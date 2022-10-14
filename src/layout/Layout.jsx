@@ -34,7 +34,7 @@ const Layout = (props) => {
           {props.children}
         </Grid>
         <Grid item lg={6} sx={{display:{xs:"none",lg:"block"}}}>
-          <img src={s} alt="s" style={{ width: "75%" }} />
+          <img src={s} alt="s" style={{ width: "75%" ,position:"sticky",top:0}} />
         </Grid>
       </Grid>
     </div>
