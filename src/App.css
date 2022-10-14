@@ -1,0 +1,53 @@
+:root{
+    --main-color:#4775FE;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    counter-reset: section;
+    background-color: var(--main-color);
+}
+.App{
+    
+    inset: 0;
+    position: fixed;
+    margin: 1rem;
+    overflow-y: scroll;
+    background-color: #fff;
+}
+.counter::before{
+    counter-increment: section;
+    content: counter(section) ;
+}
+.active{
+    background-color: var(--main-color);
+    color:white;
+}
+.counter{
+    border: 1px solid black;
+    border-radius:50%;  
+    width: 0.5rem;
+    height: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    margin-right: 0.5rem  ;
+}
+.text-blue{
+    color:var(--main-color);
+}
+
+@media screen and (min-width: 1200px) {
+    .App{
+        margin-top: 5rem  ;
+        margin-left: 8rem;
+        margin-right: 8rem;
+        margin-bottom: 5rem  ;
+    }
+}
+/* @media screen and (max-width: 1200px) {
+    img{
+        display:none;
+    }
+} */
