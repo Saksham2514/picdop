@@ -2,7 +2,7 @@ import "./App.css";
 import React    from "react";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 
 function App() {

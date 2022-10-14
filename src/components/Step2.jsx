@@ -16,13 +16,13 @@ TextField,
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const Form = ({disabled}) => {
-    const [category, setCategory] = React.useState('');
+    // const [category, setCategory] = React.useState('');
     const [subcategory, setSubCategory] = React.useState('');
     const [activeClass, setActive] = React.useState('');
 
-  const handleCategory = (event) => {
-    setCategory(event.target.value);
-  };
+  // const handleCategory = (event) => {
+  //   setCategory(event.target.value);
+  // };
   const handleSubCategory = (event) => {
     setSubCategory(event.target.value);
   };
