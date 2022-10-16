@@ -17,7 +17,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FmdGoodSharpIcon from "@mui/icons-material/FmdGoodSharp";
 import Fr from "./Fr";
 
-const Form = ({ disabled,setStep2 }) => {
+const Form = ({ disabled,setStep4 }) => {
   const [activeClass, setActive] = React.useState("");
   const [values, setValues] = React.useState({
     amount: "",
@@ -113,7 +113,7 @@ const Form = ({ disabled,setStep2 }) => {
               </Grid>
               <Fr />
               <Button onClick={
-                ()=>{setStep2(true)}
+                ()=>{setStep4(true)}
               } sx={{my:2,float:"right"}}  variant="contained">Next</Button>
             </AccordionDetails>
           </Accordion>

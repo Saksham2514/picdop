@@ -1,60 +1,70 @@
-import React, { Component } from 'react';
-import {Button} from '@mui/material'
+import React, { Component } from "react";
+import { Button } from "@mui/material";
 
 class ImageUploadPreviewComponent extends Component {
+  fileObj = [];
+  fileArray = [];
 
-    fileObj = [];
-    fileArray = [];
+  constructor(props) {
+    super(props);
+    this.state = {
+      file: [null],
+    };
+    this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
+    this.uploadFiles = this.uploadFiles.bind(this);
+  }
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            file: [null]
-        }
-        this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this)
-        this.uploadFiles = this.uploadFiles.bind(this)
+  uploadMultipleFiles(e) {
+    this.fileObj.push(e.target.files);
+    for (let i = 0; i < this.fileObj[0].length; i++) {
+      this.fileArray.push(URL.createObjectURL(this.fileObj[0][i]));
     }
+    this.setState({ file: this.fileArray });
+  }
 
-    uploadMultipleFiles(e) {
-        this.fileObj.push(e.target.files)
-        for (let i = 0; i < this.fileObj[0].length; i++) {
-            this.fileArray.push(URL.createObjectURL(this.fileObj[0][i]))
-        }
-        this.setState({ file: this.fileArray })
-    }
+  uploadFiles(e) {
+    e.preventDefault();
+    console.log(this.state.file);
+  }
 
-    uploadFiles(e) {
-        e.preventDefault()
-        console.log(this.state.file)
-    }
+  render() {
+    return (
+      <form>
+        <div
+          className="form-group multi-preview "
+          style={{
+            overflow: "scroll",
+            width: "100%",
+            height: "150px",
+            marginTop: "1rem",
+            display: this.fileArray.length === 0 ? "none" : "flex",
+          }}
+        >
+          {(this.fileArray || []).map((url) => (
+            <>
+              <img
+                src={url}
+                alt="..."
+                height={100}
+                width={100}
+                style={{ border: "1px solid black" }}
+              />
+              <br />
+            </>
+          ))}
+        </div>
 
-    render() {
-        return (
-            <form>
-                <div className="form-group multi-preview " style={{overflow:"scroll",width:"100%",height:"150px" ,marginTop:"1rem" , display:this.fileArray.length === 0 ? "none" : "flex"}}>
-                    {(this.fileArray || []).map(url => (
-                        <>
-                        <img src={url} alt="..." height={100} width={100} style={{border:"1px solid black"}}/>
-                        <br/>
-                        </>
-                    ))}
-                </div>
-
-                <Button sx={{mt:2}}
-  variant="outlined"
-  component="label"
->
-  +
-  <input 
-    type="file"
-    onChange={this.uploadMultipleFiles} 
-    multiple
-    hidden
-  />
-</Button>
-                {/* <button type="button" className="btn btn-danger btn-block" onClick={this.uploadFiles}>Upload</button> */}
-            </form >
-        )
-    }
+        <Button sx={{ mt: 2 }} variant="outlined" component="label">
+          +
+          <input
+            type="file"
+            onChange={this.uploadMultipleFiles}
+            multiple
+            hidden
+          />
+        </Button>
+      </form>
+    );
+  }
 }
-export default ImageUploadPreviewComponent
+export default ImageUploadPreviewComponent;

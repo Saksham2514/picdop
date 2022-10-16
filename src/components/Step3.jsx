@@ -6,100 +6,118 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
-
-  MenuItem,
-  Select,
+  TextField,
   FormControl,
   InputLabel,
-  Button
+  OutlinedInput,
+  InputAdornment,
+  Button,
 } from "@mui/material/";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FmdGoodSharpIcon from "@mui/icons-material/FmdGoodSharp";
+import Fr from "./Fr";
 
-const Form = (props) => {
-    const [category, setCategory] = React.useState('');
-    const [subcategory, setSubCategory] = React.useState('');
-    const [activeClass, setActive] = React.useState('');
+const Form = ({ disabled,setStep3 }) => {
+  const [activeClass, setActive] = React.useState("");
+  const [values, setValues] = React.useState({
+    amount: "",
+    password: "",
+    weight: "",
+    weightRange: "",
+    showPassword: false,
+  });
 
-  const handleCategory = (event) => {
-    setCategory(event.target.value);
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleSubCategory = (event) => {
-    setSubCategory(event.target.value);
-  };
   return (
     <div>
       <Grid
-        sx={{ p: 1}}
+        sx={{ p: 1 }}
         container
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
         {/* Row 1  */}
 
-       
         {/* Row 2  */}
         <Grid item xs={12}>
-          <Accordion onChange = {(e,expanded) => {
-        if(expanded){
-          setActive("active");
-        }
-        else{
-          setActive("");
-        }
-      }}>
+          <Accordion
+            disabled={disabled}
+            onChange={(e, expanded) => {
+              if (expanded) {
+                setActive("active");
+              } else {
+                setActive("");
+              }
+            }}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-                <div className={`counter ${activeClass}`}></div>
-              <Typography>User Type</Typography>
+              <div className={`counter ${activeClass}`}></div>
+              <Typography>Shop Details</Typography>
             </AccordionSummary>
-            <AccordionDetails >
+            <AccordionDetails>
               <Grid container>
                 <Grid item xs={6}>
-                <FormControl  sx={{ minWidth:200}}>
-        <InputLabel id="demo-simple-select-helper-label">Category</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          value={category}
-          label="Category"
-          onChange={handleCategory}
-        >
-          <MenuItem value={10}>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
+                  <TextField
+                    required
+                    id="outlined-required"
+                    label="Shop Name"
+                    defaultValue=""
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-helper-label">Sub Category</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          value={subcategory}
-          label="Sub Category"
-          onChange={handleSubCategory}
-        >
-          <MenuItem value={10}>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
+                  <TextField
+                    required
+                    id="outlined-required"
+                    label="Shop Number"
+                    defaultValue=""
+                  />
                 </Grid>
               </Grid>
-              <Button sx={{my:2,float:"right"}}  variant="contained">Next</Button>
+              <Grid container sx={{ mt: 1 }}>
+                <Grid item xs={6}>
+                  <FormControl variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      Location
+                    </InputLabel>
+                    <OutlinedInput
+                      required
+                      id="outlined-adornment-required"
+                      type="text"
+                      value={values.password}
+                      onChange={handleChange("password")}
+                      sx={{ mr: 0.5 }}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <FmdGoodSharpIcon />
+                        </InputAdornment>
+                      }
+                      label="Password"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    required
+                    id="outlined-required"
+                    label="Pincode"
+                    defaultValue=""
+                  />
+                </Grid>
+              </Grid>
+              <Fr />
+              <Button onClick={
+                ()=>{setStep3(true)}
+              } sx={{my:2,float:"right"}}  variant="contained">Next</Button>
             </AccordionDetails>
           </Accordion>
         </Grid>
-        
       </Grid>
     </div>
   );

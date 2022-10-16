@@ -15,7 +15,7 @@ import {
 } from "@mui/material/";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const Form = ({setNext}) => {
+const Form = ({setStep1}) => {
     const [category, setCategory] = React.useState(10);
     const [subcategory, setSubCategory] = React.useState(10);
     const [activeClass, setActive] = React.useState('');
@@ -96,7 +96,7 @@ const Form = ({setNext}) => {
                 </Grid>
               </Grid>
               <Button onClick={
-                ()=>{setNext(true)}
+                ()=>{setStep1(true)}
               } sx={{my:2,float:"right"}}  variant="contained">Next</Button>
             </AccordionDetails>
           </Accordion>
