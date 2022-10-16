@@ -5,6 +5,7 @@ import Step3 from "../components/Step3";
 import Step4 from "../components/Step4";
 import Step5 from "../components/Step5";
 import Layout from "../layout/Layout";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [step1, setStep1] = useState(false)
@@ -31,7 +32,7 @@ const SignUp = () => {
         step4 ? <Step5 disabled={false}   /> : <Step5 disabled={true}  />  
         }
        
-        
+        <Link to="/" style={{marginLeft:"0.75rem",color:"var(--main-color)",textDecoration:"none"}}> Login instead ? </Link> 
       </Layout>
     
     </div>

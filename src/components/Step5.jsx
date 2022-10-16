@@ -22,9 +22,9 @@ const Form = ({ disabled }) => {
     showPassword: false,
   });
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  // const handleChange = (prop) => (event) => {
+  //   setValues({ ...values, [prop]: event.target.value });
+  // };
 
   return (
     <div>
@@ -92,6 +92,7 @@ const Form = ({ disabled }) => {
                     fullWidth
                     id="outlined-required"
                     label="CVV"
+                    type="password"
                     defaultValue=""
                   />
                 </Grid>

@@ -1,8 +1,9 @@
 import React from 'react'
 import LoginLayout from '../layout/LoginLayout'
 import { TextField,Typography,Grid,FormControlLabel,Checkbox,Button } from '@mui/material'
+import { Link } from "react-router-dom";
 
-import Link from '@mui/material/Link';
+//import Link from '@mui/material/Link';
 
 const Login = () => {
   return (
@@ -39,7 +40,7 @@ reader will be distracted by the readable.
           <FormControlLabel control={<Checkbox defaultChecked />} label="Remember me" />
         </Grid>
         <Grid item lg={6} >
-        <Link href="#" underline="none" >
+        <Link to="/forgot" style={{color:"var(--main-color)",textDecoration:"none"}}>
         <p>
             Forgot Password?
             </p>
@@ -53,7 +54,7 @@ reader will be distracted by the readable.
             <Button variant="contained" style={{width:"50%",backgroundColor:"var(--main-color)"}}>Login</Button>
         </Grid>
         <br/>
-        <Link href="/register" underline="none" >
+        <Link to="/register" style={{color:"var(--main-color)",textDecoration:"none"}} >
             Create Account
         </Link>
 
