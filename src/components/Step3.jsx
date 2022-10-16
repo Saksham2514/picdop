@@ -14,13 +14,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const Form = ({ disabled,setStep3 }) => {
   const [activeClass, setActive] = React.useState("");
-  const [values, setValues] = React.useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-  });
+  // const [values, setValues] = React.useState({
+  //   amount: "",
+  //   password: "",
+  //   weight: "",
+  //   weightRange: "",
+  //   showPassword: false,
+  // });
 
   // const handleChange = (prop) => (event) => {
   //   setValues({ ...values, [prop]: event.target.value });

@@ -7,25 +7,22 @@ import {
   AccordionDetails,
   Typography,
   TextField,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
+
   Button,
 } from "@mui/material/";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FmdGoodSharpIcon from "@mui/icons-material/FmdGoodSharp";
+
 import Fr from "./Fr";
 
 const Form = ({ disabled,setStep2 }) => {
   const [activeClass, setActive] = React.useState("");
-  const [values, setValues] = React.useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-  });
+  // const [values, setValues] = React.useState({
+  //   amount: "",
+  //   password: "",
+  //   weight: "",
+  //   weightRange: "",
+  //   showPassword: false,
+  // });
 
   // const handleChange = (prop) => (event) => {
   //   setValues({ ...values, [prop]: event.target.value });
