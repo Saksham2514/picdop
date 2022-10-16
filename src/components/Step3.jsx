@@ -7,15 +7,10 @@ import {
   AccordionDetails,
   Typography,
   TextField,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
   Button,
 } from "@mui/material/";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FmdGoodSharpIcon from "@mui/icons-material/FmdGoodSharp";
-import Fr from "./Fr";
+
 
 const Form = ({ disabled,setStep3 }) => {
   const [activeClass, setActive] = React.useState("");
@@ -59,59 +54,51 @@ const Form = ({ disabled,setStep3 }) => {
               id="panel1a-header"
             >
               <div className={`counter ${activeClass}`}></div>
-              <Typography>Shop Details</Typography>
+              <Typography>Owner Details</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container>
-                <Grid item xs={6}>
+                <Grid item sx={{mt:1,pr:1}} md={6}>
                   <TextField
+                  fullWidth
                     required
                     id="outlined-required"
-                    label="Shop Name"
+                    label="First Name"
                     defaultValue=""
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sx={{mt:1}} md={6}>
                   <TextField
+                  fullWidth
                     required
                     id="outlined-required"
-                    label="Shop Number"
-                    defaultValue=""
-                  />
-                </Grid>
-              </Grid>
-              <Grid container sx={{ mt: 1 }}>
-                <Grid item xs={6}>
-                  <FormControl variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password">
-                      Location
-                    </InputLabel>
-                    <OutlinedInput
-                      required
-                      id="outlined-adornment-required"
-                      type="text"
-                      value={values.password}
-                      onChange={handleChange("password")}
-                      sx={{ mr: 0.5 }}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <FmdGoodSharpIcon />
-                        </InputAdornment>
-                      }
-                      label="Password"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    id="outlined-required"
-                    label="Pincode"
+                    label="Last Number"
                     defaultValue=""
                   />
                 </Grid>
               </Grid>
-              <Fr />
+              <Grid container >
+                <Grid item sx={{mt:1,pr:1}} md={6}>
+                  <TextField
+                  fullWidth
+                    required
+                    id="outlined-required"
+                    label="Mobile Number"
+                    defaultValue=""
+                  />
+                  
+                </Grid>
+                <Grid item sx={{mt:1}} md={6}>
+                  <TextField
+                  fullWidth
+                    required
+                    id="outlined-required"
+                    label="Mail ID"
+                    defaultValue=""
+                  />
+                </Grid>
+              </Grid>
+          
               <Button onClick={
                 ()=>{setStep3(true)}
               } sx={{my:2,float:"right"}}  variant="contained">Next</Button>

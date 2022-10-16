@@ -63,51 +63,22 @@ const Form = ({ disabled,setStep2 }) => {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container>
-                <Grid item xs={6}>
+                <Grid item md={6} sx={{mt:{xs:1,md:0},pr:1}}>
                   <TextField
                     required
                     id="outlined-required"
                     label="Shop Name"
                     defaultValue=""
+                    fullWidth
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item md={6} sx={{mt:{xs:1,md:0}}}>
                   <TextField
                     required
                     id="outlined-required"
                     label="Shop Number"
                     defaultValue=""
-                  />
-                </Grid>
-              </Grid>
-              <Grid container sx={{ mt: 1 }}>
-                <Grid item xs={6}>
-                  <FormControl variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password">
-                      Location
-                    </InputLabel>
-                    <OutlinedInput
-                      required
-                      id="outlined-adornment-required"
-                      type="text"
-                      value={values.password}
-                      onChange={handleChange("password")}
-                      sx={{ mr: 0.5 }}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <FmdGoodSharpIcon />
-                        </InputAdornment>
-                      }
-                      label="Password"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    id="outlined-required"
-                    label="Pincode"
-                    defaultValue=""
+                    fullWidth
                   />
                 </Grid>
               </Grid>

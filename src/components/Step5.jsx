@@ -7,15 +7,10 @@ import {
   AccordionDetails,
   Typography,
   TextField,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
   Button,
 } from "@mui/material/";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FmdGoodSharpIcon from "@mui/icons-material/FmdGoodSharp";
-import Fr from "./Fr";
+
 
 const Form = ({ disabled }) => {
   const [activeClass, setActive] = React.useState("");
@@ -39,9 +34,8 @@ const Form = ({ disabled }) => {
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
+        
         {/* Row 1  */}
-
-        {/* Row 2  */}
         <Grid item xs={12}>
           <Accordion
             disabled={disabled}
@@ -59,60 +53,51 @@ const Form = ({ disabled }) => {
               id="panel1a-header"
             >
               <div className={`counter ${activeClass}`}></div>
-              <Typography>Shop Details</Typography>
+              <Typography>Bank Details</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container>
-                <Grid item xs={6}>
+                <Grid item md={6} sx={{pr:1}}>
                   <TextField
                     required
+                    fullWidth
                     id="outlined-required"
-                    label="Shop Name"
+                    label="Card Number  "
                     defaultValue=""
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item md={6}>
                   <TextField
                     required
+                    fullWidth
                     id="outlined-required"
-                    label="Shop Number"
+                    label="Card Holder Name "
                     defaultValue=""
                   />
                 </Grid>
               </Grid>
               <Grid container sx={{ mt: 1 }}>
-                <Grid item xs={6}>
-                  <FormControl variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password">
-                      Location
-                    </InputLabel>
-                    <OutlinedInput
-                      required
-                      id="outlined-adornment-required"
-                      type="text"
-                      value={values.password}
-                      onChange={handleChange("password")}
-                      sx={{ mr: 0.5 }}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <FmdGoodSharpIcon />
-                        </InputAdornment>
-                      }
-                      label="Password"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
+                <Grid item md={6} sx={{pr:1}}>
+                <TextField
                     required
+                    fullWidth
                     id="outlined-required"
-                    label="Pincode"
+                    label="Expiry Date"
+                    defaultValue=""
+                  />
+                </Grid>
+                <Grid item md={6}>  
+                <TextField
+                    required
+                    fullWidth
+                    id="outlined-required"
+                    label="CVV"
                     defaultValue=""
                   />
                 </Grid>
               </Grid>
-              <Fr />
-              <Button  sx={{my:2,float:"right"}}  variant="contained">Next</Button>
+        
+              <Button sx={{my:2,float:"right"}}  variant="contained">Register</Button>
             </AccordionDetails>
           </Accordion>
         </Grid>

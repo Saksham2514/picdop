@@ -7,15 +7,9 @@ import {
   AccordionDetails,
   Typography,
   TextField,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
   Button,
 } from "@mui/material/";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FmdGoodSharpIcon from "@mui/icons-material/FmdGoodSharp";
-import Fr from "./Fr";
 
 const Form = ({ disabled,setStep4 }) => {
   const [activeClass, setActive] = React.useState("");
@@ -39,9 +33,8 @@ const Form = ({ disabled,setStep4 }) => {
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
+        
         {/* Row 1  */}
-
-        {/* Row 2  */}
         <Grid item xs={12}>
           <Accordion
             disabled={disabled}
@@ -59,59 +52,70 @@ const Form = ({ disabled,setStep4 }) => {
               id="panel1a-header"
             >
               <div className={`counter ${activeClass}`}></div>
-              <Typography>Shop Details</Typography>
+              <Typography>Location and Route</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container>
-                <Grid item xs={6}>
+                <Grid item md={6} sx={{mt:1,pr:1}}>
                   <TextField
+                  fullWidth
                     required
                     id="outlined-required"
-                    label="Shop Name"
+                    label="Address Line 1 "
                     defaultValue=""
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item md={6} sx={{mt:1}}>
                   <TextField
+                  fullWidth
                     required
                     id="outlined-required"
-                    label="Shop Number"
+                    label="Address Line 2 "
                     defaultValue=""
                   />
                 </Grid>
               </Grid>
-              <Grid container sx={{ mt: 1 }}>
-                <Grid item xs={6}>
-                  <FormControl variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password">
-                      Location
-                    </InputLabel>
-                    <OutlinedInput
-                      required
-                      id="outlined-adornment-required"
-                      type="text"
-                      value={values.password}
-                      onChange={handleChange("password")}
-                      sx={{ mr: 0.5 }}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <FmdGoodSharpIcon />
-                        </InputAdornment>
-                      }
-                      label="Password"
-                    />
-                  </FormControl>
+              <Grid container >
+                <Grid item md={6} sx={{mt:1,pr:1}}>
+                <TextField
+                fullWidth
+                    required
+                    id="outlined-required"
+                    label="City"
+                    defaultValue=""
+                  />
                 </Grid>
-                <Grid item xs={6}>
-                  <TextField
+                <Grid item md={6} sx={{mt:1}}>
+                <TextField
+                fullWidth
+                    required
+                    id="outlined-required"
+                    label="State"
+                    defaultValue=""
+                  />
+                </Grid>
+              </Grid>
+              <Grid container >
+                <Grid item md={6} sx={{mt:1,pr:1}}>
+                <TextField
+                fullWidth
                     required
                     id="outlined-required"
                     label="Pincode"
                     defaultValue=""
                   />
                 </Grid>
+                <Grid item md={6} sx={{mt:1}}>
+                  <TextField
+                  fullWidth
+                    required
+                    id="outlined-required"
+                    label="Google Maps Link"
+                    defaultValue=""
+                  />
+                </Grid>
               </Grid>
-              <Fr />
+
               <Button onClick={
                 ()=>{setStep4(true)}
               } sx={{my:2,float:"right"}}  variant="contained">Next</Button>

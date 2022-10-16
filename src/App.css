@@ -46,8 +46,12 @@ body{
         margin-bottom: 5rem  ;
     }
 }
-/* @media screen and (max-width: 1200px) {
-    img{
-        display:none;
-    }
-} */
+.button{
+    background-color:"red";
+    border:0;
+    border-radius:"50%";
+    height:"1rem";
+    color:"white";
+    position:"absolute";
+    float:"center"
+}

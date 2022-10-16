@@ -6,102 +6,101 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
-
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  Button
+  TextField,
+  Button,
 } from "@mui/material/";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
-const Form = ({setStep1}) => {
-    const [category, setCategory] = React.useState(10);
-    const [subcategory, setSubCategory] = React.useState(10);
-    const [activeClass, setActive] = React.useState('');
 
-  const handleCategory = (event) => {
-    setCategory(event.target.value);
+const Form = ({ disabled,setStep1 }) => {
+  const [activeClass, setActive] = React.useState("");
+  const [values, setValues] = React.useState({
+    amount: "",
+    password: "",
+    weight: "",
+    weightRange: "",
+    showPassword: false,
+  });
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleSubCategory = (event) => {
-    setSubCategory(event.target.value);
-  };
   return (
     <div>
       <Grid
-        sx={{ p: 1}}
+        sx={{ p: 1 }}
         container
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
         {/* Row 1  */}
 
-       
         {/* Row 2  */}
-        <Grid item md={12}>
-          <Accordion onChange = {(e,expanded) => {
-        if(expanded){
-          setActive("active");
-        }
-        else{
-          setActive("");
-        }
-      }}>
+        <Grid item xs={12}>
+          <Accordion
+            disabled={disabled}
+            onChange={(e, expanded) => {
+              if (expanded) {
+                setActive("active");
+              } else {
+                setActive("");
+              }
+            }}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-                <div className={`counter ${activeClass}`}></div>
+              <div className={`counter ${activeClass}`}></div>
               <Typography>User Type</Typography>
             </AccordionSummary>
-            <AccordionDetails >
+            <AccordionDetails>
               <Grid container>
-                <Grid item md={6}>
-                <FormControl  sx={{ minWidth:200 , my:{ xs: 2, md: 0} }}>
-        <InputLabel id="demo-simple-select-helper-label">Category</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          value={category}
-          label="Category"
-          onChange={handleCategory}
-        >
-          <MenuItem value={10}>
-          </MenuItem>
-          <MenuItem value={10}>Medical</MenuItem>
-          <MenuItem value={20}>Non Medical</MenuItem>
-          <MenuItem value={30}>Technical</MenuItem>
-        </Select>
-      </FormControl>
+                <Grid item sx={{mt:1,pr:1}} md={6}>
+                <FormControl fullWidth sx={{minWidth:200}} >
+  <InputLabel id="demo-simple-select-label">Category</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    label="Category"
+    onChange={handleChange}
+  >
+    <MenuItem value={10}>Ten</MenuItem>
+    <MenuItem value={20}>Twenty</MenuItem>
+    <MenuItem value={30}>Thirty</MenuItem>
+  </Select>
+</FormControl>
                 </Grid>
-                <Grid item md={6}>
-                <FormControl fullWidth  sx={{ minWidth:200  }}>
-        <InputLabel id="demo-simple-select-helper-label">Sub Category</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          value={subcategory}
-          label="Sub Category"
-          onChange={handleSubCategory}
-        >
-          <MenuItem value={10}>
-          </MenuItem>
-          <MenuItem value={10}>Retailer</MenuItem>
-          <MenuItem value={20}>Whole Seller</MenuItem>
-          <MenuItem value={30}>Customer</MenuItem>
-        </Select>
-      </FormControl>
+                <Grid item sx={{mt:1}} md={6}>
+                <FormControl fullWidth sx={{minWidth:200}} >
+  <InputLabel id="demo-simple-select-label">Category</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    label="Category"
+    onChange={handleChange}
+  >
+    <MenuItem value={10}>Ten</MenuItem>
+    <MenuItem value={20}>Twenty</MenuItem>
+    <MenuItem value={30}>Thirty</MenuItem>
+  </Select>
+</FormControl>
+                  {/* SELECT 2 */}
                 </Grid>
               </Grid>
+          
               <Button onClick={
                 ()=>{setStep1(true)}
               } sx={{my:2,float:"right"}}  variant="contained">Next</Button>
             </AccordionDetails>
           </Accordion>
         </Grid>
-        
       </Grid>
     </div>
   );

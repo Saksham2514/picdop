@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "@mui/material";
+import { Button,InputLabel } from "@mui/material";
 
 class ImageUploadPreviewComponent extends Component {
   fileObj = [];
@@ -53,8 +53,10 @@ class ImageUploadPreviewComponent extends Component {
             </>
           ))}
         </div>
-
-        <Button sx={{ mt: 2 }} variant="outlined" component="label">
+        <InputLabel sx={{my:1.5,ml:0.5}}>
+              Shop Images
+              </InputLabel>
+        <Button variant="outlined" component="label">
           +
           <input
             type="file"
