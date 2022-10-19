@@ -1,0 +1,6 @@
+@import url('./Root.css');
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    counter-reset: section;
+   background-color: var(--secondary-color) !important;
+}

@@ -1,5 +1,5 @@
 import React from 'react'
-
+import "../App.css";
 import {
     Grid,
     
@@ -11,7 +11,7 @@ import logo from "../logo.png";
 
 const Layout = (props) => {
   return (
-    <div>
+    <div className='App'>
         <Grid
         sx={{ p: 3 }}
         container

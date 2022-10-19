@@ -4,12 +4,12 @@ import { Grid } from "@mui/material/";
 
 import s from "../login.png";
 import logo from "../logo.png";
-
+import "../App.css";
 const Layout = (props) => {
   return (
-    <div>
+    <div className="App">
       <Grid
-        sx={{ p: 3 }}
+        sx={{ px: 3 }}
         container
         rowSpacing={1}
         columnSpacing={{ lg: 1, sm: 2, md: 3 }}
