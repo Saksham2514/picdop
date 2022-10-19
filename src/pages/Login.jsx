@@ -77,6 +77,12 @@ reader will be distracted by the readable.
         <Link to="/register" style={{color:"var(--main-color)",textDecoration:"none"}} >
             Create Account
         </Link>
+        <Link to="/admin" style={{color:"var(--main-color)",textDecoration:"none"}} >
+            Check Admin dashboard
+        </Link>
+        {/* <Link to="/user" style={{color:"var(--main-color)",textDecoration:"none"}} >
+            Check User dashboard
+        </Link> */}
 
       </LoginLayout>
     </div>
