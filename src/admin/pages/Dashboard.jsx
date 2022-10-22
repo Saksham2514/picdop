@@ -1,239 +1,200 @@
 import React from "react";
-import clsx from "clsx";
-import "../../App.css"
+import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Link from "@material-ui/core/Link";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import { MainListItems } from "./listItems";
-import Chart from "./Chart";
-import Deposits from "./Deposits";
-import Orders from "./Orders";
-import Logo from "../../logo.png"
+import DashboardLayout from "./DashboardLayout";
+import { Container, Grid } from "@material-ui/core";
+import SVG from "../../assets/admin/dashboard.png";
+import { Button, Paper, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import DataTable from 'react-data-table-component';
 
-function Copyright() {
-  // classes created because it is needed in the footer.
-  const classes = useStyles();
-  return (
-    <Container className={classes.footer}>
-      <Typography variant="body2" color="textSecondary" align="center">
-        {"Copyright © "}
-        <Link color="inherit" href="https://material-ui.com/">
-          Your Website
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    </Container>
-  );
-}
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles(theme => ({  
-  root: {
-    display: "flex"
-  },
-  toolbar: {
-    paddingRight: 24 // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar
-  },
-  appBar: {
-    
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  },
-  menuButton: {
-    marginRight: 36
-  },
-  menuButtonHidden: {
-    display: "none"
-  },
-  title: {
-    flexGrow: 1
-  },
-  drawerPaper: {
-    position: "relative",
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-    
-    backgroundColor:"var(--main-color)",
-    color:"white",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  },
-  drawerPaperClose: {
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9)
-    }
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    // content which is class of main needs to be flex and column direction
-    display: "flex",
-    flexDirection: "column",
-    flexGrow: 1,
-    height: "100vh",
-    overflow: "auto"
-  },
+const useStyles = makeStyles((theme) => ({
   container: {
-    
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
+    paddingBottom: theme.spacing(4),
   },
   paper: {
-    
     padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   fixedHeight: {
-    height: 240
+    height: 240,
   },
   // added the footer class
-  footer: {
-    padding: theme.spacing(2),
-    marginTop: "auto",
-    backgroundColor: "white",
-    // just this item, push to bottom
-    alignSelf: "flex-end"
-  },
-  listItemRoot:{
-    backgroundColor:"red"
-  }
 }));
 
 export default function Dashboard() {
+  
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+
+  const columns = [
+    {
+        name: 'Title',
+        selector: row => row.title,
+        sortable:true,
+    },
+    {
+        name: 'Year',
+        selector: row => row.year,
+        sortable:true,
+    },
+  ];
+  
+  const data = [
+    {
+        id: 1,
+        title: 'Beetlejuice',
+        year: '1981',
+    },
+    {
+        id: 2,
+        title: 'Ghostbusters',
+        year: '1982',
+    },
+    {
+        id: 3,
+        title: 'Beetlejuice',
+        year: '1983',
+    },
+    {
+        id: 4,
+        title: 'Ghostbusters',
+        year: '1984',
+    },
+    {
+        id: 5,
+        title: 'Beetlejuice',
+        year: '1985',
+    },
+    {
+        id: 6,
+        title: 'Ghostbusters',
+        year: '1986',
+    },
+    {
+        id: 7,
+        title: 'Beetlejuice',
+        year: '1987',
+    },
+    {
+        id: 8,
+        title: 'Ghostbusters',
+        year: '1988',
+    },
+    {
+        id: 9,
+        title: 'Beetlejuice',
+        year: '1989',
+    },
+    {
+        id: 10,
+        title: 'Ghostbusters',
+        year: '1990',
+    },
+    {
+        id: 11,
+        title: 'Beetlejuice',
+        year: '1991',
+    },
+    {
+        id: 12,
+        title: 'Ghostbusters',
+        year: '1992',
+    },
+  ]
+  
+  
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="absolute"
-        style={{backgroundColor:"white"}}
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-      >
-        <Toolbar  className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="gray"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(
-              classes.menuButton,
-              open && classes.menuButtonHidden
-            )}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            
-          <img src={Logo} style={{height:"4rem"}} alt=""/>
-          </Typography>
-          <IconButton color="gray">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer
+    <DashboardLayout>
+      <Container maxWidth="lg" className={classes.container}>
+        <Grid container>
+          <Grid item xs={12}>
+            {/* Grid Content */}
 
-        variant="permanent"
-        style={{backgroundColor:"var(--main-color)"}}
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon style={{color:"white"}} />
-          </IconButton>
-        </div>
-        <Divider />
-        <MainListItems/>
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Chart />
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
+            <Paper
+              variant="outlined"
+              elevation={3}
+              style={{
+                backgroundColor: "var(--main-color)",
+                color: "white",
+                padding: "0 0.5rem",
+              }}
+            >
+              <Grid container fullWidth>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="subtitle1">
+                    <p>Book a Delivery</p>
+                  </Typography>
+                  <Typography variant="body2">
+                    <p>
+                      There are many variations of passages of Lorem Ipsum
+                      available, but the majority have suffered alteration some
+                      form, by injected humour, or randomised words which don't
+                      look even slightly believable.
+                    </p>
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    style={{
+                      backgroundColor: "white",
+                      color: "var(--main-color)",
+                      borderRadius: "0.25rem",
+                      marginBottom: "1rem",
+                      padding: 0,
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Book
+                  </Button>
+                </Grid>
+                <Grid
+                  component={Box}
+                  item
+                  md={6}
+                  display={{ xs: "none", lg: "block" }}
+                >
+                  <img src={SVG} alt="" width={"100%"} height="100%" />
+                </Grid>
+                {/* Grid Content */}
+              </Grid>
+            </Paper>
           </Grid>
-        </Container>
-        <Copyright />
-      </main>
-    </div>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <Paper></Paper>
+          </Grid>
+        </Grid>
+        <Grid container spacing={1} style={{ marginTop: "0.5rem" }}>
+          <Grid item xs={12} md={6}>
+            <Paper style={{ padding: "0.5rem" }}>
+              
+              <DataTable
+              columns={columns}
+              
+              data={data}
+              
+              pagination
+                      />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper style={{ padding: "0.5rem" }}>
+            <DataTable
+            columns={columns}
+            
+            data={data}
+            
+            pagination
+                    />
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+    </DashboardLayout>
   );
 }

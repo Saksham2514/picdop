@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp";
 import { Routes, Route } from "react-router-dom";
 
 
+
 function App() {
 
   
@@ -19,6 +20,8 @@ function App() {
       </Routes>
        <Routes>
         <Route path="/admin" element={<Admin/>} />
+        
+        
       </Routes>
     </div>
   );

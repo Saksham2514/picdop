@@ -47,7 +47,7 @@ export const MainListItems = () => {
       </ListItemIcon>
       <ListItemText primary="Collection" />
     </ListItem>
-    <ListItem button className={classes.listitemRoot}>
+    <ListItem button  className={classes.listitemRoot}>
       <ListItemIcon className={classes.iconRoot} >
         <MonetizationOnIcon />
       </ListItemIcon>

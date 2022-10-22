@@ -57,3 +57,11 @@ body:has(.App){
 .listParent{
     background-color: aqua;
 }
+.iSAVrt{
+
+    background-color: var(--main-color) !important;
+    color:white;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+  
