@@ -54,7 +54,7 @@ class ImageUploadPreviewComponent extends Component {
           ))}
         </div>
         <InputLabel sx={{my:1.5,ml:0.5}}>
-              Shop Images
+              {this.props.label}
               </InputLabel>
         <Button variant="outlined" component="label">
           +

@@ -11,12 +11,13 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
+
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { MainListItems } from "./listItems";
 import Logo from "../../logo.png"
+import { Link } from "react-router-dom";
 
 function Copyright() {
   // classes created because it is needed in the footer.
@@ -25,7 +26,7 @@ function Copyright() {
     <Container className={classes.footer}>
       <Typography variant="body2" color="textSecondary" align="center">
         {"Copyright © "}
-        <Link color="inherit" href="https://material-ui.com/">
+        <Link color="inherit" to="/order">
           Your Website
         </Link>{" "}
         {new Date().getFullYear()}
@@ -174,8 +175,9 @@ export default function Dashboard({children}) {
             noWrap
             className={classes.title}
           >
-            
-          <img src={Logo} style={{height:"4rem"}} alt=""/>
+          <Link to="/admin">
+            <img src={Logo} style={{height:"4rem"}} alt=""/>
+          </Link>  
           </Typography>
           <IconButton color="gray">
             <Badge badgeContent={4} color="secondary">

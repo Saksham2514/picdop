@@ -79,7 +79,7 @@ const Form = ({ disabled,setStep2 }) => {
                   />
                 </Grid>
               </Grid>
-              <Fr />
+              <Fr label="Shop Images"/>
               <Button onClick={
                 ()=>{setStep2(true)}
               } sx={{my:2,float:"right"}}  variant="contained">Next</Button>
