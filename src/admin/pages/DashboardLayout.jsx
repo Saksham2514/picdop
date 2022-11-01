@@ -4,6 +4,7 @@ import "../../App.css"
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
+import Appbar from "./Appbar";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -11,7 +12,6 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
-
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -111,12 +111,11 @@ const useStyles = makeStyles(theme => ({
     overflow: "auto"
   },
   container: {
-    
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4)
   },
+
   paper: {
-    
     padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
@@ -130,13 +129,15 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     marginTop: "auto",
     backgroundColor: "white",
-    // just this item, push to bottom
     alignSelf: "flex-end"
   },
  
 }));
 
+
 export default function Dashboard({children}) {
+
+  
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -184,10 +185,10 @@ export default function Dashboard({children}) {
               <NotificationsIcon />
             </Badge>
           </IconButton>
+          <Appbar/>
         </Toolbar>
       </AppBar>
       <Drawer
-
         variant="permanent"
         style={{backgroundColor:"var(--main-color)"}}
         classes={{

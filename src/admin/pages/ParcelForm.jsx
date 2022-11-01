@@ -49,6 +49,7 @@ const ParcelForm = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
+          fullWidth
             label="Parcel Weight"
             value={weight}
             variant="outlined"
@@ -64,6 +65,7 @@ const ParcelForm = () => {
         {/* LBH ROW */}
         <Grid item xs={12} md={4}>
           <TextField
+          fullWidth
             label="Parcel Height"
             value={height}
             variant="outlined"
@@ -78,6 +80,7 @@ const ParcelForm = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <TextField
+          fullWidth
             label="Parcel Length"
             value={length}
             variant="outlined"
@@ -92,6 +95,7 @@ const ParcelForm = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <TextField
+          fullWidth
             label="Parcel Width"
             value={width}
             variant="outlined"
