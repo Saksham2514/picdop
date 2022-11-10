@@ -1,5 +1,12 @@
 :root{    
     --main-color:#4775FE;
     --secondary-color:rgb(243, 238, 238);
-    --icom-color:white;
+    --success-color:rgb(33, 204, 95);
+    --error-color:rgb(205, 44, 44);
+    --icon-color:white;
+}
+#bg{
+    background-color: var(--main-color);
+    color: white    ;
+    box-shadow: 0 0 1px  black;
 }

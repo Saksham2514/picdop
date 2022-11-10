@@ -11,7 +11,7 @@ import Select from "@mui/material/Select";
 import React from "react";
 import ImagePreview from "../../components/Fr";
 
-const ParcelForm = (props) => {
+const ProfileForm = (props) => {
   
   return (
     <div>
@@ -182,4 +182,4 @@ const ParcelForm = (props) => {
   );
 };
 
-export default ParcelForm;
+export default ProfileForm;

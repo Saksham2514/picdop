@@ -2,7 +2,9 @@ import "./Bidy.css";
 import React    from "react";
 import Login from "./pages/Login";
 import Delivery from "./admin/components/Delivery";
+import Collection from "./admin/components/Collection";
 import Prices from "./admin/components/Prices";
+import Orders from "./admin/components/Orders";
 import Profile from "./admin/components/Profile";
 import Admin from "./admin/pages/Dashboard";
 import SignUp from "./pages/SignUp";
@@ -24,8 +26,9 @@ function App() {
        <Routes>
         <Route path="/admin" element={<Admin/>} />
         <Route path="/delivery" element={<Delivery/>} />
-        <Route path="/collection" element={<Admin/>} />
+        <Route path="/collection" element={<Collection/>} />
         <Route path="/earnings" element={<Admin/>} />
+        <Route path="/orders" element={<Orders/>} />
         <Route path="/prices" element={<Prices/>} />
         <Route path="/profile" element={<Profile/>} />
         
