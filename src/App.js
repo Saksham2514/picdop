@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Delivery from "./admin/components/Delivery";
 import Collection from "./admin/components/Collection";
 import Prices from "./admin/components/Prices";
+import {UserClass} from "./admin/pages/UserClass";
 import Orders from "./admin/components/Orders";
 import Profile from "./admin/components/Profile";
 import Admin from "./admin/pages/Dashboard";
@@ -31,6 +32,7 @@ function App() {
         <Route path="/orders" element={<Orders/>} />
         <Route path="/prices" element={<Prices/>} />
         <Route path="/profile" element={<Profile/>} />
+        <Route path="/users" element={<UserClass/>} />
         
         
       </Routes>
