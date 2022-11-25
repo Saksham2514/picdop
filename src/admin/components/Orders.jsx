@@ -4,10 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 // import DashboardLayout from "./DashboardLayout";
 import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
-import SVG from "../../assets/admin/dashboard.png";
-import { Button, Paper, Typography, TextField } from "@mui/material";
-import { Box } from "@mui/system";
-import Table from "../pages/Table";
+// import SVG from "../../assets/admin/dashboard.png";
+import { Paper } from "@mui/material";
+// import { Box } from "@mui/system";
+// import Table from "../pages/Table";
 import OrderView from "../pages/OrderView";
 
 const useStyles = makeStyles((theme) => ({

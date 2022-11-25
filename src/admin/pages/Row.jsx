@@ -4,7 +4,7 @@ import "../../Root.css";
 import DatePicker from "react-datepicker";
 import Table from "../pages/Table"
 import "react-datepicker/dist/react-datepicker.css";
-import { Badge } from "@material-ui/core";
+
 import { Link } from "react-router-dom";
 
 const Row = () => {
@@ -72,7 +72,7 @@ btn:<Link to="/orders" style={{textDecoration:"none"}}><Button style={{backgroun
   const handleClick = () => {
     console.info("You clicked the Chip.");
   };
-  const [open, setOpen] = useState(false);
+  
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   return (
