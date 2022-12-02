@@ -18,17 +18,20 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import { MainListItems } from "./listItems";
 import Logo from "../../logo.png"
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Copyright() {
+  const id =  useSelector(state=>state.id)
   // classes created because it is needed in the footer.
   const classes = useStyles();
   return (
-    <Container className={classes.footer}>
+    <Container className={classes.footer}> 
       <Typography variant="body2" color="textSecondary" align="center">
         {"Copyright © "}
         <Link color="inherit" to="/order">
-          Your Website
+          Your Website 
         </Link>{" "}
+        Your ID : {id}
         {new Date().getFullYear()}
         {"."}
       </Typography>

@@ -21,8 +21,6 @@ const Login = () => {
   const auth =  useSelector(state=>state.auth)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-  const [id, setId] = useState("");
 
   function handleSubmit() {
     if (email.length < 8 || password.length < 8) {

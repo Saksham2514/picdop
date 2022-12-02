@@ -12,6 +12,7 @@ export const userSlice = createSlice({
    login : (state,action)=>{
      state.auth = true 
      state.id = action.payload 
+     console.log(state.id)
    } ,
    logout : (state)=>{
      state.auth = false

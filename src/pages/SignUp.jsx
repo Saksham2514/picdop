@@ -5,7 +5,8 @@ import Step3 from "../components/Step3";
 import Step4 from "../components/Step4";
 import Step5 from "../components/Step5";
 import Layout from "../layout/Layout";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 const SignUp = () => {
   const [step1, setStep1] = useState(false)
@@ -14,8 +15,10 @@ const SignUp = () => {
   const [step4, setStep4] = useState(false)
   const [details, setDetails] = useState({})
   
+  const auth =  useSelector(state=>state.auth)
   return (
     <div>
+       {auth ? <Navigate to="/admin" replace/> : ""}
        <Layout>  
         <Step1 setDetails={setDetails} details={details} setStep1 = {setStep1}/>
         {

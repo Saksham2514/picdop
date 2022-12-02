@@ -10,12 +10,14 @@ import {
   Button,
 } from "@mui/material/";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/slice";
 
 
 const Form = ({ disabled,details,setDetails }) => {
   const [activeClass, setActive] = React.useState("");
   const [resp, setResp] = React.useState([]);
-  
+  const dispatch = useDispatch();
   const handleSubmit = () => {
     if (
       details.cardCVV &&
@@ -28,11 +30,15 @@ const Form = ({ disabled,details,setDetails }) => {
       }
       else {
         console.log(process.env.REACT_APP_BACKEND_URL);
-        axios.post(`${process.env.REACT_APP_BACKEND_URL}users`,details).then(res=>{setResp(res.data);console.log(res.data);}).catch(err=>console.log(err))
-        if(resp.matchedCount !== 0 ){
-          console.log("New ");
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}users`,details).then(res=>{setResp(res.data);}).catch(err=>console.log(err))
+        if(resp.matchedCount === 0 ){ 
+          dispatch(login(resp.upsertedId))
+          // console.log("New ");
+          // console.log(resp.upsertedId);
         }else{
-          console.log("matched ");
+          // console.log(resp);
+          // console.log("matched ");
+          alert("User Already exists")
         }
 
       }
