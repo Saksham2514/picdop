@@ -11,6 +11,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { List } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/slice";
 
 const useStyles = makeStyles({
   listitemRoot: {
@@ -33,6 +35,7 @@ const useStyles = makeStyles({
 });
 
 export const MainListItems = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   return (
     <List>
@@ -69,14 +72,14 @@ export const MainListItems = () => {
         </ListItem>
       </Link>
 
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <ListItem button className={classes.listitemRoot}>
+        <ListItem button className={classes.listitemRoot} onClick={()=>{
+          dispatch(logout())
+        }}>
           <ListItemIcon className={classes.iconRoot}>
             <PowerSettingsNewIcon />
           </ListItemIcon>
           <ListItemText primary="Logout" />
         </ListItem>
-      </Link>
     </List>
   );
 };

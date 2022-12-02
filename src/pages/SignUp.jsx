@@ -10,26 +10,26 @@ import { Link } from "react-router-dom";
 const SignUp = () => {
   const [step1, setStep1] = useState(false)
   const [step2, setStep2] = useState(false)
-  const [step3, setStep3] = useState(false)
+  const [step3, setStep3] = useState(false) 
   const [step4, setStep4] = useState(false)
-
+  const [details, setDetails] = useState({})
   
   return (
     <div>
        <Layout>  
-        <Step1 setStep1 = {setStep1}/>
+        <Step1 setDetails={setDetails} details={details} setStep1 = {setStep1}/>
         {
-        step1 ? <Step2 disabled={false}  setStep2 = {setStep2} /> : <Step2 disabled={true} setStep2 = {setStep2} />  
+        step1 ? <Step2 setDetails={setDetails} details={details} disabled={false}  setStep2 = {setStep2} /> : <Step2 setDetails={setDetails} details={details} disabled={true} setStep2 = {setStep2} />  
         }
         {
-        step2 ? <Step3 disabled={false}  setStep3 = {setStep3} /> : <Step3 disabled={true} setStep3 = {setStep3} />  
+        step2 ? <Step3 setDetails={setDetails} details={details} disabled={false}  setStep3 = {setStep3} /> : <Step3 setDetails={setDetails} details={details} disabled={true} setStep3 = {setStep3} />  
         }
        
         {
-        step3? <Step4 disabled={false}  setStep4 = {setStep4} /> : <Step4 disabled={true} setStep4 = {setStep4} />  
+        step3? <Step4 setDetails={setDetails} details={details} disabled={false}  setStep4 = {setStep4} /> : <Step4 setDetails={setDetails} details={details} disabled={true} setStep4 = {setStep4} />  
         }
         {
-        step4 ? <Step5 disabled={false}   /> : <Step5 disabled={true}  />  
+        step4 ? <Step5 setDetails={setDetails} details={details} disabled={false}   /> : <Step5 setDetails={setDetails} details={details} disabled={true}  />  
         }
        
         <Link to="/" style={{marginLeft:"0.75rem",color:"var(--main-color)",textDecoration:"none"}}> Login instead ? </Link> 

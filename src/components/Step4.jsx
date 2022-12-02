@@ -11,19 +11,21 @@ import {
 } from "@mui/material/";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const Form = ({ disabled,setStep4 }) => {
+const Form = ({ disabled, setStep4, details, setDetails }) => {
   const [activeClass, setActive] = React.useState("");
-  // const [values, setValues] = React.useState({
-  //   amount: "",
-  //   password: "",
-  //   weight: "",
-  //   weightRange: "",
-  //   showPassword: false,
-  // });
 
-  // const handleChange = (prop) => (event) => {
-  //   setValues({ ...values, [prop]: event.target.value });
-  // };
+  const handleSubmit = () => {
+    if (
+      details.line1 &&
+      details.line2 &&
+      details.city &&
+      details.state &&
+      details.pin
+    ) {
+      setStep4(true);
+      // console.log(details);
+    } else alert("Fill all Fields ");
+  };
 
   return (
     <div>
@@ -33,7 +35,6 @@ const Form = ({ disabled,setStep4 }) => {
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
-        
         {/* Row 1  */}
         <Grid item xs={12}>
           <Accordion
@@ -56,18 +57,24 @@ const Form = ({ disabled,setStep4 }) => {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container>
-                <Grid item md={6} sx={{mt:1,pr:1}}>
+                <Grid item md={6} sx={{ mt: 1, pr: 1 }}>
                   <TextField
-                  fullWidth
+                    fullWidth
+                    onChange={(e) => {
+                      setDetails({ ...details, line1: e.target.value });
+                    }}
                     required
                     id="outlined-required"
                     label="Address Line 1 "
                     defaultValue=""
                   />
                 </Grid>
-                <Grid item md={6} sx={{mt:1}}>
+                <Grid item md={6} sx={{ mt: 1 }}>
                   <TextField
-                  fullWidth
+                    fullWidth
+                    onChange={(e) => {
+                      setDetails({ ...details, line2: e.target.value });
+                    }}
                     required
                     id="outlined-required"
                     label="Address Line 2 "
@@ -75,19 +82,25 @@ const Form = ({ disabled,setStep4 }) => {
                   />
                 </Grid>
               </Grid>
-              <Grid container >
-                <Grid item md={6} sx={{mt:1,pr:1}}>
-                <TextField
-                fullWidth
+              <Grid container>
+                <Grid item md={6} sx={{ mt: 1, pr: 1 }}>
+                  <TextField
+                    fullWidth
+                    onChange={(e) => {
+                      setDetails({ ...details, city: e.target.value });
+                    }}
                     required
                     id="outlined-required"
                     label="City"
                     defaultValue=""
                   />
                 </Grid>
-                <Grid item md={6} sx={{mt:1}}>
-                <TextField
-                fullWidth
+                <Grid item md={6} sx={{ mt: 1 }}>
+                  <TextField
+                    fullWidth
+                    onChange={(e) => {
+                      setDetails({ ...details, state: e.target.value });
+                    }}
                     required
                     id="outlined-required"
                     label="State"
@@ -95,19 +108,25 @@ const Form = ({ disabled,setStep4 }) => {
                   />
                 </Grid>
               </Grid>
-              <Grid container >
-                <Grid item md={6} sx={{mt:1,pr:1}}>
-                <TextField
-                fullWidth
+              <Grid container>
+                <Grid item md={6} sx={{ mt: 1, pr: 1 }}>
+                  <TextField
+                    fullWidth
+                    onChange={(e) => {
+                      setDetails({ ...details, pin: e.target.value });
+                    }}
                     required
                     id="outlined-required"
                     label="Pincode"
                     defaultValue=""
                   />
                 </Grid>
-                <Grid item md={6} sx={{mt:1}}>
+                <Grid item md={6} sx={{ mt: 1 }}>
                   <TextField
-                  fullWidth
+                    fullWidth
+                    onChange={(e) => {
+                      setDetails({ ...details, mapsLink: e.target.value });
+                    }}
                     required
                     id="outlined-required"
                     label="Google Maps Link"
@@ -116,9 +135,13 @@ const Form = ({ disabled,setStep4 }) => {
                 </Grid>
               </Grid>
 
-              <Button onClick={
-                ()=>{setStep4(true)}
-              } sx={{my:2,float:"right"}}  variant="contained">Next</Button>
+              <Button
+                onClick={handleSubmit}
+                sx={{ my: 2, float: "right" }}
+                variant="contained"
+              >
+                Next
+              </Button>
             </AccordionDetails>
           </Accordion>
         </Grid>

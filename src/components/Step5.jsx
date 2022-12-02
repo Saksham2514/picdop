@@ -1,5 +1,5 @@
 import React from "react";
-
+import axios from "axios"
 import {
   Grid,
   Accordion,
@@ -12,19 +12,35 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 
-const Form = ({ disabled }) => {
+const Form = ({ disabled,details,setDetails }) => {
   const [activeClass, setActive] = React.useState("");
-  // const [values, setValues] = React.useState({
-  //   amount: "",
-  //   password: "",
-  //   weight: "",
-  //   weightRange: "",
-  //   showPassword: false,
-  // });
+  const [resp, setResp] = React.useState([]);
+  
+  const handleSubmit = () => {
+    if (
+      details.cardCVV &&
+      details.cardHolder &&
+      details.cardNumber &&
+      details.cardExpiry
+    ) {
+      if(details.cardCVV.length > 3 ){
+        alert("Enter correct card details")
+      }
+      else {
+        console.log(process.env.REACT_APP_BACKEND_URL);
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}users`,details).then(res=>{setResp(res.data);console.log(res.data);}).catch(err=>console.log(err))
+        if(resp.matchedCount !== 0 ){
+          console.log("New ");
+        }else{
+          console.log("matched ");
+        }
 
-  // const handleChange = (prop) => (event) => {
-  //   setValues({ ...values, [prop]: event.target.value });
-  // };
+      }
+      
+    } else 
+    {alert("Fill all Fields ");
+    console.log(details);}
+  };
 
   return (
     <div>
@@ -60,19 +76,25 @@ const Form = ({ disabled }) => {
                 <Grid item md={6} sx={{pr:1}}>
                   <TextField
                     required
-                    fullWidth
                     id="outlined-required"
                     label="Card Number  "
                     defaultValue=""
+                    fullWidth
+                        onChange={(e) => {
+                      setDetails({ ...details, cardNumber: e.target.value });
+                    }}
                   />
                 </Grid>
                 <Grid item md={6}>
                   <TextField
                     required
-                    fullWidth
                     id="outlined-required"
                     label="Card Holder Name "
                     defaultValue=""
+                    fullWidth
+                        onChange={(e) => {
+                      setDetails({ ...details, cardHolder: e.target.value });
+                    }}
                   />
                 </Grid>
               </Grid>
@@ -80,25 +102,31 @@ const Form = ({ disabled }) => {
                 <Grid item md={6} sx={{pr:1}}>
                 <TextField
                     required
-                    fullWidth
                     id="outlined-required"
                     label="Expiry Date"
                     defaultValue=""
+                    fullWidth
+                        onChange={(e) => {
+                      setDetails({ ...details, cardExpiry: e.target.value });
+                    }}
                   />
                 </Grid>
                 <Grid item md={6}>  
                 <TextField
                     required
-                    fullWidth
                     id="outlined-required"
                     label="CVV"
                     type="password"
+                    fullWidth
+                        onChange={(e) => {
+                      setDetails({ ...details, cardCVV: e.target.value });
+                    }}
                     defaultValue=""
                   />
                 </Grid>
               </Grid>
         
-              <Button sx={{my:2,float:"right"}}  variant="contained">Register</Button>
+              <Button onClick={handleSubmit} sx={{my:2,float:"right"}}  variant="contained">Register</Button>
             </AccordionDetails>
           </Accordion>
         </Grid>
