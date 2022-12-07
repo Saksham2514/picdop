@@ -10,18 +10,18 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import React, { useState } from "react";
-import ImagePreview from "../../components/Fr"
+import ImagePreview from "../../components/Fr";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-const ParcelForm = () => {
-  const [parcelType, setType] = useState(10);
-  const [weight, setWeight] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [length, setLength] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [paymentCollection, setCollection] = useState("");
-  const [paymentMode, setMode] = useState("");
-  const [description, setDesc] = useState(" \n \n \n \n ");
+const ParcelForm = ({ details, setDetails }) => {
 
+const handleSubmit = ()=>{
+  console.log(details);
+  axios.post(`${process.env.REACT_APP_BACKEND_URL}orders`).then(res=>console.log(res.data)).catch(err=>console.error(err))
+}
+
+  const { id } = useSelector((state) => state);
   return (
     <div>
       <Typography
@@ -37,11 +37,13 @@ const ParcelForm = () => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={parcelType}
               label="Parcel Type"
-              onChange={(event) => setType(event.target.value)}
+              // onChange={(event) => setType(event.target.value)}
+              onChange={(e) => {
+                setDetails({ ...details, parcelType: e.target.value });
+              }}
             >
-              <MenuItem value={10}>Box</MenuItem>
+              <MenuItem value={"Box"}>Box</MenuItem>
               <MenuItem value={20}>Twenty</MenuItem>
               <MenuItem value={30}>Thirty</MenuItem>
             </Select>
@@ -49,11 +51,12 @@ const ParcelForm = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
-          fullWidth
+            fullWidth
             label="Parcel Weight"
-            value={weight}
             variant="outlined"
-            onChange={(e) => setWeight(e.target.value)}
+            onChange={(e) => {
+              setDetails({ ...details, parcelWeight: e.target.value });
+            }}
             id="outlined-start-adornment"
             InputProps={{
               endAdornment: (
@@ -65,11 +68,12 @@ const ParcelForm = () => {
         {/* LBH ROW */}
         <Grid item xs={12} md={4}>
           <TextField
-          fullWidth
+            fullWidth
             label="Parcel Height"
-            value={height}
             variant="outlined"
-            onChange={(e) => setHeight(e.target.value)}
+            onChange={(e) => {
+              setDetails({ ...details, parcelHeight: e.target.value });
+            }}
             id="outlined-start-adornment"
             InputProps={{
               endAdornment: (
@@ -80,11 +84,12 @@ const ParcelForm = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <TextField
-          fullWidth
+            fullWidth
             label="Parcel Length"
-            value={length}
             variant="outlined"
-            onChange={(e) => setLength(e.target.value)}
+            onChange={(e) => {
+              setDetails({ ...details, parcelLength: e.target.value });
+            }}
             id="outlined-start-adornment"
             InputProps={{
               endAdornment: (
@@ -95,11 +100,12 @@ const ParcelForm = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <TextField
-          fullWidth
+            fullWidth
             label="Parcel Width"
-            value={width}
             variant="outlined"
-            onChange={(e) => setWidth(e.target.value)}
+            onChange={(e) => {
+              setDetails({ ...details, parcelWidth: e.target.value });
+            }}
             id="outlined-start-adornment"
             InputProps={{
               endAdornment: (
@@ -117,36 +123,45 @@ const ParcelForm = () => {
             multiline
             fullWidth
             maxRows={10}
-            value={description}
-            onChange={(e) => setDesc((e.target.value).trim())}
+            onChange={(e) => {
+              setDetails({ ...details, parcelDescription: e.target.value });
+            }}
             variant="outlined"
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <FormControl  fullWidth>
+          <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Payment Mode</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={paymentMode}
               label="Payment Mode"
-              onChange={(event) => setMode(event.target.value)}
+              onChange={(e) => {
+                setDetails({ ...details, paymentMode: e.target.value });
+              }}
             >
-              <MenuItem value={10}>Bank Account</MenuItem>
+              <MenuItem value={"Bank Account"}>Bank Account</MenuItem>
               <MenuItem value={20}>Twenty</MenuItem>
               <MenuItem value={30}>Thirty</MenuItem>
             </Select>
           </FormControl>
           <FormControl margin="normal" fullWidth>
-            <InputLabel id="demo-simple-select-label">Parcel Payment Collection</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              Parcel Payment Collection
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={paymentCollection}
               label="Parcel Payment Collection"
-              onChange={(event) => setCollection(event.target.value)}
+              onChange={(e) => {
+                setDetails({
+                  ...details,
+                  createdBy: id,
+                  parcelPaymentCollection: e.target.value,
+                });
+              }}
             >
-              <MenuItem value={10}>yes</MenuItem>
+              <MenuItem value={"yes"}>yes</MenuItem>
               <MenuItem value={20}>Twenty</MenuItem>
               <MenuItem value={30}>Thirty</MenuItem>
             </Select>
@@ -154,29 +169,28 @@ const ParcelForm = () => {
         </Grid>
         {/* Descritpion and payments mode ends */}
         <Grid item xs={12} md={6}>
-            <ImagePreview label="Bill Image"/>
+          <ImagePreview label="Bill Image" />
         </Grid>
         <Grid item xs={12} md={6}>
-            <ImagePreview label="Parcel Document"/>
+          <ImagePreview label="Parcel Document" />
         </Grid>
-        <Grid item xs={12} >
-        <Button
-                    variant="contained"
-                    size="small"
-                    style={{
-                      color: "white",
-                      backgroundColor: "var(--main-color)",
-                      borderRadius: "0.25rem",
-                      margin: "1rem 0",
-                      paddingX: "1rem",
-                      textTransform: "capitalize",
-                      
-                    }}
-                  >
-                   Book Delivery 
-                  </Button>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            size="small"
+            style={{
+              color: "white",
+              backgroundColor: "var(--main-color)",
+              borderRadius: "0.25rem",
+              margin: "1rem 0",
+              paddingX: "1rem",
+              textTransform: "capitalize",
+            }}
+            onClick={handleSubmit}
+          >
+            Book Delivery
+          </Button>
         </Grid>
-
       </Grid>
     </div>
   );

@@ -5,11 +5,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
 import SVG from "../../assets/admin/dashboard.png";
-import { Button, Paper, Typography, TextField } from "@mui/material";
+import {
+  Button,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import Table from "../pages/Table";
 import ParcelForm from "../pages/ParcelForm";
-
+import { useState } from "react";
+import { TypeAhead } from "./TypeAhead";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -94,7 +99,6 @@ export default function Dashboard() {
     },
   ];
 
-  
   const columns = [
     {
       name: "ORDER ID ",
@@ -128,8 +132,9 @@ export default function Dashboard() {
     },
   ];
 
-
-
+  const [parcelDetails, setParcelDetails] = useState({});
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
 
   return (
     <DashboardLayout>
@@ -156,69 +161,11 @@ export default function Dashboard() {
                   </Grid>
                   <Grid container fullWidth spacing={1}>
                     <Grid item xs={12} md={6}>
-                      <TextField
-                        fullWidth
-                        id="outlined-basic"
-                        label="From Shop"
-                        sx={{
-                          "&:focus ": { borderColor: "white" }, //styles the label
-                          input: { color: "white" },
-                          "& .MuiInputLabel-root": { color: "white" }, //styles the label
-                          "& .MuiOutlinedInput-root": {
-                            "& > fieldset": {
-                              color: "white",
-                              borderColor: "white",
-                            },
-                          },
-                          "&:focus .MuiInputLabel-root": { color: "white" }, //styles the label
-                          "&:focus .MuiOutlinedInput-root": {
-                            "&:focus > fieldset": {
-                              color: "white",
-                              borderColor: "white",
-                            },
-                          },
-                          "&:active .MuiInputLabel-root": { color: "white" }, //styles the label
-                          "&:active .MuiOutlinedInput-root": {
-                            "&:active > fieldset": {
-                              color: "white",
-                              borderColor: "white",
-                            },
-                          },
-                        }}
-                        variant="outlined"
-                      />
+           
+                   <TypeAhead label="From" setFrom={setFrom}/>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                      <TextField
-                      fullWidth
-                        id="outlined-basic"
-                        label="To Shop"
-                        sx={{
-                          input: { color: "white" },
-                          "& .MuiInputLabel-root": { color: "white" }, //styles the label
-                          "& .MuiOutlinedInput-root": {
-                            "& > fieldset": {
-                              color: "white",
-                              borderColor: "white",
-                            },
-                          },
-                          "&:focus .MuiInputLabel-root": { color: "white" }, //styles the label
-                          "&:focus .MuiOutlinedInput-root": {
-                            "&:focus > fieldset": {
-                              color: "white",
-                              borderColor: "white",
-                            },
-                          },
-                          "&:active .MuiInputLabel-root": { color: "white" }, //styles the label
-                          "&:active .MuiOutlinedInput-root": {
-                            "&:active > fieldset": {
-                              color: "white",
-                              borderColor: "white",
-                            },
-                          },
-                        }}
-                        variant="outlined"
-                      />
+                    <TypeAhead label="To" setFrom={setTo}/>
                     </Grid>
                   </Grid>
                   <Button
@@ -233,10 +180,16 @@ export default function Dashboard() {
                       textTransform: "capitalize",
                       fontWeight: "600",
                     }}
+                    onClick={(e) => {
+                      from && to ? 
+                      setParcelDetails({ ...parcelDetails, from:from,to:to }) :
+                      alert("Set pickup Source and destination")
+                      console.log(parcelDetails);
+                    }}
                   >
                     Add Parcel Details
                   </Button>
-                </Grid>
+                 </Grid>
                 <Grid
                   component={Box}
                   item
@@ -256,11 +209,10 @@ export default function Dashboard() {
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ marginTop: "0.5rem" }}>
-        <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
-             
-              <ParcelForm/>
-           
+              <ParcelForm details={parcelDetails} setDetails={setParcelDetails} />
+
               {/* <Test/> */}
             </Paper>
           </Grid>
@@ -275,8 +227,6 @@ export default function Dashboard() {
               <Table data={data} columns={columns} />
             </Paper>
           </Grid>
-          
-          
         </Grid>
       </Container>
     </DashboardLayout>

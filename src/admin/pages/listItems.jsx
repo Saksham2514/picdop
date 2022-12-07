@@ -55,7 +55,7 @@ export const MainListItems = () => {
           <ListItemText primary="Collection" />
         </ListItem>
       </Link>
-      <Link to="/earnings" style={{ textDecoration: "none" }}>
+      <Link to="/admin" style={{ textDecoration: "none" }}>
         <ListItem button className={classes.listitemRoot}>
           <ListItemIcon className={classes.iconRoot}>
             <MonetizationOnIcon />

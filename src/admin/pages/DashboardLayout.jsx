@@ -17,21 +17,26 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { MainListItems } from "./listItems";
 import Logo from "../../logo.png"
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Copyright() {
   const id =  useSelector(state=>state.id)
+  const role =  useSelector(state=>state.role)
+
+  
   // classes created because it is needed in the footer.
   const classes = useStyles();
   return (
     <Container className={classes.footer}> 
+    {id.length > 0 && role.length > 0 ? "" :<Navigate to="/"/>}
       <Typography variant="body2" color="textSecondary" align="center">
         {"Copyright © "}
         <Link color="inherit" to="/order">
           Your Website 
         </Link>{" "}
         Your ID : {id}
+        Your ID : {role}
         {new Date().getFullYear()}
         {"."}
       </Typography>
@@ -142,7 +147,7 @@ export default function Dashboard({children}) {
 
   
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };

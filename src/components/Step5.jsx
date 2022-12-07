@@ -33,6 +33,7 @@ const Form = ({ disabled,details,setDetails }) => {
         axios.post(`${process.env.REACT_APP_BACKEND_URL}users`,details).then(res=>{setResp(res.data);}).catch(err=>console.log(err))
         if(resp.matchedCount === 0 ){ 
           dispatch(login(resp.upsertedId))
+          dispatch(login({id:resp.upsertedId,role:"user"}))
           // console.log("New ");
           // console.log(resp.upsertedId);
         }else{

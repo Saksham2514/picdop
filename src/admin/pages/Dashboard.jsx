@@ -7,10 +7,7 @@ import SVG from "../../assets/admin/dashboard.png";
 import { Button, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Table from "./Table";
-
-
-
-
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,111 +24,74 @@ const useStyles = makeStyles((theme) => ({
     height: 240,
   },
   // added the footer class
- 
 }));
 
 export default function Dashboard() {
-  
-  
-  const data = [
-    {
-      id: 1,
-      title: "Beetlejuice",
-      year: "1981",
-    },
-    {
-      id: 2,
-      title: "Ghostbusters",
-      year: "1982",
-    },
-    {
-      id: 3,
-      title: "Beetlejuice",
-      year: "1983",
-    },
-    {
-      id: 4,
-      title: "Ghostbusters",
-      year: "1984",
-    },
-    {
-      id: 5,
-      title: "Beetlejuice",
-      year: "1985",
-    },
-    {
-      id: 6,
-      title: "Ghostbusters",
-      year: "1986",
-    },
-    {
-      id: 7,
-      title: "Beetlejuice",
-      year: "1987",
-    },
-    {
-      id: 8,
-      title: "Ghostbusters",
-      year: "1988",
-    },
-    {
-      id: 9,
-      title: "Beetlejuice",
-      year: "1989",
-    },
-    {
-      id: 10,
-      title: "Ghostbusters",
-      year: "1990",
-    },
-    {
-      id: 11,
-      title: "Beetlejuice",
-      year: "1991",
-    },
-    {
-      id: 12,
-      title: "Ghostbusters",
-      year: "1992",
-    },
-  ];
-
-  
-  const columns = [
-    {
-      name: "ORDER ID ",
-      selector: (row) => row.title,
-      sortable: true,
-    },
-    {
-      name: "FROM ",
-      selector: (row) => row.year,
-      sortable: true,
-    },
-    {
-      name: "TO",
-      selector: (row) => row.year,
-      sortable: true,
-    },
-    {
-      name: "DATE",
-      selector: (row) => row.year,
-      sortable: true,
-    },
-    {
-      name: "PRICE",
-      selector: (row) => row.year,
-      sortable: true,
-    },
-    {
-      name: "STATUS",
-      selector: (row) => row.year,
-      sortable: true,
-    },
-  ];
-
-
-  
+ 
+const data= []
+ 
+const data1 = [
+  {
+    id: 1,
+    title: "Beetlejuice",
+    year: "1981",
+  },
+  {
+    id: 2,
+    title: "Ghostbusters",
+    year: "1982",
+  },
+  {
+    id: 3,
+    title: "Beetlejuice",
+    year: "1983",
+  },
+  {
+    id: 4,
+    title: "Ghostbusters",
+    year: "1984",
+  },
+  {
+    id: 5,
+    title: "Beetlejuice",
+    year: "1985",
+  },
+  {
+    id: 6,
+    title: "Ghostbusters",
+    year: "1986",
+  },
+  {
+    id: 7,
+    title: "Beetlejuice",
+    year: "1987",
+  },
+  {
+    id: 8,
+    title: "Ghostbusters",
+    year: "1988",
+  },
+  {
+    id: 9,
+    title: "Beetlejuice",
+    year: "1989",
+  },
+  {
+    id: 10,
+    title: "Ghostbusters",
+    year: "1990",
+  },
+  {
+    id: 11,
+    title: "Beetlejuice",
+    year: "1991",
+  },
+  {
+    id: 12,
+    title: "Ghostbusters",
+    year: "1992",
+  },
+];
   const columns1 = [
     {
       name: "NAME ",
@@ -170,13 +130,10 @@ export default function Dashboard() {
     },
   ];
 
-
   const classes = useStyles();
-  
-  
+
   return (
     <DashboardLayout>
-
       <Container maxWidth="lg" className={classes.container}>
         <Grid container>
           <Grid item xs={12}>
@@ -191,7 +148,6 @@ export default function Dashboard() {
                 padding: "0 0.5rem",
               }}
             >
-      
               <Grid container fullWidth>
                 <Grid item xs={12} md={6}>
                   <Typography variant="subtitle1">
@@ -205,20 +161,22 @@ export default function Dashboard() {
                       look even slightly believable.
                     </p>
                   </Typography>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    style={{
-                      backgroundColor: "white",
-                      color: "var(--main-color)",
-                      borderRadius: "0.25rem",
-                      marginBottom: "1rem",
-                      padding: 0,
-                      textTransform: "capitalize",
-                    }}
-                  >
-                    Book
-                  </Button>
+                  <Link to="/delivery" style={{textDecoration:"none"}}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      style={{
+                        backgroundColor: "white",
+                        color: "var(--main-color)",
+                        borderRadius: "0.25rem",
+                        marginBottom: "1rem",
+                        padding: 0,
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Book
+                    </Button>
+                  </Link>
                 </Grid>
                 <Grid
                   component={Box}
@@ -233,24 +191,29 @@ export default function Dashboard() {
             </Paper>
           </Grid>
         </Grid>
-        <Grid container spacing={1}>
-          <Grid item xs={12} md={8}>
-            <Paper>
-            </Paper>
-          </Grid>
-        </Grid>
+
         <Grid container spacing={2} style={{ marginTop: "0.5rem" }}>
           <Grid item xs={12} md={6}>
-            <Paper style={{ padding: "1rem" ,borderRadius:"1rem"}}>
-            <Typography style={{paddingBottom : "1rem",fontWeight:"bold"}} variant="h5">Daily Earnings</Typography>
-             <Table data={data} columns={columns1}/>
+            <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
+              <Typography
+                style={{ paddingBottom: "1rem", fontWeight: "bold" }}
+                variant="h5"
+              >
+                Daily Earnings
+              </Typography>
+              <Table data={data} columns={columns1} />
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper style={{ padding: "1rem" ,borderRadius:"1rem"}}>
-            <Typography style={{paddingBottom : "1rem",fontWeight:"bold"}} variant="h5">Orders</Typography>
-           <Table data={data} columns={columns}/>
-           {/* <Test/> */}
+            <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
+              <Typography
+                style={{ paddingBottom: "1rem", fontWeight: "bold" }}
+                variant="h5"
+              >
+                Orders
+              </Typography>
+              <Table data={data1} columns={columns1} />
+              {/* <Test/> */}
             </Paper>
           </Grid>
         </Grid>

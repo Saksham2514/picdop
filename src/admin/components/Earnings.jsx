@@ -7,6 +7,7 @@ import SVG from "../../assets/admin/dashboard.png";
 import { Button, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Table from "./Table"
+import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,9 +52,12 @@ export default function Dashboard() {
             >
               <Grid container fullWidth>
                 <Grid item xs={12} md={6}>
+                  
+
                   <Typography variant="subtitle1">
                     <p>Book a Delivery</p>
                   </Typography>
+                  
                   <Typography variant="body2">
                     <p>
                       There are many variations of passages of Lorem Ipsum
@@ -62,20 +66,10 @@ export default function Dashboard() {
                       look even slightly believable.
                     </p>
                   </Typography>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    style={{
-                      backgroundColor: "white",
-                      color: "var(--main-color)",
-                      borderRadius: "0.25rem",
-                      marginBottom: "1rem",
-                      padding: 0,
-                      textTransform: "capitalize",
-                    }}
-                  >
+                  <Link to="/delivery" style={{textDecoration:"none"}}>
                     Book
-                  </Button>
+                  
+                  </Link>
                 </Grid>
                 <Grid
                   component={Box}

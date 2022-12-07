@@ -16,9 +16,9 @@ import axios from "axios";
 
 const Login = () => {
   const dispatch = useDispatch();
- 
-// const auth = false;
-  const auth =  useSelector(state=>state.auth)
+
+  // const auth = false;
+  const auth = useSelector((state) => state.auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -33,18 +33,16 @@ const Login = () => {
         })
         .then((res) => {
           if (res.data.length > 0) {
-            dispatch(login(res.data[0]._id))
+            dispatch(login({ id: res.data[0]._id, role: res.data[0].role }));
           } else console.log(res.data.length);
         })
         .catch((err) => console.error(err));
-
-      // alert("Success");
     }
   }
 
   return (
     <div>
-     {auth ? <Navigate to="/admin" replace/> : ""}
+      {auth ? <Navigate to="/admin" replace /> : ""}
       <LoginLayout>
         <h3>User Login</h3>
         <Typography variant="caption" display="block" gutterBottom>
@@ -98,7 +96,11 @@ const Login = () => {
         <Grid item xs={12}>
           <Button
             variant="contained"
-            style={{ width: "50%", backgroundColor: "var(--main-color)",color:"white" }}
+            style={{
+              width: "50%",
+              backgroundColor: "var(--main-color)",
+              color: "white",
+            }}
             onClick={() => {
               handleSubmit();
             }}
