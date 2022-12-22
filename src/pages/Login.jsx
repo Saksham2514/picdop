@@ -7,6 +7,7 @@ import {
   FormControlLabel,
   Checkbox,
   Button,
+  Alert,
 } from "@mui/material";
 import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,23 +19,27 @@ const Login = () => {
   const dispatch = useDispatch();
 
   // const auth = false;
-  const auth = useSelector((state) => state.auth);
+  const {auth,role} = useSelector((state) => state);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   function handleSubmit() {
     if (email.length < 8 || password.length < 8) {
-      alert("Invalid details provided");
+      setError("Invalid details provided"); 
     } else {
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}login`, {
+        .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, {
           email: email,
           password: password,
         })
         .then((res) => {
           if (res.data.length > 0) {
-            dispatch(login({ id: res.data[0]._id, role: res.data[0].role }));
-          } else console.log(res.data.length);
+            dispatch(login({ id: res.data[0]._id, role: res.data[0].role,name:res.data[0].name }));
+          } else {
+            setError("Invalid Credentials");
+            console.log(res.data.length);
+          }
         })
         .catch((err) => console.error(err));
     }
@@ -42,8 +47,21 @@ const Login = () => {
 
   return (
     <div>
-      {auth ? <Navigate to="/admin" replace /> : ""}
+      {auth && role !== "agent" ? <Navigate to="/admin" replace /> : auth && role ==="agent" ? <Navigate to="/agent" replace /> :"" }
       <LoginLayout>
+      
+{error ? (<>
+        <Alert
+          action={
+             <Button color="inherit" size="small" onClick={()=>setError()}>
+              &times;
+            </Button>
+          }
+          severity="error"
+        >
+          {error}
+        </Alert>
+        </>): (<></>)}
         <h3>User Login</h3>
         <Typography variant="caption" display="block" gutterBottom>
           It is a long established fact that a reader will be distracted by the

@@ -8,7 +8,7 @@ import { Container, Grid } from "@material-ui/core";
 import { Paper } from "@mui/material";
 // import { Box } from "@mui/system";
 // import Table from "../pages/Table";
-import OrderView from "../pages/OrderView";
+import UserView from "../pages/UserView";
 import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +40,7 @@ export default function Dashboard() {
           <Grid item xs={12} md={8} style={{margin:"auto"}}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
               
-              <OrderView id={orderId} />
+              <UserView id={orderId} />
             </Paper>
           </Grid>
         </Grid>

@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { List } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slice";
 
 const useStyles = makeStyles({
@@ -36,25 +36,28 @@ const useStyles = makeStyles({
 
 export const MainListItems = () => {
   const dispatch = useDispatch();
+  const {role} = useSelector(state=>state)
   const classes = useStyles();
   return (
     <List>
-      <Link to="/delivery" style={{ textDecoration: "none" }}>
+      {/* <Link to={role !== "agent" ?  "/admin" : "/agent"}> */}
+      <Link to={role !== "agent" ?  "/delivery" : "/agent"} style={{ textDecoration: "none" }}>
         <ListItem button className={classes.listitemRoot}>
           <ListItemIcon className={classes.iconRoot}>
             <LocalShippingIcon />
           </ListItemIcon>
-          <ListItemText primary="Book a Delivery" />
+          <ListItemText primary={role !== "agent" ?  "Book a Delivery" : "Available Orders"}/>
         </ListItem>
       </Link>
-      <Link to="/collection" style={{ textDecoration: "none" }}>
+      <Link to={role !== "agent" ?  "/collection" : "/orders"} style={{ textDecoration: "none" }}>
         <ListItem button className={classes.listitemRoot}>
           <ListItemIcon className={classes.iconRoot}>
             <ViewCarouselIcon />
           </ListItemIcon>
-          <ListItemText primary="Collection" />
+          <ListItemText primary={role !== "agent" ?  "Collection" : "Accepted Orders"} />
         </ListItem>
       </Link>
+      {role !== "agent" ?  (<>
       <Link to="/admin" style={{ textDecoration: "none" }}>
         <ListItem button className={classes.listitemRoot}>
           <ListItemIcon className={classes.iconRoot}>
@@ -71,7 +74,7 @@ export const MainListItems = () => {
           <ListItemText primary="Set Prices" />
         </ListItem>
       </Link>
-
+      </>) : ("")}
         <ListItem button className={classes.listitemRoot} onClick={()=>{
           dispatch(logout())
         }}>

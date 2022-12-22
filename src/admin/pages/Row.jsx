@@ -11,51 +11,87 @@ import axios from "axios";
 import { useEffect } from "react";
 
 const Row = () => {
-  const { id } = useSelector((state) => state);
   const [data, setData] = useState([]);
+  const [users, setUsers] = useState([]);
+  const { role,id } = useSelector((state) => state);
+  const [choice, setChoice] = useState(true);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  function search(nameKey, myArray) {
+    for (let i = 0; i < myArray.length; i++) {
+      if (myArray[i]["_id"] === nameKey) {
+        return myArray[i]["name"];
+      }
+    }
+  }
 
   useEffect(() => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, {
-        createdBy: id,
-      })
+      .get(role === "admin" ? `${process.env.REACT_APP_BACKEND_URL}orders`:`${process.env.REACT_APP_BACKEND_URL}order/${id}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setData(res.data);
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}users`)
+      .then((res) => {
+        // console.log(res.data);
+        setUsers(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const data1 = [
-    {
-      title: "test",
-      name: "test",
-      email: "test",
-      location: "test",
-      role: "test",
-      shop: "test",
-      kyc: <Chip label="Completed" color="success" variant="outlined" />,
-      btn: (
-        <Link to="/orders" style={{ textDecoration: "none" }}>
-          <Button
-            style={{ backgroundColor: "var(--main-color)", color: "white" }}
-          >
-            test
-          </Button>
-        </Link>
-      ),
-    },
-  ];
-
   const columns = [
     {
-      name: "From ",
-      selector: (row) => row.from,
+      name: "FROM ",
+      selector: (row, ind) => {
+        return search(row.from, users);
+      },
+      sortable: true,
+      wrap: true,
+    },
+
+    {
+      name: "to ",
+      selector: (row) => {
+        return search(row.to, users);
+      },
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "status",
+      selector: (row, ind) => (
+        <Chip
+          label={row.status}
+          key={ind}
+          color={
+            row.status === "Pending"
+              ? "warning"
+              : row.status === "Completed"
+              ? "success"
+              : row.status === "Accepted"
+              ? "info"
+              : "error"
+          }
+          variant="outlined"
+          sx={{ wordWrap: "break-word" }}
+        />
+      ),
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Agent",
+      selector: (row) => row.agentName || "-",
       sortable: true,
     },
     {
-      name: "to ",
-      selector: (row) => row.to,
+      name: "OTP",
+      selector: (row) => row.otp,
       sortable: true,
     },
     {
@@ -65,7 +101,6 @@ const Row = () => {
     },
     {
       name: "Height",
-      // selector: (row) => row.parcelHeight+" x "+row.parcelLength+" x "+row.parcelWidth+" inch",
       selector: (row) => row.parcelHeight + " inch",
       sortable: true,
     },
@@ -99,15 +134,87 @@ const Row = () => {
       },
       sortable: true,
     },
+    {
+      name: "Action",
+      selector: (row) => (
+        <Link to={`/orders/${row._id}`}>View Order details</Link>
+      ),
+      wrap: true,
+    },
+  ];
+
+  const userColumns = [
+    {
+      name: "Name ",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.email,
+      sortable: true,
+    },
+    {
+      name: "Contact",
+      selector: (row) => row.contact,
+      sortable: true,
+    },
+    {
+      name: "Shop No",
+      selector: (row) => row.shopNumber,
+      sortable: true,
+    },
+    {
+      name: "Shop Name",
+      selector: (row) => row.shopName,
+      sortable: true,
+    },
+    {
+      name: "Role",
+      selector: (row, ind) => (
+        <Chip
+          label={row.role}
+          key={ind}
+          color={
+            row.role === "admin"
+              ? "warning"
+              : row.role === "agent"
+              ? "success"
+              : row.role === "user"
+              ? "info"
+              : "error"
+          }
+          variant="outlined"
+          sx={{ wordWrap: "break-word" }}
+        />
+      ),
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Reg.Date",
+      selector: (row) => {
+        const date = new Date(row.createdAt);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const dt = date.getDate();
+        return `${year}-${month}-${dt}`;
+      },
+      sortable: true,
+    },
+    {
+      name: "Action",
+      selector: (row) => (
+        <Link to={`/users/${row._id}`}>View User details</Link>
+      ),
+      wrap: true,
+    },
   ];
 
   const handleClick = () => {
-    console.info("You clicked the Chip.");
+    setChoice(!choice);
   };
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const role = useSelector((state) => state.role);
   return (
     <div>
       <Grid container>
@@ -129,15 +236,14 @@ const Row = () => {
               <>
                 <Chip
                   label="Users"
-                  style={{
-                    backgroundColor: "white",
-                  }}
+                  variant="outlined"
+                  id={choice ? "bgN" : "bg"}
                   onClick={handleClick}
                 />
 
                 <Chip
                   label="Orders"
-                  id="bg"
+                  id={choice ? "bg" : "bgN"}
                   variant="outlined"
                   onClick={handleClick}
                 />
@@ -175,7 +281,11 @@ const Row = () => {
           </Stack>
         </Grid>
         <Grid item xs={12}>
-          <Table data={data} columns={columns} />
+          <Table
+            expand={false}
+            data={choice ? data : users}
+            columns={choice ? columns : userColumns}
+          />
         </Grid>
       </Grid>
     </div>

@@ -8,6 +8,10 @@ import { Button, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Table from "./Table";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,106 +31,101 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
- 
-const data= []
- 
-const data1 = [
-  {
-    id: 1,
-    title: "Beetlejuice",
-    year: "1981",
-  },
-  {
-    id: 2,
-    title: "Ghostbusters",
-    year: "1982",
-  },
-  {
-    id: 3,
-    title: "Beetlejuice",
-    year: "1983",
-  },
-  {
-    id: 4,
-    title: "Ghostbusters",
-    year: "1984",
-  },
-  {
-    id: 5,
-    title: "Beetlejuice",
-    year: "1985",
-  },
-  {
-    id: 6,
-    title: "Ghostbusters",
-    year: "1986",
-  },
-  {
-    id: 7,
-    title: "Beetlejuice",
-    year: "1987",
-  },
-  {
-    id: 8,
-    title: "Ghostbusters",
-    year: "1988",
-  },
-  {
-    id: 9,
-    title: "Beetlejuice",
-    year: "1989",
-  },
-  {
-    id: 10,
-    title: "Ghostbusters",
-    year: "1990",
-  },
-  {
-    id: 11,
-    title: "Beetlejuice",
-    year: "1991",
-  },
-  {
-    id: 12,
-    title: "Ghostbusters",
-    year: "1992",
-  },
-];
+  const [orders, setOrders] = useState([]);
+  const [users, setUsers] = useState([]);
+  const id = useSelector((state) => state.id);
+  const role = useSelector((state) => state.role);
+
+  const getData = (id) => {
+    axios
+      .get(id)
+      .then((res) => {
+        console.log(res.data);
+        setOrders(res.data);
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}users`)
+      .then((res) => setUsers(res.data))
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    role === "admin"
+    ? getData(`${process.env.REACT_APP_BACKEND_URL}orders`)
+    : getData(`${process.env.REACT_APP_BACKEND_URL}order/${id}`);
+  }, []);
+
+  function search(nameKey, myArray) {
+    for (let i = 0; i < myArray.length; i++) {
+      if (myArray[i]['_id'] === nameKey) {
+        return myArray[i]['name'];
+      }
+    }
+  }
+
   const columns1 = [
     {
-      name: "NAME ",
-      selector: (row) => row.title,
+      name: "ORDER ID ",
+      selector: (row) => row._id,
       sortable: true,
+      wrap:true
     },
     {
-      name: "DATE ",
-      selector: (row) => row.year,
+      name: "FROM ",
+      selector: (row, ind) => {
+        return search(row.from,users)
+      },
       sortable: true,
+      wrap:true
+    },
+    
+    {
+      name: "to ",
+      selector: (row, ind) => {
+        return search(row.to,users)
+      },
+      sortable: true,
+      wrap:true
+    },
+    
+    {
+      name: "height",
+      selector: (row) => row.parcelHeight+" inch",
+      sortable: true,
+      wrap:true
     },
     {
-      name: "EMAIL",
-      selector: (row) => row.year,
+      name: "length",
+      selector: (row) => row.parcelLength+" inch",
       sortable: true,
+      wrap:true
     },
     {
-      name: "DATE",
-      selector: (row) => row.year,
+      name: "width",
+      selector: (row) => row.parcelWidth+" inch",
       sortable: true,
+      wrap:true
     },
     {
-      name: "ORDER COUNT",
-      selector: (row) => row.year,
+      name: "weight",
+      selector: (row) => row.parcelWeight+" kg",
       sortable: true,
+      wrap:true
     },
+    
     {
-      name: "ROLE",
-      selector: (row) => row.year,
+      name: "Payment Mode",
+      selector: (row) => row.paymentMode,
       sortable: true,
+      wrap:true,
     },
+    
     {
-      name: "EARNINGS",
-      selector: (row) => row.year,
+      name: "Collection done",
+      selector: (row) => row.parcelPaymentCollection,
       sortable: true,
+      wrap:true
     },
   ];
 
@@ -161,7 +160,7 @@ const data1 = [
                       look even slightly believable.
                     </p>
                   </Typography>
-                  <Link to="/delivery" style={{textDecoration:"none"}}>
+                  <Link to="/delivery" style={{ textDecoration: "none" }}>
                     <Button
                       variant="contained"
                       size="small"
@@ -201,7 +200,7 @@ const data1 = [
               >
                 Daily Earnings
               </Typography>
-              <Table data={data} columns={columns1} />
+              <Table data={orders} columns={columns1} />
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -212,7 +211,7 @@ const data1 = [
               >
                 Orders
               </Typography>
-              <Table data={data1} columns={columns1} />
+              <Table data={orders} columns={columns1} />
               {/* <Test/> */}
             </Paper>
           </Grid>

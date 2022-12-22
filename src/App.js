@@ -11,10 +11,14 @@ import Profile from "./admin/components/Profile";
 import Admin from "./admin/pages/Dashboard";
 
 import PrivateRoutes from "./components/PrivateRoutes";
+import AgentRoutes from "./components/AgentRoutes";
 import SignUp from "./pages/SignUp";
 import { Routes, Route } from "react-router-dom";
+import { AgentHome } from "./agents/AgentHome";
+import { AgentOrders } from "./agents/AgentOrders";
 
 function App() {
+
   return (
     <div className="">
       <Routes>
@@ -27,10 +31,21 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/collection" element={<Collection />} />
-          <Route path="/orders" element={<Orders />} />
+          <Route path="/orders/:orderId" element={<Orders />} />
           <Route path="/prices" element={<Prices />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/users" element={<UserClass />} />
+          <Route path="/users/:userId" element={<UserClass  />} />
+        </Route>
+      </Routes>
+      <Routes>
+        <Route element={<AgentRoutes />}>
+          <Route path="/agent" element={<AgentHome />} />
+          <Route path="/orders" element={<AgentOrders />} />
+          {/* <Route path="/agent" element={<Admin />} />
+          <Route path="/collection" element={<Collection />} />
+          <Route path="/prices" element={<Prices />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/users/:userId" element={<UserClass  />} /> */}
         </Route>
       </Routes>
     </div>

@@ -13,15 +13,34 @@ import React, { useState } from "react";
 import ImagePreview from "../../components/Fr";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { Alert } from "@mui/material";
 
-const ParcelForm = ({ details, setDetails }) => {
 
-const handleSubmit = ()=>{
-  console.log(details);
-  axios.post(`${process.env.REACT_APP_BACKEND_URL}orders`).then(res=>console.log(res.data)).catch(err=>console.error(err))
-}
-
+const ParcelForm = ({update, details, setDetails}) => {
   const { id } = useSelector((state) => state);
+  const [error, setError] = useState();
+  let i =0 ;
+  const handleSubmit = () => {
+    if (Object.keys(details).length < 10) {
+      console.log(details);
+      setError("Please fill all the fields ");
+    } else {
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_URL}orders`, details)
+        .then((res) => {
+          console.log(`${process.env.REACT_APP_BACKEND_URL}orders`);
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log("Printing error");
+          console.log(err);
+          setError(err.message);
+        });
+        update(++i)
+    }
+    
+  };
+
   return (
     <div>
       <Typography
@@ -30,6 +49,24 @@ const handleSubmit = ()=>{
       >
         Parcel Information
       </Typography>
+      {error ? (
+        <>
+          <Alert
+            style={{ marginBottom: "1rem" }}
+            severity="error"
+            action={
+              <Button color="inherit" size="small" onClick={() => setError()}>
+                &#x2715;
+              </Button>
+            }
+          >
+            {error}
+          </Alert>
+        </>
+      ) : (
+        <></>
+      )}
+
       <Grid container fullWidth spacing={3}>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
@@ -186,6 +223,7 @@ const handleSubmit = ()=>{
               paddingX: "1rem",
               textTransform: "capitalize",
             }}
+            disabled={false}
             onClick={handleSubmit}
           >
             Book Delivery

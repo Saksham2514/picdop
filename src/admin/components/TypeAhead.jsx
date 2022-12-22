@@ -11,7 +11,9 @@ export const TypeAhead = (props) => {
   console.log(`${process.env.REACT_APP_BACKEND_URL}users`);
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}users`)
+      .post(`${process.env.REACT_APP_BACKEND_URL}users/search`,{
+        $not : [{role:"agent"}]
+      })
       .then((res) => setUsers(res.data))
       .catch((err) => alert(err));
   }, []);

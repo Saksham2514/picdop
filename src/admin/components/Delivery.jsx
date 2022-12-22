@@ -5,16 +5,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
 import SVG from "../../assets/admin/dashboard.png";
-import {
-  Button,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Button, Chip, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Table from "../pages/Table";
 import ParcelForm from "../pages/ParcelForm";
 import { useState } from "react";
 import { TypeAhead } from "./TypeAhead";
+import { useEffect } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,107 +34,133 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
-  const classes = useStyles();
 
-  const data = [
-    {
-      id: 1,
-      title: "Beetlejuice",
-      year: "1981",
-    },
-    {
-      id: 2,
-      title: "Ghostbusters",
-      year: "1982",
-    },
-    {
-      id: 3,
-      title: "Beetlejuice",
-      year: "1983",
-    },
-    {
-      id: 4,
-      title: "Ghostbusters",
-      year: "1984",
-    },
-    {
-      id: 5,
-      title: "Beetlejuice",
-      year: "1985",
-    },
-    {
-      id: 6,
-      title: "Ghostbusters",
-      year: "1986",
-    },
-    {
-      id: 7,
-      title: "Beetlejuice",
-      year: "1987",
-    },
-    {
-      id: 8,
-      title: "Ghostbusters",
-      year: "1988",
-    },
-    {
-      id: 9,
-      title: "Beetlejuice",
-      year: "1989",
-    },
-    {
-      id: 10,
-      title: "Ghostbusters",
-      year: "1990",
-    },
-    {
-      id: 11,
-      title: "Beetlejuice",
-      year: "1991",
-    },
-    {
-      id: 12,
-      title: "Ghostbusters",
-      year: "1992",
-    },
-  ];
+  const { id } = useSelector((state) => state);
+  const [data, setData] = useState([]);
+  const [parcelDetails, setParcelDetails] = useState({});
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [users, setUsers] = useState([]);
+  const [updateVar, setUpdateVar] = useState(0);
+
+  const classes = useStyles();
 
   const columns = [
     {
       name: "ORDER ID ",
-      selector: (row) => row.title,
-      sortable: true,
+      selector: (row) => row._id,
     },
     {
       name: "FROM ",
-      selector: (row) => row.year,
+      selector: (row, ind) => {
+        return search(row.from, users);
+      },
       sortable: true,
+      wrap: true,
+    },
+
+    {
+      name: "to ",
+      selector: (row) => {
+        return search(row.to, users);
+      },
+      sortable: true,
+      wrap: true,
     },
     {
-      name: "TO",
-      selector: (row) => row.year,
+      name: "status",
+      selector: (row, ind) => (
+        <Chip
+          label={row.status}
+          key={ind}
+          color={
+            row.status === "Pending"
+              ? "warning"
+              : row.status === "Completed"
+              ? "success"
+              : row.status === "Accepted"
+              ? "info"
+              : "error"
+          }
+          variant="outlined"
+          sx={{ wordWrap: "break-word" }}
+        />
+      ),
       sortable: true,
+      wrap: true,
     },
     {
-      name: "DATE",
-      selector: (row) => row.year,
+      name: "Agent",
+      selector: (row) => row.agentName,
       sortable: true,
+      wrap: true,
     },
     {
-      name: "PRICE",
-      selector: (row) => row.year,
+      name: "height",
+      selector: (row) => row.parcelHeight + " inch",
       sortable: true,
+      wrap: true,
+    },
+
+    {
+      name: "length",
+      selector: (row) => row.parcelLength + " inch",
+      sortable: true,
+      wrap: true,
     },
     {
-      name: "STATUS",
-      selector: (row) => row.year,
+      name: "width",
+      selector: (row) => row.parcelWidth + " inch",
       sortable: true,
+      wrap: true,
+    },
+    {
+      name: "weight",
+      selector: (row) => row.parcelWeight + " kg",
+      sortable: true,
+      wrap: true,
+    },
+
+    {
+      name: "Payment Mode",
+      selector: (row) => row.paymentMode,
+      sortable: true,
+      wrap: true,
+    },
+
+    {
+      name: "Collection done",
+      selector: (row) => row.parcelPaymentCollection,
+      sortable: true,
+      wrap: true,
     },
   ];
+  function search(nameKey, myArray) {
+    for (let i = 0; i < myArray.length; i++) {
+      if (myArray[i]["_id"] === nameKey) {
+        return myArray[i]["name"];
+      }
+    }
+  }
 
-  const [parcelDetails, setParcelDetails] = useState({});
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  
+  useEffect(() => {
+    
+    axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}order/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data);
+      })
+      .catch((err) => console.log(err));
+      
+      axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}users`)
+      .then((res) => setUsers(res.data))
+      .catch((err) => console.log(err.message));
+  }, [updateVar]);
+
+ 
 
   return (
     <DashboardLayout>
@@ -161,11 +187,10 @@ export default function Dashboard() {
                   </Grid>
                   <Grid container fullWidth spacing={1}>
                     <Grid item xs={12} md={6}>
-           
-                   <TypeAhead label="From" setFrom={setFrom}/>
+                      <TypeAhead label="From" setFrom={setFrom} />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                    <TypeAhead label="To" setFrom={setTo}/>
+                      <TypeAhead label="To" setFrom={setTo} />
                     </Grid>
                   </Grid>
                   <Button
@@ -181,15 +206,19 @@ export default function Dashboard() {
                       fontWeight: "600",
                     }}
                     onClick={(e) => {
-                      from && to ? 
-                      setParcelDetails({ ...parcelDetails, from:from,to:to }) :
-                      alert("Set pickup Source and destination")
-                      console.log(parcelDetails);
+                      from && to
+                        ? setParcelDetails({
+                            ...parcelDetails,
+                            from: from,
+                            to: to,
+                          })
+                        : alert("Set pickup Source and destination");
+                      // console.log(parcelDetails);
                     }}
                   >
                     Add Parcel Details
                   </Button>
-                 </Grid>
+                </Grid>
                 <Grid
                   component={Box}
                   item
@@ -203,17 +232,15 @@ export default function Dashboard() {
             </Paper>
           </Grid>
         </Grid>
-        <Grid container spacing={1}>
-          <Grid item xs={12} md={8}>
-            <Paper></Paper>
-          </Grid>
-        </Grid>
+
         <Grid container spacing={2} style={{ marginTop: "0.5rem" }}>
           <Grid item xs={12} md={6}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
-              <ParcelForm details={parcelDetails} setDetails={setParcelDetails} />
-
-              {/* <Test/> */}
+              <ParcelForm
+                update={setUpdateVar}
+                details={parcelDetails}
+                setDetails={setParcelDetails}
+              />
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -224,11 +251,11 @@ export default function Dashboard() {
               >
                 Recent Bookings
               </Typography>
-              <Table data={data} columns={columns} />
+              <Table data={data.slice(0,5)} columns={columns} expand={false}/>
             </Paper>
           </Grid>
         </Grid>
-      </Container>
+      </Container> 
     </DashboardLayout>
   );
 }

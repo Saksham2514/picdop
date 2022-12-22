@@ -6,7 +6,7 @@ import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
 
 import { Paper } from "@mui/material";
-import UserForm from "../pages/UserForm";
+import {ProfileForm} from "../pages/UserFormClass";
 import { useState,useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -61,7 +61,7 @@ return (
         <Grid container spacing={2} style={{ marginTop: "0.5rem" , display:"flex",justifyContent:"center"}}>
           <Grid item xs={9}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }} elevation={5}>
-              <UserForm edit={edit} setEdit={setEdit} data={details} setDetails={setDetails} />
+              <ProfileForm edit={edit} setEdit={setEdit} data={details} setDetails={setDetails} />
             </Paper>
           </Grid>
         </Grid>

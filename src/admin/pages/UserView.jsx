@@ -19,7 +19,7 @@ const navigate = useNavigate();
   const fetch = () => {
     try {
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`,{_id:id})
+        .get(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`)
         .then((res) => {
           setData(res.data[0]);
         })
@@ -207,8 +207,14 @@ const navigate = useNavigate();
           </Button>
         </Grid>
         <Grid xs={12} md={3} style={{ paddingTop: "0.5rem" }}>
-          <NestedModal label=" Order" handleDelete={handleDelete}/>
-          
+          <NestedModal label="Delete Order" handleDelete={handleDelete}>
+            <h3 style={{ textAlign: "center" }} id="parent-modal-description">
+              Are Your Sure?
+            </h3>
+            <h3 style={{ textAlign: "center" }} id="parent-modal-description">
+              This order will be deleted
+            </h3>
+          </NestedModal>
         </Grid>
       </Grid>
     </div>

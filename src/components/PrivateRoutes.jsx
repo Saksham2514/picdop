@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 
 
 const PrivateRoute = () => {
-  let authe = useSelector(state=>state.auth)
+  let {role,auth} = useSelector(state=>state)
   return (
-      authe ? <Outlet/> : <Navigate to="/" replace/> 
+      role !=="agent" && auth ? <Outlet/> : <Navigate to="/" replace/> 
   );
 };
 export default PrivateRoute;

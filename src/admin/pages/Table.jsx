@@ -11,7 +11,7 @@ const Table = (props) => {
         paginationRowsPerPageOptions={[1, 5, 10, 15, 20]}
         paginationPerPage={5}
         columns={props.columns}
-        expandableRows
+        expandableRows={props.expand !== undefined ?  props.expand : true}
         expandableRowsComponent={ExpandedComponent}
         data={props.data}
         options={{

@@ -47,8 +47,9 @@ export default function NestedModal(props, { children }) {
               Are Your Sure?
             </h3>
             <h3 style={{ textAlign: "center" }} id="parent-modal-description">
-              This {props.label} will be deleted
+              This {props.label } will be deleted.
             </h3>
+              {props.label.trim() === "User" ? "All the orders related to this user will also be deleted." : ""}
           <Divider />
           <Button
             variant="contained"
@@ -63,8 +64,9 @@ export default function NestedModal(props, { children }) {
               paddingX: "1rem",
               textTransform: "capitalize",
             }}
+            onClick={props.handleDelete}
           >
-            {props.label}
+            Delete {props.label}
           </Button>
         </Box>
       </Modal>
@@ -82,7 +84,8 @@ export default function NestedModal(props, { children }) {
         }}
         onClick={handleOpen}
       >
-        Delete Order
+        Delete {props.label}
+
       </Button>
     </div>
   );

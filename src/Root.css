@@ -10,3 +10,8 @@
     color: white    ;
     box-shadow: 0 0 1px  black;
 }
+#bgN{
+    background-color: var(--secondary-color);
+    
+    box-shadow: 0 0 1px  black;
+}

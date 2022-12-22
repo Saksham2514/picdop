@@ -17,7 +17,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { MainListItems } from "./listItems";
 import Logo from "../../logo.png"
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Copyright() {
@@ -154,7 +154,7 @@ export default function Dashboard({children}) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  
+  const role =  useSelector(state=>state.role)
 
   return (
     <div className={classes.root}>
@@ -184,7 +184,7 @@ export default function Dashboard({children}) {
             noWrap
             className={classes.title}
           >
-          <Link to="/admin">
+          <Link to={role !== "agent" ?  "/admin" : "/agent"}>
             <img src={Logo} style={{height:"4rem"}} alt=""/>
           </Link>  
           </Typography>
