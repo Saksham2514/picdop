@@ -70,9 +70,9 @@ const Form = ({ disabled, setStep1, details, setDetails }) => {
                         setDetails({ ...details, category: e.target.value });
                       }}
                     >
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      <MenuItem value={"Medical"}>Medical</MenuItem>
+                      <MenuItem value={"Groceries"}>Groceries</MenuItem>
+                      
                     </Select>
                   </FormControl>
                 </Grid>
@@ -90,9 +90,9 @@ const Form = ({ disabled, setStep1, details, setDetails }) => {
                         setDetails({ ...details, subCategory: e.target.value });
                       }}
                     >
-                      <MenuItem value={40}>Ten</MenuItem>
-                      <MenuItem value={50}>Twenty</MenuItem>
-                      <MenuItem value={60}>Thirty</MenuItem>
+                      <MenuItem value={"Retailer"}>Retailer</MenuItem>
+                      <MenuItem value={"Whole Seller"}>Whole Seller</MenuItem>
+                      
                     </Select>
                   </FormControl>
                   {/* SELECT 2 */}

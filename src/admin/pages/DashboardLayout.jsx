@@ -34,9 +34,7 @@ function Copyright() {
         {"Copyright © "}
         <Link color="inherit" to="/order">
           Your Website 
-        </Link>{" "}
-        Your ID : {id}
-        Your ID : {role}
+        </Link>
         {new Date().getFullYear()}
         {"."}
       </Typography>
@@ -188,11 +186,11 @@ export default function Dashboard({children}) {
             <img src={Logo} style={{height:"4rem"}} alt=""/>
           </Link>  
           </Typography>
-          <IconButton color="gray">
+          {/* <IconButton color="gray">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
           <Appbar/>
         </Toolbar>
       </AppBar>

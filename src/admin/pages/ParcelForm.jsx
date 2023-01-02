@@ -81,8 +81,9 @@ const ParcelForm = ({update, details, setDetails}) => {
               }}
             >
               <MenuItem value={"Box"}>Box</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={"Polythene"}>Polythene</MenuItem>
+              <MenuItem value={"Looose"}>Loose</MenuItem>
+              <MenuItem value={"Other"}>Other</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -177,9 +178,9 @@ const ParcelForm = ({update, details, setDetails}) => {
                 setDetails({ ...details, paymentMode: e.target.value });
               }}
             >
-              <MenuItem value={"Bank Account"}>Bank Account</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={"Cash On Delivery"}>Cash On Delivery</MenuItem>
+              <MenuItem value={"Prepaid"}>Prepaid</MenuItem>
+              <MenuItem value={"Credit"}>Credit</MenuItem>
             </Select>
           </FormControl>
           <FormControl margin="normal" fullWidth>

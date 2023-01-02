@@ -192,6 +192,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid container spacing={2} style={{ marginTop: "0.5rem" }}>
+          {role === "admin" ? (
           <Grid item xs={12} md={6}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
               <Typography
@@ -203,7 +204,8 @@ export default function Dashboard() {
               <Table data={orders} columns={columns1} />
             </Paper>
           </Grid>
-          <Grid item xs={12} md={6}>
+          ) : (<></>)}
+          <Grid item xs={12} md={role === "admin" ? 6 : 12}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
               <Typography
                 style={{ paddingBottom: "1rem", fontWeight: "bold" }}
