@@ -9,29 +9,38 @@ import Typography from "@mui/material/Typography";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
-import { Button, CardActions, Grid } from "@mui/material";
+import { Alert, Button, CardActions, Grid, TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-export default function MediaControlCard({ data,getData }) {
+export default function MediaControlCard({ data, getData }) {
   const theme = useTheme();
+  const [otp, setOtp] = useState(0);
   const [from, setFrom] = useState([]);
+  const [error, setError] = useState(false);
   const [to, setTo] = useState([]);
   const date = new Date(data.createdAt.toString());
+
   const { id, name } = useSelector((state) => state);
+
   const handleAccept = () => {
-    axios
-      .put(`${process.env.REACT_APP_BACKEND_URL}orders/${data._id}`, {
-        agentId: id,
-        agentName: name,
-        status:"Accepted"
-      })
-      .then((res) => {
-        getData();
-      })
-      .catch((err) => console.log(err));
+    if (otp.trim() === data.otp.toString()) {
+      axios
+        .put(`${process.env.REACT_APP_BACKEND_URL}orders/${data._id}`, {
+          agentId: id,
+          agentName: name,
+          status: "Accepted",
+          pickupDate: new Date()
+        })
+        .then((res) => {
+          getData();
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setError(true);
+    }
   };
 
   useEffect(() => {
@@ -53,10 +62,26 @@ export default function MediaControlCard({ data,getData }) {
 
   return (
     <Card elevation={3} sx={{ borderRadius: "1rem", padding: "0.5rem" }}>
+      {error ? (
+        <Alert
+          severity="error"
+          onClose={() => {
+            setError(false);
+          }}
+        >
+          Invalid OTP
+        </Alert>
+      ) : (
+        ""
+      )}
       <CardContent>
         <Grid container>
-          <Grid item xs={12} md={6}>
-            <Typography color="text.secondary" gutterBottom>
+          <Grid item xs={6}>
+            <Typography
+              sx={{ fontWeight: "bold" }}
+              color="text.secondary"
+              gutterBottom
+            >
               From - {from.name}
             </Typography>
             <Typography color="text.caption1" gutterBottom>
@@ -70,13 +95,22 @@ export default function MediaControlCard({ data,getData }) {
                 " - " +
                 from.pin}
             </Typography>
-            <Typography color="text.secondary" gutterBottom>
+            <Typography
+              sx={{ fontWeight: "bold" }}
+              color="text.secondary"
+              gutterBottom
+            >
               Contact
             </Typography>
             <a href={`tell:${from.contact}`}>{from.contact}</a>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography color="text.secondary" gutterBottom align="right">
+          <Grid item xs={6}>
+            <Typography
+              sx={{ fontWeight: "bold" }}
+              color="text.secondary"
+              gutterBottom
+              align="right"
+            >
               To - {to.name}
             </Typography>
             <Typography color="text.caption1" gutterBottom align="right">
@@ -90,7 +124,12 @@ export default function MediaControlCard({ data,getData }) {
                 " - " +
                 to.pin}
             </Typography>
-            <Typography color="text.secondary" gutterBottom align="right">
+            <Typography
+              sx={{ fontWeight: "bold" }}
+              color="text.secondary"
+              gutterBottom
+              align="right"
+            >
               Contact
             </Typography>
 
@@ -101,12 +140,26 @@ export default function MediaControlCard({ data,getData }) {
         </Grid>
       </CardContent>
       <CardActions>
-        <Grid container>
+        <Grid container spacing={2}>
+          <Grid item xs={12} textAlign="right">
+            <TextField
+              variant="standard"
+              label="Enter OTP "
+              size="small"
+              fullWidth
+              type="number"
+              onChange={(e) => {
+                setOtp(e.target.value);
+              }}
+              InputProps={{ inputProps: { min: 100000, max: 999999 } }}
+            />
+          </Grid>
           <Grid item xs={6}>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {date.getFullYear()} / {date.getMonth()} / {date.getDate()}
+              {date.getFullYear()} / {date.getMonth() + 1} / {date.getDate()}
             </Typography>
           </Grid>
+
           <Grid item xs={6}>
             <Button
               onClick={handleAccept}
@@ -114,6 +167,7 @@ export default function MediaControlCard({ data,getData }) {
               color="success"
               size="small"
               sx={{ float: "right" }}
+              disabled={otp.length === 6 ? false : true}
             >
               Accept
             </Button>

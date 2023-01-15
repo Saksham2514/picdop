@@ -12,11 +12,17 @@ import { useEffect } from "react";
 
 const Row = () => {
   const [data, setData] = useState([]);
+
   const [users, setUsers] = useState([]);
-  const { role,id } = useSelector((state) => state);
+  const { role, id } = useSelector((state) => state);
   const [choice, setChoice] = useState(true);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filter, setFilter] = useState(
+    role === "admin"
+      ? {}
+      : { $or: [{ from: id }, { to: id }, { createdBy: id }] }
+  );
 
   function search(nameKey, myArray) {
     for (let i = 0; i < myArray.length; i++) {
@@ -28,21 +34,23 @@ const Row = () => {
 
   useEffect(() => {
     axios
-      .get(role === "admin" ? `${process.env.REACT_APP_BACKEND_URL}orders`:`${process.env.REACT_APP_BACKEND_URL}order/${id}`)
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, filter)
       .then((res) => {
-        // console.log(res.data);
         setData(res.data);
       })
       .catch((err) => console.log(err));
 
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}users`)
+      .post(
+        `${process.env.REACT_APP_BACKEND_URL}users/search`,
+        choice ? {} : filter
+      )
       .then((res) => {
         // console.log(res.data);
         setUsers(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [filter]);
 
   const columns = [
     {
@@ -65,21 +73,22 @@ const Row = () => {
     {
       name: "status",
       selector: (row, ind) => (
-        <Chip
-          label={row.status}
-          key={ind}
-          color={
+        <div
+          className={
             row.status === "Pending"
-              ? "warning"
+              ? "chip pending"
               : row.status === "Completed"
-              ? "success"
+              ? "chip success"
               : row.status === "Accepted"
-              ? "info"
+              ? "chip info"
               : "error"
           }
+          key={ind}
           variant="outlined"
           sx={{ wordWrap: "break-word" }}
-        />
+        >
+          {row.status}
+        </div>
       ),
       sortable: true,
       wrap: true,
@@ -88,39 +97,52 @@ const Row = () => {
       name: "Agent",
       selector: (row) => row.agentName || "-",
       sortable: true,
+      wrap: true,
     },
     {
       name: "OTP",
       selector: (row) => row.otp,
       sortable: true,
+      wrap: true,
     },
     {
-      name: "Paid In",
+      name: "Mode",
       selector: (row) => row.paymentMode,
       sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Amount",
+      selector: (row) => "₹ "+row.parcelPaymentCollection,
+      sortable: true,
+      wrap: true,
     },
     {
       name: "Height",
       selector: (row) => row.parcelHeight + " inch",
       sortable: true,
+      wrap: true,
     },
     {
       name: "Length",
       // selector: (row) => row.parcelLength+" x "+row.parcelLength+" x "+row.parcelWidth+" inch",
       selector: (row) => row.parcelLength + " inch",
       sortable: true,
+      wrap: true,
     },
     {
       name: "Width",
       // selector: (row) => row.parcelWidth+" x "+row.parcelLength+" x "+row.parcelWidth+" inch",
       selector: (row) => row.parcelWidth + " inch",
       sortable: true,
+      wrap: true,
     },
     {
       name: "Weight",
       // selector: (row) => row.parcelWeight+" x "+row.parcelLength+" x "+row.parcelWidth+" inch",
       selector: (row) => row.parcelWeight + " kg",
       sortable: true,
+      wrap: true,
     },
     {
       name: "Date",
@@ -133,9 +155,35 @@ const Row = () => {
         return `${year}-${month}-${dt}`;
       },
       sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Pick at",
+      selector: (row) => {
+        return row.pickupDate
+          ? new Date(row.pickupDate).toLocaleString("en-US", {
+              timeZone: "Asia/Kolkata",
+            })
+          : "-";
+      },
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Ship at",
+      selector: (row) => {
+        return row.deliveryDate
+          ? new Date(row.deliveryDate).toLocaleString("en-US", {
+              timeZone: "Asia/Kolkata",
+            })
+          : "-";
+      },
+      sortable: true,
+      wrap: true,
     },
     {
       name: "Action",
+
       selector: (row) => (
         <Link to={`/orders/${row._id}`}>View Order details</Link>
       ),
@@ -148,46 +196,52 @@ const Row = () => {
       name: "Name ",
       selector: (row) => row.name,
       sortable: true,
+      wrap: true,
     },
     {
       name: "Email",
       selector: (row) => row.email,
       sortable: true,
+      wrap: true,
     },
     {
       name: "Contact",
       selector: (row) => row.contact,
       sortable: true,
+      wrap: true,
     },
     {
       name: "Shop No",
       selector: (row) => row.shopNumber,
       sortable: true,
+      wrap: true,
     },
     {
       name: "Shop Name",
       selector: (row) => row.shopName,
       sortable: true,
+      wrap: true,
     },
     {
       name: "Role",
-      selector: (row, ind) => (
-        <Chip
-          label={row.role}
-          key={ind}
-          color={
+      selector: (row) => row.role,
+      render: ( row, ind ) => {
+        <span
+          className={
             row.role === "admin"
-              ? "warning"
+              ? "chip pending"
               : row.role === "agent"
-              ? "success"
+              ? "chip info"
               : row.role === "user"
-              ? "info"
-              : "error"
+              ? "chip success"
+              : "chip error"
           }
+          key={ind}
           variant="outlined"
-          sx={{ wordWrap: "break-word" }}
-        />
-      ),
+        >
+          {row.role}
+        </span>;
+      },
       sortable: true,
       wrap: true,
     },
@@ -201,13 +255,13 @@ const Row = () => {
         return `${year}-${month}-${dt}`;
       },
       sortable: true,
+      wrap: true,
     },
     {
       name: "Action",
       selector: (row) => (
         <Link to={`/users/${row._id}`}>View User details</Link>
       ),
-      wrap: true,
     },
   ];
 
@@ -217,72 +271,97 @@ const Row = () => {
 
   return (
     <div>
-      <Grid container>
-        <Grid item xs={7}>
-          <Stack direction="row">
-            <Typography
-              style={{
-                paddingBottom: "1rem",
-                paddingRight: "1rem",
-                fontWeight: "bold",
-                marginRight: "1rem",
-                textTransform: "capitalize",
-              }}
-              variant="h6"
-            >
-              {role} Dashboard
-            </Typography>
-            {role === "admin" ? (
-              <>
-                <Chip
-                  label="Users"
-                  variant="outlined"
-                  id={choice ? "bgN" : "bg"}
-                  onClick={handleClick}
-                />
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={3}>
+          <Typography
+            style={{
+              paddingBottom: "1rem",
+              paddingRight: "1rem",
+              fontWeight: "bold",
+              marginRight: "1rem",
+              textTransform: "capitalize",
+            }}
+            variant="h6"
+          >
+            {role} Dashboard
+          </Typography>
+          {role === "admin" ? (
+            <>
+              <Chip
+                label="Users"
+                variant="outlined"
+                id={choice ? "bgN" : "bg"}
+                onClick={handleClick}
+              />
 
-                <Chip
-                  label="Orders"
-                  id={choice ? "bg" : "bgN"}
-                  variant="outlined"
-                  onClick={handleClick}
-                />
-              </>
-            ) : (
-              ""
-            )}
-          </Stack>
+              <Chip
+                label="Orders"
+                id={choice ? "bg" : "bgN"}
+                variant="outlined"
+                onClick={handleClick}
+              />
+            </>
+          ) : (
+            ""
+          )}
         </Grid>
-        <Grid item xs={2}>
-          <Stack direction="row">
-            <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              dateFormat="MM/yyyy"
-              showMonthYearPicker
-            />
-            <Typography
-              style={{
-                paddingRight: "1rem",
-                paddingLeft: "1rem",
-                fontWeight: "bold",
-              }}
-              variant="button"
-            >
-              -
-            </Typography>
-            <DatePicker
-              selected={endDate}
-              onChange={(date) => setEndDate(date)}
-              minDate={startDate}
-              dateFormat="MM/yyyy"
-              showMonthYearPicker
-            />
-          </Stack>
+        <Grid item xs={6} md={3}>
+          Start Date
+          <DatePicker
+            selected={startDate}
+            dateFormat="MM/yyyy"
+            showMonthYearPicker
+            onChange={(date) => {
+              setStartDate(date);
+            }}
+          />
+        </Grid>
+        <Grid item xs={6} md={3}>
+          End Date
+          <DatePicker
+            selected={endDate}
+            minDate={startDate}
+            dateFormat="MM/yyyy"
+            showMonthYearPicker
+            onChange={(date) => {
+              setEndDate(date);
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setFilter({
+                ...filter,
+                createdAt: {
+                  $gt: startDate.toISOString(),
+                  $lt: endDate.toISOString(),
+                },
+              });
+              console.log(filter);
+            }}
+          >
+            Load
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setStartDate();
+              setEndDate();
+              setFilter(
+                role === "admin"
+                  ? {}
+                  : { $or: [{ from: id }, { to: id }, { createdBy: id }] }
+              );
+            }}
+          >
+            Clear Filter
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <Table
-            expand={false}
+            expand={true}
             data={choice ? data : users}
             columns={choice ? columns : userColumns}
           />

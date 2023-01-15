@@ -196,7 +196,7 @@ export default function Dashboard() {
                     </p>
                   </Typography>
                   <Link to="/delivery" style={{textDecoration:"none"}}>
-                    Book
+                    Book Delivery
                   
                   </Link>
                 </Grid>

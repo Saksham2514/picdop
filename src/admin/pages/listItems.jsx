@@ -36,53 +36,77 @@ const useStyles = makeStyles({
 
 export const MainListItems = () => {
   const dispatch = useDispatch();
-  const {role} = useSelector(state=>state)
+  const { role } = useSelector((state) => state);
   const classes = useStyles();
   return (
     <List>
       {/* <Link to={role !== "agent" ?  "/admin" : "/agent"}> */}
-      <Link to={role !== "agent" ?  "/delivery" : "/agent"} style={{ textDecoration: "none" }}>
+      <Link
+        to={role !== "agent" ? "/delivery" : "/agent"}
+        style={{ textDecoration: "none" }}
+      >
         <ListItem button className={classes.listitemRoot}>
           <ListItemIcon className={classes.iconRoot}>
             <LocalShippingIcon />
           </ListItemIcon>
-          <ListItemText primary={role !== "agent" ?  "Book a Delivery" : "Available Orders"}/>
+          <ListItemText
+            primary={role !== "agent" ? "Book a Delivery" : "Available Orders"}
+          />
         </ListItem>
       </Link>
-      <Link to={role !== "agent" ?  "/collection" : "/orders"} style={{ textDecoration: "none" }}>
+      <Link
+        to={role !== "agent" ? "/collection" : "/orders"}
+        style={{ textDecoration: "none" }}
+      >
         <ListItem button className={classes.listitemRoot}>
           <ListItemIcon className={classes.iconRoot}>
             <ViewCarouselIcon />
           </ListItemIcon>
-          <ListItemText primary={role !== "agent" ?  "Collection" : "Accepted Orders"} />
+          <ListItemText
+            primary={role !== "agent" ? "Collection" : "Accepted Orders"}
+          />
         </ListItem>
       </Link>
-      {role !== "agent" ?  (<>
-      <Link to="/admin" style={{ textDecoration: "none" }}>
-        <ListItem button className={classes.listitemRoot}>
-          <ListItemIcon className={classes.iconRoot}>
-            <MonetizationOnIcon />
-          </ListItemIcon>
-          <ListItemText primary="Daily Earnings" />
-        </ListItem>
-      </Link>
-      <Link to="/prices" style={{ textDecoration: "none" }}>
-        <ListItem button className={classes.listitemRoot}>
-          <ListItemIcon className={classes.iconRoot}>
-            <ReceiptIcon />
-          </ListItemIcon>
-          <ListItemText primary="Set Prices" />
-        </ListItem>
-      </Link>
-      </>) : ("")}
-        <ListItem button className={classes.listitemRoot} onClick={()=>{
-          dispatch(logout())
-        }}>
-          <ListItemIcon className={classes.iconRoot}>
-            <PowerSettingsNewIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
-        </ListItem>
+      {role !== "agent" ? (
+        <>
+          <Link to="/admin" style={{ textDecoration: "none" }}>
+            <ListItem button className={classes.listitemRoot}>
+              <ListItemIcon className={classes.iconRoot}>
+                <MonetizationOnIcon />
+              </ListItemIcon>
+              <ListItemText primary="Daily Earnings" />
+            </ListItem>
+          </Link>
+          {role === "admin" ? (
+            <>
+              <Link to="/prices" style={{ textDecoration: "none" }}>
+                <ListItem button className={classes.listitemRoot}>
+                  <ListItemIcon className={classes.iconRoot}>
+                    <ReceiptIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Set Prices" />
+                </ListItem>
+              </Link>
+            </>
+          ) : (
+            ""
+          )}
+        </>
+      ) : (
+        ""
+      )}
+      <ListItem
+        button
+        className={classes.listitemRoot}
+        onClick={() => {
+          dispatch(logout());
+        }}
+      >
+        <ListItemIcon className={classes.iconRoot}>
+          <PowerSettingsNewIcon />
+        </ListItemIcon>
+        <ListItemText primary="Logout" />
+      </ListItem>
     </List>
   );
 };

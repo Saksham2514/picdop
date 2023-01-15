@@ -20,8 +20,13 @@ export const TypeAhead = (props) => {
 
   for (let x of users) {
     // console.log(x.name);
-    options.push(`${x._id} - ${x.name} from ${x.shopName}`);
+    options.push(`${x.contact} - ${x.name} from ${x.shopName}`);
   }
+
+  // for (let x of users) {
+  //   // console.log(x.name);
+  //   options.push(`${x._id} - ${x.name} from ${x.shopName}`);
+  // }
 
   return (
     <Autocomplete
@@ -61,7 +66,8 @@ export const TypeAhead = (props) => {
           )}
           onChange={(event, newValue) => {
             const s = newValue.split("-")[0];
-              props.setFrom(s.trim())
+            console.log(users.filter((data)=> data.contact === s.trim())[0]._id);
+              props.setFrom(users.filter((data)=> data.contact === s.trim())[0]._id)
           }}
           inputValue={inputValue}
           onInputChange={(event, newInputValue) => {

@@ -9,13 +9,13 @@ import Typography from "@mui/material/Typography";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
-import { Alert, Button, CardActions, Grid, TextField } from "@mui/material";
+import { Alert, Button, CardActions, Chip, Grid, TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-export default function MediaControlCard({ data, key,getData }) {
+export default function MediaControlCard({ data, key, getData }) {
   const theme = useTheme();
   const [from, setFrom] = useState([]);
   const [to, setTo] = useState([]);
@@ -23,11 +23,13 @@ export default function MediaControlCard({ data, key,getData }) {
   const [error, setError] = useState(false);
   const date = new Date(data.createdAt.toString());
   const { id, name } = useSelector((state) => state);
+ 
   const handleAccept = () => {
     if (otp.trim() === data.otp.toString()) {
       axios
         .put(`${process.env.REACT_APP_BACKEND_URL}orders/${data._id}`, {
           status: "Completed",
+          deliveryDate: new Date()
         })
         .then((res) => {
           getData();
@@ -72,10 +74,13 @@ export default function MediaControlCard({ data, key,getData }) {
         </Alert>
       ) : (
         ""
-      )}
+      )} 
       <CardContent>
         <Grid container>
-          <Grid item xs={12} md={6}>
+        <Grid item xs={12} textAlign="center">
+                <Chip variant="outlined" label={data.status} color={data.status ==="Accepted" ? "info" : "success"}  />
+          </Grid>
+          <Grid item xs={6} >
             <Typography color="text.secondary" gutterBottom>
               From - {from.name}
             </Typography>
@@ -95,7 +100,8 @@ export default function MediaControlCard({ data, key,getData }) {
             </Typography>
             <a href={`tell:${from.contact}`}>{from.contact}</a>
           </Grid>
-          <Grid item xs={12} md={6}>
+          
+          <Grid item xs={6} >
             <Typography color="text.secondary" gutterBottom align="right">
               To - {to.name}
             </Typography>
@@ -118,12 +124,13 @@ export default function MediaControlCard({ data, key,getData }) {
               <a href={`tell:${to.contact}`}>{to.contact}</a>
             </Typography>
           </Grid>
-          <Grid item xs={6} marginTop={1}>
-            <Typography variant="body2">Enter OTP</Typography>
-          </Grid>
-          <Grid item xs={6}>
+          {data.status !== "Completed" ? (<>
+         
+          <Grid item xs={12} textAlign="right" marginTop={2}>
             <TextField
-              variant="standard"
+              variant="outlined"
+              fullWidth
+              label="Enter OTP "
               size="small"
               type="number"
               onChange={(e) => {
@@ -132,13 +139,21 @@ export default function MediaControlCard({ data, key,getData }) {
               InputProps={{ inputProps: { min: 100000, max: 999999 } }}
             />
           </Grid>
+          </>) : (<>
+          <Grid item xs={6}>
+            <Typography variant="body1">Delivered at : </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography>{new Date(data.deliveryDate).toLocaleString("en-US",{timeZone:"Asia/Kolkata"})} </Typography>
+          </Grid>
+          </>)}
         </Grid>
       </CardContent>
       <CardActions>
         <Grid container>
           <Grid item xs={6}>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {date.getFullYear()} / {date.getMonth()} / {date.getDate()}
+              {date.getFullYear()} / {date.getMonth() + 1} / {date.getDate()}
             </Typography>
           </Grid>
 

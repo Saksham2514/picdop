@@ -10,7 +10,7 @@ import Orders from "./admin/components/Orders";
 import Profile from "./admin/components/Profile";
 import Admin from "./admin/pages/Dashboard";
 
-import PrivateRoutes from "./components/PrivateRoutes";
+import PrivateRoutes, { AdminRoute } from "./components/PrivateRoutes";
 import AgentRoutes from "./components/AgentRoutes";
 import SignUp from "./pages/SignUp";
 import { Routes, Route } from "react-router-dom";
@@ -18,7 +18,6 @@ import { AgentHome } from "./agents/AgentHome";
 import { AgentOrders } from "./agents/AgentOrders";
 
 function App() {
-
   return (
     <div className="">
       <Routes>
@@ -32,9 +31,11 @@ function App() {
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/collection" element={<Collection />} />
           <Route path="/orders/:orderId" element={<Orders />} />
-          <Route path="/prices" element={<Prices />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/users/:userId" element={<UserClass  />} />
+          <Route path="/users/:userId" element={<UserClass />} />
+        </Route>
+        <Route element={<AdminRoute />}>
+          <Route path="/prices" element={<Prices />} />
         </Route>
       </Routes>
       <Routes>

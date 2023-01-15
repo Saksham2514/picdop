@@ -48,7 +48,7 @@ export const AgentHome = () => {
                 <>No Orders available right now </>
               ) : (
                 data.map((order, ind) => (
-                  <Grid item xs={12} md={6} lg={3} key={ind}>
+                  <Grid item xs={12} key={ind}>
                     <OrderCard data={order} key={ind} getData={getData}/>
                   </Grid>
                 ))

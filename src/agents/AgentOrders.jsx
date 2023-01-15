@@ -9,23 +9,25 @@ import OrderCard from "./components/AcceptOrderCard";
 export const AgentOrders = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {id } = useSelector(state=>state)
-  const getData = () =>{
+  const { id } = useSelector((state) => state);
+  const getData = () => {
     axios
-    .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, {
-      status: "Accepted",
-      agentId:id
-    })
-    .then((res) => {
-      setData(res.data);
-      setLoading(false);
-    
-    })
-    .catch((err) => console.log(err));
-  }
-  
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, {
+        $or: [
+          {status: "Accepted"},
+          {status: "Completed"},
+      ],
+        agentId: id,
+      })
+      .then((res) => {
+        setData(res.data);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
-   getData()
+    getData();
   }, []);
 
   return (
@@ -33,12 +35,12 @@ export const AgentOrders = () => {
       <Dashboard>
         <Grid container sx={{ p: "1.5rem" }} spacing={3}>
           <Grid item xs={6}>
-            <Typography variant="h4" >
-              Accepted Orders
-            </Typography>
+            <Typography variant="h4">Accepted Orders</Typography>
           </Grid>
-          <Grid item xs={6}  textAlign={"right"}>
-            <Button color="info" variant="text" onClick={getData}>Refresh</Button>
+          <Grid item xs={6} textAlign={"right"}>
+            <Button color="info" variant="text" onClick={getData}>
+              Refresh
+            </Button>
           </Grid>
           {loading ? (
             <>
@@ -47,10 +49,12 @@ export const AgentOrders = () => {
           ) : (
             <>
               {data.length === 0 ? (
-                <Typography variant="body1" marginY={1} marginLeft={3}>You have not accepted any orders yet </Typography>
+                <Typography variant="body1" marginY={1} marginLeft={3}>
+                  You have not accepted any orders yet{" "}
+                </Typography>
               ) : (
                 data.map((order, ind) => (
-                  <Grid item xs={12} md={6} lg={3} >
+                  <Grid item xs={12}>
                     <OrderCard data={order} getData={getData} key={ind} />
                   </Grid>
                 ))

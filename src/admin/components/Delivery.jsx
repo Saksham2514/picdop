@@ -41,7 +41,7 @@ export default function Dashboard() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [users, setUsers] = useState([]);
-  const [updateVar, setUpdateVar] = useState(0);
+  
 
   const classes = useStyles();
 
@@ -143,14 +143,21 @@ export default function Dashboard() {
     }
   }
 
-  
-  useEffect(() => {
+  const getData = () =>{
     
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}order/${id}`)
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`,
+        {
+          $or: [
+            { from: id },
+            { to: id },
+            { createdBy: id },
+          ],
+        }
+      )
       .then((res) => {
-        console.log(res.data);
         setData(res.data);
+        console.log(res.data);
       })
       .catch((err) => console.log(err));
       
@@ -158,7 +165,10 @@ export default function Dashboard() {
       .get(`${process.env.REACT_APP_BACKEND_URL}users`)
       .then((res) => setUsers(res.data))
       .catch((err) => console.log(err.message));
-  }, [updateVar]);
+  }
+  useEffect(() => {
+    getData();
+  }, []);
 
  
 
@@ -206,15 +216,22 @@ export default function Dashboard() {
                       fontWeight: "600",
                     }}
                     onClick={(e) => {
+                      
                       from && to
-                        ? setParcelDetails({
-                            ...parcelDetails,
-                            from: from,
-                            to: to,
-                          })
-                        : alert("Set pickup Source and destination");
-                      // console.log(parcelDetails);
-                    }}
+                      ? 
+                        setParcelDetails({
+                          ...parcelDetails,
+                          from: from,
+                          to: to,
+                        })
+                        
+                      : alert("Set pickup Source and destination");
+                      
+
+                      console.log( parcelDetails )
+                     
+                    }
+                  }
                   >
                     Add Parcel Details
                   </Button>
@@ -237,7 +254,6 @@ export default function Dashboard() {
           <Grid item xs={12} md={6}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
               <ParcelForm
-                update={setUpdateVar}
                 details={parcelDetails}
                 setDetails={setParcelDetails}
               />
@@ -251,7 +267,7 @@ export default function Dashboard() {
               >
                 Recent Bookings
               </Typography>
-              <Table data={data.slice(0,5)} columns={columns} expand={false}/>
+              <Table  data={data} columns={columns} expand={false}/>
             </Paper>
           </Grid>
         </Grid>

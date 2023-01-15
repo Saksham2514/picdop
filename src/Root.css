@@ -3,6 +3,7 @@
     --secondary-color:rgb(243, 238, 238);
     --success-color:rgb(33, 204, 95);
     --error-color:rgb(205, 44, 44);
+    --pending-color:rgb(227, 193, 0);
     --icon-color:white;
 }
 #bg{
@@ -14,4 +15,30 @@
     background-color: var(--secondary-color);
     
     box-shadow: 0 0 1px  black;
+}
+.chip{
+    border: 1px solid black;
+    border-radius: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    white-space: nowrap;
+    
+}
+.pending{
+    border-color: var(--pending-color);
+    color: var(--pending-color);
+}
+.success{
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+.info{
+    border-color: var(--main-color);
+    color: var(--main-color);
+}
+.pending{
+    border-color: var(--pending-color);
+    color: var(--pending-color);
 }

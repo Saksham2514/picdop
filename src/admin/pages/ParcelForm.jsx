@@ -14,15 +14,19 @@ import ImagePreview from "../../components/Fr";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 
-const ParcelForm = ({update, details, setDetails}) => {
+const ParcelForm = ({ details, setDetails}) => {
   const { id } = useSelector((state) => state);
   const [error, setError] = useState();
-  let i =0 ;
+  const navigate = useNavigate();
+
   const handleSubmit = () => {
-    if (Object.keys(details).length < 10) {
-      console.log(details);
+    console.log(details);
+
+    if (Object.keys(details).length < 11) {
+      console.log(Object.keys(details).length );
       setError("Please fill all the fields ");
     } else {
       axios
@@ -30,13 +34,14 @@ const ParcelForm = ({update, details, setDetails}) => {
         .then((res) => {
           console.log(`${process.env.REACT_APP_BACKEND_URL}orders`);
           console.log(res.data);
+          navigate("/collection");
         })
         .catch((err) => {
           console.log("Printing error");
           console.log(err);
           setError(err.message);
         });
-        update(++i)
+        
     }
     
   };
@@ -93,7 +98,7 @@ const ParcelForm = ({update, details, setDetails}) => {
             label="Parcel Weight"
             variant="outlined"
             onChange={(e) => {
-              setDetails({ ...details, parcelWeight: e.target.value });
+              setDetails({ ...details, parcelWeight: e.target.value , createdBy: id });
             }}
             id="outlined-start-adornment"
             InputProps={{
@@ -183,29 +188,20 @@ const ParcelForm = ({update, details, setDetails}) => {
               <MenuItem value={"Credit"}>Credit</MenuItem>
             </Select>
           </FormControl>
-          <FormControl margin="normal" fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Parcel Payment Collection
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Parcel Payment Collection"
-              onChange={(e) => {
-                setDetails({
-                  ...details,
-                  createdBy: id,
-                  parcelPaymentCollection: e.target.value,
-                });
-              }}
-            >
-              <MenuItem value={"yes"}>yes</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
+          
         </Grid>
         {/* Descritpion and payments mode ends */}
+        <Grid item xs={12} >
+        <TextField
+            fullWidth
+            label="Amount to be collected "
+            variant="outlined"
+            onChange={(e) => {
+              setDetails({ ...details, parcelPaymentCollection: e.target.value });
+            }}
+            id="outlined-start-adornment"
+          />
+        </Grid>
         <Grid item xs={12} md={6}>
           <ImagePreview label="Bill Image" />
         </Grid>

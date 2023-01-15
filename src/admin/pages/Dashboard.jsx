@@ -31,16 +31,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
+  const [dailyOrders, setDailyOrders] = useState([]);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
   const id = useSelector((state) => state.id);
   const role = useSelector((state) => state.role);
+  
+  const yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
+  const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString()
+
+  
 
   const getData = (id) => {
+    console.log(yesterday);
+    console.log(tomorrow);
+    
     axios
-      .get(id)
+      .post(id,{
+        createdAt: {
+          $gte: yesterday,
+          $lte: tomorrow
+        },
+      })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
+        setDailyOrders(res.data);
+      })
+      .catch((err) => console.log(err));
+    axios
+      .post(id)
+      .then((res) => {
+        // console.log(res.data);
         setOrders(res.data);
       })
       .catch((err) => console.log(err));
@@ -51,15 +72,13 @@ export default function Dashboard() {
       .catch((err) => console.log(err));
   };
   useEffect(() => {
-    role === "admin"
-    ? getData(`${process.env.REACT_APP_BACKEND_URL}orders`)
-    : getData(`${process.env.REACT_APP_BACKEND_URL}order/${id}`);
+    getData(`${process.env.REACT_APP_BACKEND_URL}orders/search`);
   }, []);
 
   function search(nameKey, myArray) {
     for (let i = 0; i < myArray.length; i++) {
-      if (myArray[i]['_id'] === nameKey) {
-        return myArray[i]['name'];
+      if (myArray[i]["_id"] === nameKey) {
+        return myArray[i]["name"];
       }
     }
   }
@@ -69,63 +88,63 @@ export default function Dashboard() {
       name: "ORDER ID ",
       selector: (row) => row._id,
       sortable: true,
-      wrap:true
+      wrap: true,
     },
     {
       name: "FROM ",
       selector: (row, ind) => {
-        return search(row.from,users)
+        return search(row.from, users);
       },
       sortable: true,
-      wrap:true
+      wrap: true,
     },
-    
+
     {
       name: "to ",
       selector: (row, ind) => {
-        return search(row.to,users)
+        return search(row.to, users);
       },
       sortable: true,
-      wrap:true
+      wrap: true,
     },
-    
+
     {
       name: "height",
-      selector: (row) => row.parcelHeight+" inch",
+      selector: (row) => row.parcelHeight + " inch",
       sortable: true,
-      wrap:true
+      wrap: true,
     },
     {
       name: "length",
-      selector: (row) => row.parcelLength+" inch",
+      selector: (row) => row.parcelLength + " inch",
       sortable: true,
-      wrap:true
+      wrap: true,
     },
     {
       name: "width",
-      selector: (row) => row.parcelWidth+" inch",
+      selector: (row) => row.parcelWidth + " inch",
       sortable: true,
-      wrap:true
+      wrap: true,
     },
     {
       name: "weight",
-      selector: (row) => row.parcelWeight+" kg",
+      selector: (row) => row.parcelWeight + " kg",
       sortable: true,
-      wrap:true
+      wrap: true,
     },
-    
+
     {
       name: "Payment Mode",
       selector: (row) => row.paymentMode,
       sortable: true,
-      wrap:true,
+      wrap: true,
     },
-    
+
     {
       name: "Collection done",
       selector: (row) => row.parcelPaymentCollection,
       sortable: true,
-      wrap:true
+      wrap: true,
     },
   ];
 
@@ -169,11 +188,11 @@ export default function Dashboard() {
                         color: "var(--main-color)",
                         borderRadius: "0.25rem",
                         marginBottom: "1rem",
-                        padding: 0,
+                        paddingX: "1rem",
                         textTransform: "capitalize",
                       }}
                     >
-                      Book
+                      Book Delivery
                     </Button>
                   </Link>
                 </Grid>
@@ -193,18 +212,20 @@ export default function Dashboard() {
 
         <Grid container spacing={2} style={{ marginTop: "0.5rem" }}>
           {role === "admin" ? (
-          <Grid item xs={12} md={6}>
-            <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
-              <Typography
-                style={{ paddingBottom: "1rem", fontWeight: "bold" }}
-                variant="h5"
-              >
-                Daily Earnings
-              </Typography>
-              <Table data={orders} columns={columns1} />
-            </Paper>
-          </Grid>
-          ) : (<></>)}
+            <Grid item xs={12} md={6}>
+              <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
+                <Typography
+                  style={{ paddingBottom: "1rem", fontWeight: "bold" }}
+                  variant="h5"
+                >
+                  Daily Earnings
+                </Typography>
+                <Table data={dailyOrders} columns={columns1} />
+              </Paper>
+            </Grid>
+          ) : (
+            <></>
+          )}
           <Grid item xs={12} md={role === "admin" ? 6 : 12}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
               <Typography
