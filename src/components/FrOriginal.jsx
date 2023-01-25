@@ -32,12 +32,11 @@ class FileUploader extends React.Component {
     let url = process.env.REACT_APP_BACKEND_URL + "test";
     axios.post(url, data).then(
       (res) => {
-        console.log(res.data);
+        // console.log(res.data);
         // then print response status
         if(res?.data?.stat === "success"){
           this.setState({ responseArray: res.data.message });
-          const {details,name }= {...this.props};
-          this.props.setDetails({...details, name : res.data.message })
+          this.props.setDetails(res.data.message)
           this.resetFile();
         }
       },
@@ -56,6 +55,7 @@ class FileUploader extends React.Component {
     return (
       <div className="row">
         <div className="col-md-12">
+            {this.state.responseArray.length === 0 ? (<>
           <div className="form-row">
             <div className="form-group col-md-6">
               <label>{this.props.label}</label>
@@ -81,6 +81,7 @@ class FileUploader extends React.Component {
             </div>
           </div>
           <br />
+          </>) : (<>
           <div style={{
             display:"flex",
             overflowX:"auto"
@@ -96,6 +97,7 @@ class FileUploader extends React.Component {
               
                 ))}
             </div>
+            </>)}
         </div>
       </div>
     );

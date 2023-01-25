@@ -34,14 +34,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
-
   const { id } = useSelector((state) => state);
   const [data, setData] = useState([]);
   const [parcelDetails, setParcelDetails] = useState({});
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [fromCity, setFromCity] = useState("");
+  const [toCity, setToCity] = useState("");
   const [users, setUsers] = useState([]);
-  
 
   const classes = useStyles();
 
@@ -143,34 +143,25 @@ export default function Dashboard() {
     }
   }
 
-  const getData = () =>{
-    
+  const getData = () => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`,
-        {
-          $or: [
-            { from: id },
-            { to: id },
-            { createdBy: id },
-          ],
-        }
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, {
+        $or: [{ from: id }, { to: id }, { createdBy: id }],
+      })
       .then((res) => {
         setData(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((err) => console.log(err));
-      
-      axios
+
+    axios
       .get(`${process.env.REACT_APP_BACKEND_URL}users`)
       .then((res) => setUsers(res.data))
       .catch((err) => console.log(err.message));
-  }
+  };
   useEffect(() => {
     getData();
   }, []);
-
- 
 
   return (
     <DashboardLayout>
@@ -197,10 +188,18 @@ export default function Dashboard() {
                   </Grid>
                   <Grid container fullWidth spacing={1}>
                     <Grid item xs={12} md={6}>
-                      <TypeAhead label="From" setFrom={setFrom} />
+                      <TypeAhead
+                        label="From"
+                        setFrom={setFrom}
+                        setCity={setFromCity}
+                      />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                      <TypeAhead label="To" setFrom={setTo} />
+                      <TypeAhead
+                        label="To"
+                        setFrom={setTo}
+                        setCity={setToCity}
+                      />
                     </Grid>
                   </Grid>
                   <Button
@@ -217,21 +216,17 @@ export default function Dashboard() {
                     }}
                     onClick={(e) => {
                       
-                      from && to
-                      ? 
-                        setParcelDetails({
-                          ...parcelDetails,
-                          from: from,
-                          to: to,
-                        })
-                        
-                      : alert("Set pickup Source and destination");
-                      
+                      from && to && fromCity && toCity
+                        ? setParcelDetails({
+                            ...parcelDetails,
+                            from: from,
+                            to: to,
+                              sameCity:fromCity.trim().toLowerCase() === toCity.trim().toLowerCase()
+                          })
+                        : alert("Set pickup Source and destination");
 
-                      console.log( parcelDetails )
                      
-                    }
-                  }
+                    }}
                   >
                     Add Parcel Details
                   </Button>
@@ -267,11 +262,11 @@ export default function Dashboard() {
               >
                 Recent Bookings
               </Typography>
-              <Table  data={data} columns={columns} expand={false}/>
+              <Table data={data} columns={columns} expand={false} />
             </Paper>
           </Grid>
         </Grid>
-      </Container> 
+      </Container>
     </DashboardLayout>
   );
 }

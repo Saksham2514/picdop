@@ -8,6 +8,10 @@ import { Container, Grid } from "@material-ui/core";
 import { Paper } from "@mui/material";
 import ParcelForm from "../pages/ProfileForm";
 import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { Loading } from "../pages/Loading";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -28,28 +32,57 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-const [edit, setEdit] = useState(false)
-const [details, setDetails] = useState([{
-  role:10,
-  category:10,
-  fname:"Brandon",
-  lname:"Surname",
-  mobile:"098765432",
-  email:"support@brandon.co.in",
-  shopName:"Brandon",
-  address:"Online",
-}])
-return (
-    <DashboardLayout>
-      <Container maxWidth="lg" className={classes.container}>
-        <Grid container spacing={2} style={{ marginTop: "0.5rem" , display:"flex",justifyContent:"center"}}>
-          <Grid item xs={9}>
-            <Paper style={{ padding: "1rem", borderRadius: "1rem" }} elevation={5}>
-              <ParcelForm edit={edit} setEdit={setEdit} data={details} setDetails={setDetails} />
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
-    </DashboardLayout>
+  const { id } = useSelector((state) => state);
+  const [edit, setEdit] = useState(false);
+  const [details, setDetails] = useState();
+
+  useEffect(() => {
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, {
+        _id: id,
+      })
+      .then((res) => {
+        // console.log(res.data);
+        setDetails(res.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  return (
+    <>
+      {details ? (
+        <>
+          <DashboardLayout>
+            <Container maxWidth="lg" className={classes.container}>
+              <Grid
+                container
+                spacing={2}
+                style={{
+                  marginTop: "0.5rem",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Grid item xs={9}>
+                  <Paper
+                    style={{ padding: "1rem", borderRadius: "1rem" }}
+                    elevation={5}
+                  >
+                    <ParcelForm
+                      edit={edit}
+                      setEdit={setEdit}
+                      data={details[0]}
+                      setDetails={setDetails}
+                    />
+                  </Paper>
+                </Grid>
+              </Grid>
+            </Container>
+          </DashboardLayout>
+        </>
+      ) : (
+        <Loading/>
+      )}
+    </>
   );
 }

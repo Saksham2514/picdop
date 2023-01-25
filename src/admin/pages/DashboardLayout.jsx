@@ -165,7 +165,6 @@ export default function Dashboard({children}) {
         <Toolbar  className={classes.toolbar}>
           <IconButton
             edge="start"
-            color="gray"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             className={clsx(

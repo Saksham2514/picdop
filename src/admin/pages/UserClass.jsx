@@ -89,7 +89,6 @@ export class UserClass extends Component {
                 <UserFormClass
                 edit={this.state.edit}
                 data={this.state.details[0]}
-            
                 setData={this.setStateOfParent}
               />
                 </>)}

@@ -79,7 +79,7 @@ const Form = ({ disabled, setStep2, details, setDetails }) => {
                   />
                 </Grid>
               </Grid>
-              <Fr label="Shop Images" />
+              <Fr label="Shop Images" name="shopImages"/>
               <Button
                 onClick={handleSubmit}
                 sx={{ my: 2, float: "right" }}

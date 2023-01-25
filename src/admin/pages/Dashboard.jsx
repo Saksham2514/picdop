@@ -43,9 +43,7 @@ export default function Dashboard() {
   
 
   const getData = (id) => {
-    console.log(yesterday);
-    console.log(tomorrow);
-    
+  
     axios
       .post(id,{
         createdAt: {
@@ -158,7 +156,7 @@ export default function Dashboard() {
             {/* Grid Content */}
 
             <Paper
-              variant="outlined"
+              
               elevation={3}
               style={{
                 backgroundColor: "var(--main-color)",
@@ -166,7 +164,7 @@ export default function Dashboard() {
                 padding: "0 0.5rem",
               }}
             >
-              <Grid container fullWidth>
+              <Grid container >
                 <Grid item xs={12} md={6}>
                   <Typography variant="subtitle1">
                     <p>Book a Delivery</p>

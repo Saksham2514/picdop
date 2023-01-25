@@ -1,27 +1,59 @@
 import {
   Grid,
-  InputAdornment,
   Button,
-  TextField,
+  Chip,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import NestedModal from "./Modal";
 import { useEffect } from "react";
 import axios from "axios";
+import { Loading } from "./Loading";
+
+const DataDisplay = ({ label, value,color }) => (
+  <>
+    <Typography variant="button" color="gray">
+      {label}
+    </Typography>
+    <br />
+    <Typography textOverflow={"ellipsis"} variant="body1" color={color ? color :  ""}>
+      {value} 
+    </Typography>
+    
+  </>
+);
 
 const ParcelForm = ({ id }) => {
   const [data, setData] = React.useState([]);
+  const [agentData, setAgentData] = React.useState([]);
   const [loading, setLoading] = useState(true);
-  const [fileArray, setFA] = useState(["https://source.unsplash.com/300x300"]);
-const navigate = useNavigate();
+  
+  const navigate = useNavigate();
+
+  const getAgentData = (id) => {
+    try {
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, { _id: id })
+        .then((res) => {
+          setAgentData(res.data[0]);
+        })
+        .catch((err) => console.log(err));
+    } catch (err) {
+      alert("error");
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fetch = () => {
     try {
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`,{_id:id})
+        .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, { _id: id })
         .then((res) => {
           setData(res.data[0]);
+          if (res.data[0].agentId) getAgentData(res.data[0].agentId);
         })
         .catch((err) => console.log(err));
     } catch (err) {
@@ -35,26 +67,28 @@ const navigate = useNavigate();
     fetch();
   }, []);
 
-
-  const handleRegenerate = ()=>{
-    let otp = Math.floor(Math.random()*999999)+100000
-    axios.put(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`,
-    {"otp":otp}).then(fetch()).catch(err=>console.error(err))
-  }
-  const handleDelete = ()=>{
-    
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`,
-    ).then(navigate('/collection')).catch(err=>console.error(err))
-  }
+  const handleRegenerate = () => {
+    let otp = Math.floor(Math.random() * 999999) + 100000;
+    axios
+      .put(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`, { otp: otp })
+      .then(fetch())
+      .catch((err) => console.error(err));
+  };
+  const handleDelete = () => {
+    axios
+      .delete(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`)
+      .then(navigate("/collection"))
+      .catch((err) => console.error(err));
+  };
 
   return loading ? (
     <>
-      <Typography variant="body"> Loading</Typography>
+      <Loading/>
     </>
   ) : (
     <div>
       <Grid container>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={4} md={4}>
           <Typography
             style={{ paddingBottom: "1rem", fontWeight: "bold" }}
             variant="h6"
@@ -62,154 +96,164 @@ const navigate = useNavigate();
             Order View
           </Typography>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={4} md={4} textAlign={"center"}>
           <Typography style={{ fontWeight: "bold" }} variant="h6">
             OTP is : {data.otp}
           </Typography>
+        </Grid>
+        <Grid item xs={4} md={4} textAlign={"right"}>
+          <Chip
+            label={data.status}
+            color={
+              data.status === "Accepted"
+                ? "info"
+                : data.status === "Completed"
+                ? "success"
+                : "warning"
+            }
+          />
         </Grid>
       </Grid>
       <Grid container fullWidth spacing={3}>
         {/* LBH ROW */}
 
-        <Grid item xs={12} md={3}>
-          <TextField
-            size="small"
-            fullWidth
-            label="Weight"
-            value={data.parcelWeight}
-            variant="outlined"
-            id="outlined-start-adornment"
-            InputProps={{
-              readOnly: true,
-              endAdornment: (
-                <InputAdornment position="start">kg</InputAdornment>
-              ),
-            }}
-          />
+        <Grid item xs={4} md={3}>
+          <DataDisplay label="Weight" value={data.parcelWeight + " kg"} />
         </Grid>
-        <Grid item xs={12} md={3}>
-          <TextField
-            size="small"
-            fullWidth
-            label="Length"
-            value={data.parcelLength}
-            variant="outlined"
-            id="outlined-start-adornment"
-            InputProps={{
-              readOnly: true,
-              endAdornment: (
-                <InputAdornment position="start">inch</InputAdornment>
-              ),
-            }}
-          />
+        <Grid item xs={4} md={3}>
+          <DataDisplay label="Height" value={data.parcelHeight + " inch"} />
         </Grid>
-        <Grid item xs={12} md={3}>
-          <TextField
-            size="small"
-            fullWidth
-            label="Width"
-            value={data.parcelWidth}
-            variant="outlined"
-            id="outlined-start-adornment"
-            InputProps={{
-              readOnly: true,
-              endAdornment: (
-                <InputAdornment position="start">inch</InputAdornment>
-              ),
-            }}
-          />
+        <Grid item xs={4} md={3}> 
+          <DataDisplay label="Length" value={data.parcelLength + " inch"} />
         </Grid>
-        <Grid item xs={12} md={3}>
-          <TextField
-            size="small"
-            fullWidth
-            label="Height"
-            value={data.parcelHeight}
-            variant="outlined"
-            id="outlined-start-adornment"
-            InputProps={{
-              readOnly: true,
-              endAdornment: (
-                <InputAdornment position="start">inch</InputAdornment>
-              ),
-            }}
-          />
+        <Grid item xs={4} md={3}>
+          <DataDisplay label="Width" value={data.parcelWidth + " inch"} />
         </Grid>
         {/* LBH ROW ends  */}
         {/* Descritpion and payments mode  */}
-        <Grid item xs={12} md={6}>
-          <TextField
-            id="filled-multiline-flexible"
-            label="Description"
-            InputProps={{
-              readOnly: true,
-            }}
-            fullWidth
-            value={data.parcelDescription}
-            variant="outlined"
-          />
+        <Grid item xs={8} md={3}>
+          <DataDisplay label="Description" value={data.parcelDescription || "-"} />
         </Grid>
-        <Grid item xs={12} md={6}></Grid>
+        <Grid item xs={4} md={3}>
+          <DataDisplay label="Payment Amount" value={"₹ "+data.parcelPaymentCollection} color="green"/>
+        </Grid>
+        <Grid item xs={4} md={3}>
+          <DataDisplay label="Payment Mode" value={data.paymentMode} />
+        </Grid>
+        <Grid item xs={4} md={3}>
+          <DataDisplay label="Parcel Type" value={data.parcelType} />
+        </Grid>
+
+        {agentData._id ? (
+          <>
+            <Grid item xs={6} md={6}>
+             <DataDisplay label={"Pickup Time"} value={data.pickupDate  ? new Date(data.pickupDate).toLocaleString() : "-"} key={352} />
+            </Grid>
+            <Grid item xs={6} md={6}>
+             <DataDisplay label={"Delivery Time"} value={data.deliveryDate ? new Date(data.deliveryDate).toLocaleString() : "Not delivered yet"} key={352} />
+            </Grid>
+            <Grid item xs={6} md={6}>
+             <DataDisplay label={"Agent name"} value={data.agentName} key={352} />
+            </Grid>
+            <Grid item xs={6} md={6}>
+              <Typography variant="button" color="gray">
+                Contact Agent
+              </Typography>
+              <br />
+              <Typography
+                component={"a"}
+                href={`tel:${agentData.contact.replace(/\D/g,'')}`}
+                variant="body1"
+                color=""
+              >
+                {agentData.contact}
+              </Typography>
+            </Grid>
+          </>
+        ) : (
+          <></>
+        )}
         {/* Descritpion and payments mode ends */}
         <Grid item xs={12} md={6}>
-          {(fileArray || []).map((url) => (
+        <Typography variant="button" color="gray">Parcel Images</Typography>
+          {data?.parcelImages?.length > 0 ? (
             <>
-              <img
-                src={url}
-                alt="..."
-                height={100}
-                width={100}
-                style={{ border: "1px solid black" }}
-              />
-              <br />
+              <div style={{ display: "flex", overflowX: "auto" }}>
+                {data?.parcelImages.map((url) => (
+                  <>
+                    <img
+                      src={process.env.REACT_APP_BACKEND_URL+url}
+                      alt="..."
+                      height={100}
+                      width={100}
+                      style={{ border: "1px solid black" }}
+                    />
+                    <br />
+                  </>
+                ))}
+              </div>
             </>
-          ))}
+          ) : (
+            <Typography> No Images Found</Typography>
+          )}
         </Grid>
         <Grid item xs={12} md={6}>
-          {(fileArray || []).map((url) => (
+        <Typography variant="button" color="gray">Bill Images</Typography> 
+          {data?.billImages?.length > 0 ? (
             <>
-              <img
-                src={url}
-                alt="..."
-                height={100}
-                width={100}
-                style={{ border: "1px solid black" }}
-              />
-              <br />
+              <div style={{ display: "flex", overflowX: "auto" }}>
+                {data?.billImages.map((url) => (
+                  <>
+                    <img
+                      src={process.env.REACT_APP_BACKEND_URL+url}
+                      alt="..."
+                      height={100}
+                      width={100}
+                      style={{ border: "1px solid black" }}
+                    />
+                    <br />
+                  </>
+                ))}
+              </div>
             </>
-          ))}
+          ) : (
+            <Typography> No Images Found</Typography>
+          )}
         </Grid>
-        <Grid item xs={12} md={8}>
+       
+        {/* Button Row starts */}
+        <Grid item xs={12} md={4}>
           <Link
             to="/collection"
             style={{ textDecoration: "none", borderRadius: "1rem" }}
           >
             <Button
-              style={{ backgroundColor: "var(--main-color)", color: "white" }}
+            variant="contained"
+              size="small"
+              color="primary"
             >
               Back To Dashboard
             </Button>
           </Link>
+          </Grid>
+          <Grid item xs={6} md={4}  sx={{textAlign:{xs:"left" , md:"center"}}}>
           <Button
             variant="contained"
             size="small"
-            style={{
-              borderRadius: "0.25rem",
-              color: "white",
-              backgroundColor: "var(--success-color)",
-              margin: "1rem 0.25rem",
-              paddingX: "1rem",
-              textTransform: "capitalize",
+           color="success"
+            onClick={() => {
+              handleRegenerate();
+              fetch();
             }}
-            onClick={()=>{handleRegenerate();fetch()}}
           >
-            Regenerating OTP
+            Regenerate OTP
           </Button>
         </Grid>
-        <Grid xs={12} md={3} style={{ paddingTop: "0.5rem" }}>
-          <NestedModal label=" Order" handleDelete={handleDelete}/>
-          
+
+        <Grid xs={6} md={4} style={{ paddingTop: "1.5rem" }} textAlign="right">
+          <NestedModal label=" Order" handleDelete={handleDelete} />
         </Grid>
+        {/* Button row ens  */}
       </Grid>
     </div>
   );

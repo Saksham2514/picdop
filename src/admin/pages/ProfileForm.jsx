@@ -1,185 +1,314 @@
-import {
-  Grid,
-  Button,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Grid, Button, TextField, Typography } from "@mui/material/";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import React from "react";
+import React, { Component } from "react";
 import ImagePreview from "../../components/Fr";
+import { Link, Navigate } from "react-router-dom";
+import axios from "axios";
+import { Alert } from "@mui/material";
 
-const ProfileForm = (props) => {
-  
-  return (
-    <div>
-      <Grid container fullWidth spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Typography
-            style={{ paddingBottom: "1rem", fontWeight: "bold" }}
-            variant="h5"
+export class ProfileForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: ["error", ""],
+      edit: false,
+      role: this.props.data.role,
+      category: this.props.data.category,
+      subCategory: this.props.data.subCategory,
+      name: this.props.data.name,
+      shopName: this.props.data.shopName,
+      shopNumber: this.props.data.shopNumber,
+      contact: this.props.data.contact,
+      email: this.props.data.email,
+      line1: this.props.data.line1,
+      line2: this.props.data.line2,
+      city: this.props.data.city,
+      state: this.props.data.state,
+      mapsLink: this.props.data.mapsLink,
+      pin: this.props.data.pin,
+      navigate: false,
+    };
+    this.handleUpdate = () => {    
+      axios
+        .put(`${process.env.REACT_APP_BACKEND_URL}users/${this.props.data._id}`, this.state)
+        .then((res) => {
+          if (res?.data?._id) {
+            this.setState({
+              error: ["success", "Updated Successfully"],
+            });
+          } else {
+            this.setState({
+              error: ["error", "Could not update details. Try Again Later"],
+            });
+          }
+        })
+        .catch((err) => console.log(err));
+    };
+
+    this.handleDelete = () => {
+      let url = window.location.href;
+      let str = url.split("/");
+      let par = str.splice(-1)[0];
+      axios
+        .delete(`${process.env.REACT_APP_BACKEND_URL}users/${par}`)
+        .then((res) => {
+          this.setState({ navigate: true });
+        })
+        .catch((err) => console.error(err));
+    };
+  }
+  render() {
+    return (
+      <div>
+        {this.state.navigate ? <Navigate to="/collection"></Navigate> : ""}
+        <Grid container size="small" fullWidth spacing={3}>
+
+          <Grid item xs={6}>
+            <Typography
+              style={{ paddingBottom: "1rem", fontWeight: "bold" }}
+              variant="h5"
             >
-            {props.edit ? "Update" :" "} Profile
-          </Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Button onClick={()=>{props.setEdit(true)}} style={{float:"right"}}>Edit</Button>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Role</InputLabel>
-            <Select 
-            disabled={!props.edit}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={props.data[0].role}
-              label={props.data[0].role ? "Role" : ""  }
-              onChange={(e) => props.setDetails([...props.data[0], { role : e.target.value}])}
-            >
-              <MenuItem value={10}>Not Selected </MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} md={6}>
-        <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Category</InputLabel>
-            <Select
-             disabled={!props.edit}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={props.data[0].category}
-              label="Category"
-             
-              onChange={(e) => props.setDetails([...props.data[0], { category : e.target.value}])}
-            >
-              <MenuItem value={10}>Medicine </MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        {/* NAme ROW */}
-        <Grid item xs={12} md={6}>
-          <TextField
-            fullWidth
-            label="First Name"
-            value={props.data[0].fname}
-            variant="outlined"
-            InputProps={{
-              readOnly: !props.edit,
-            }}
-            onChange={(e) => props.setDetails([...props.data[0], { fname : e.target.value}])}
-            id="outlined-start-adornment"
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            fullWidth
-            label="Last Name"
-            value={props.data[0].lname}
-            variant="outlined"
-            InputProps={{
-              readOnly: !props.edit,
-            }}
-            onChange={(e) => props.setDetails([...props.data[0], { lname: e.target.value}])}
-            id="outlined-start-adornment"
-          />
-        </Grid>
-
-        {/* NAme Row ends  */}
-        {/* Contact ROW */}
-        <Grid item xs={12} md={6}>
-          <TextField
-            fullWidth
-            label="Mobile Number"
-            value={props.data[0].mobile}
-            variant="outlined"
-            InputProps={{
-              readOnly: !props.edit,
-            }}
-            onChange={(e) => props.setDetails([...props.data[0], { mobile : e.target.value}])}
-            id="outlined-start-adornment"
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            fullWidth
-            label="Email Address"
-            value={props.data[0].email}
-            variant="outlined"
-            InputProps={{
-              readOnly: !props.edit,
-            }}
-            onChange={(e) => props.setDetails([...props.data[0], { email : e.target.value}])}
-            id="outlined-start-adornment"
-          />
-        </Grid>
-
-        {/* Contact Row ends  */}
-        {/* Address ROW */}
-        <Grid item xs={12} md={6}>
-          <TextField
-            fullWidth
-            multiline
-            label="Shop Name"
-            value={props.data[0].shopName}
-            variant="outlined"
-            InputProps={{
-              readOnly: !props.edit,
-            }}
-            onChange={(e) => props.setDetails([...props.data[0], { shopName: e.target.value}])}
-            id="outlined-start-adornment"
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-          
-            fullWidth
-            maxRows={5}
-            multiline
-            label="Address"
-            value={props.data[0].address}
-            InputProps={{
-              readOnly: !props.edit,
-            }}
-            onChange={(e) => props.setDetails([...props.data[0], { address : e.target.value}])}
-            variant="outlined"
-            id="outlined-start-adornment"
-          />
-        </Grid>
-
-        {/* Address Row ends  */}
-       
-        <Grid item xs={12} md={6}>
-          <ImagePreview label="Shop Image" />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <ImagePreview label="Shop Document" />
-        </Grid>
-        <Grid item xs={12}>
-        {props.edit ? (<Button
-            variant="contained"
-            size="small"
-            onClick={()=>props.setEdit(false)}
-            style={{
-              color: "white",
-              backgroundColor: "var(--main-color)",
-              borderRadius: "0.25rem",
-              paddingX: "1rem",
-              textTransform: "capitalize",
-            }}
-          >
-           Update
-          </Button>
-        ) : ("") }
+              Profile
+            </Typography>
           </Grid>
-      </Grid>
-    </div>
-  );
-};
+          <Grid item xs={6} textAlign={"right"}>
+          <Button onClick={()=>{this.setState({edit:!this.state.edit})}}>{!this.state.edit ? "Disable Edit"  : "Edit"}</Button>
+          </Grid>
+        
+          <Grid item xs={12} md={6}>
+            <FormControl size="small" fullWidth>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <Select
+                disabled={this.state.edit}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={this.state.category}
+                onChange={(e) => this.setState({ category: e.target.value })}
+              >
+                <MenuItem value={"Medicine"}>Medicine </MenuItem>
+                <MenuItem value={"Groceries"}>Groceries</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControl size="small" fullWidth>
+              <InputLabel id="demo-simple-select-label">
+                Sub Category
+              </InputLabel>
+              <Select
+                disabled={this.state.edit}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={this.state.subCategory}
+                onChange={(e) => this.setState({ subCategory: e.target.value })}
+              >
+                <MenuItem value={"Wholeseller"}>Wholeseller </MenuItem>
+                <MenuItem value={"Retailler"}>Retailler</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          {/* NAme ROW */}
+          <Grid item xs={12} md={6}>
+            <TextField
+              size="small"
+              fullWidth
+              label="Name"
+              value={this.state.name}
+              variant="outlined"
+              InputProps={{
+                readOnly: this.state.edit,
+              }}
+              id="outlined-start-adornment"
+              onChange={(e) => this.setState({ name: e.target.value })}
+            />
+          </Grid>
+
+          {/* NAme Row ends  */}
+          {/* Contact ROW */}
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              size="small"
+              label="Shop Name"
+              value={this.state.shopName}
+              variant="outlined"
+              InputProps={{
+                readOnly: this.state.edit,
+              }}
+              onChange={(e) => this.setState({ shopName: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              size="small"
+              label="Shop Number"
+              value={this.state.shopNumber}
+              variant="outlined"
+              InputProps={{
+                readOnly: this.state.edit,
+              }}
+              onChange={(e) => this.setState({ shopNumber: e.target.value })}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <TextField
+              size="small"
+              fullWidth
+              label="Mobile Number"
+              value={this.state.contact}
+              variant="outlined"
+              InputProps={{
+                readOnly: this.state.edit,
+              }}
+              style={{ marginBottom: "1.5rem" }}
+              id="outlined-start-adornment"
+              onChange={(e) => this.setState({ contact: e.target.value })}
+            />
+          </Grid>
+         
+
+          {/* Contact Row ends  */}
+          {/* Address ROW */}
+
+          <Grid item xs={12} md={6}>
+            <TextField
+              size="small"
+              fullWidth
+              label="Line 1 "
+              value={this.state.line1}
+              InputProps={{
+                readOnly: this.state.edit,
+              }}
+              onChange={(e) => this.setState({ line1: e.target.value })}
+              variant="outlined"
+              id="outlined-start-adornment"
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              size="small"
+              fullWidth
+              label="Line 2"
+              value={this.state.line2}
+              InputProps={{
+                readOnly: this.state.edit,
+              }}
+              onChange={(e) => this.setState({ line2: e.target.value })}
+              variant="outlined"
+              id="outlined-start-adornment"
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              size="small"
+              fullWidth
+              label="Maps Link "
+              value={this.state.mapsLink}
+              InputProps={{
+                readOnly: this.state.edit,
+              }}
+              onChange={(e) => this.setState({ mapsLink: e.target.value })}
+              variant="outlined"
+              id="outlined-start-adornment"
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              size="small"
+              fullWidth
+              maxRows={5}
+              multiline
+              label="City"
+              value={this.state.city}
+              InputProps={{
+                readOnly: this.state.edit,
+              }}
+              onChange={(e) => this.setState({ city: e.target.value })}
+              variant="outlined"
+              id="outlined-start-adornment"
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              size="small"
+              fullWidth
+              maxRows={5}
+              multiline
+              label="State"
+              value={this.state.state}
+              InputProps={{
+                readOnly: this.state.edit,
+              }}
+              onChange={(e) => this.setState({ state: e.target.value })}
+              variant="outlined"
+              id="outlined-start-adornment"
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              size="small"
+              fullWidth
+              maxRows={5}
+              multiline
+              label="PINCODE"
+              value={this.state.pin}
+              InputProps={{
+                readOnly: this.state.edit,
+              }}
+              onChange={(e) => this.setState({ pin: e.target.value })}
+              variant="outlined"
+              id="outlined-start-adornment"
+            />
+          </Grid>
+
+          {/* Address Row ends  */}
+
+          <Grid item xs={12}>
+            <ImagePreview label="Shop Image" name="shopImages" />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Link
+              to="/collection"
+              style={{ textDecoration: "none", borderRadius: "1rem" }}
+            >
+              <Button 
+               variant="outlined"
+               color="primary"
+               size="small"
+              >
+                Back To Dashboard
+              </Button>
+            </Link>
+          </Grid>
+          <Grid item xs={12} md={6} textAlign={"right"}>
+            <Button
+              onClick={this.handleUpdate}
+              variant="outlined"
+              size="small"
+              color="success"
+              disabled={this.state.edit}
+              
+            >
+              Save Details
+            </Button>
+          </Grid>
+          {this.state.error[1]  ?  (<>
+          <Grid item xs={12}>
+            <Alert severity={this.state.error[0]} onClose={() => {this.setState({error:["error",""]})}}>
+              {this.state.error[1]}
+            </Alert>
+          </Grid>
+          </>) : (<></>)} 
+        </Grid>
+      </div>
+    );
+  }
+}
 
 export default ProfileForm;

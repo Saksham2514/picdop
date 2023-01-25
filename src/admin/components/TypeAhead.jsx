@@ -8,7 +8,7 @@ export const TypeAhead = (props) => {
   const options = [];
   const [inputValue, setInputValue] = React.useState('');
   const [users, setUsers] = useState([]);
-  console.log(`${process.env.REACT_APP_BACKEND_URL}users`);
+  
   useEffect(() => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}users/search`,{
@@ -19,14 +19,10 @@ export const TypeAhead = (props) => {
   }, []);
 
   for (let x of users) {
-    // console.log(x.name);
+    
     options.push(`${x.contact} - ${x.name} from ${x.shopName}`);
   }
 
-  // for (let x of users) {
-  //   // console.log(x.name);
-  //   options.push(`${x._id} - ${x.name} from ${x.shopName}`);
-  // }
 
   return (
     <Autocomplete
@@ -66,8 +62,9 @@ export const TypeAhead = (props) => {
           )}
           onChange={(event, newValue) => {
             const s = newValue.split("-")[0];
-            console.log(users.filter((data)=> data.contact === s.trim())[0]._id);
+            // console.log(users.filter((data)=> data.contact === s.trim())[0].city);
               props.setFrom(users.filter((data)=> data.contact === s.trim())[0]._id)
+              props.setCity(users.filter((data)=> data.contact === s.trim())[0].city)
           }}
           inputValue={inputValue}
           onInputChange={(event, newInputValue) => {

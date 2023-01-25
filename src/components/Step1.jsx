@@ -90,8 +90,8 @@ const Form = ({ disabled, setStep1, details, setDetails }) => {
                         setDetails({ ...details, subCategory: e.target.value });
                       }}
                     >
-                      <MenuItem value={"Retailer"}>Retailer</MenuItem>
-                      <MenuItem value={"Whole Seller"}>Whole Seller</MenuItem>
+                      <MenuItem value={"Retailler"}>Retailer</MenuItem>
+                      <MenuItem value={"Wholeseller"}>Whole Seller</MenuItem>
                       
                     </Select>
                   </FormControl>

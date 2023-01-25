@@ -32,7 +32,8 @@ const Row = () => {
     }
   }
 
-  useEffect(() => {
+
+  function getData(){
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, filter)
       .then((res) => {
@@ -50,6 +51,10 @@ const Row = () => {
         setUsers(res.data);
       })
       .catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+    setTimeout(getData(),60000)
   }, [filter]);
 
   const columns = [

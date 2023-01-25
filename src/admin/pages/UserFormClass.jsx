@@ -1,4 +1,4 @@
-import { Grid, Button, TextField, Typography } from "@material-ui/core";
+import { Grid, Button, TextField, Typography } from "@mui/material/";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -8,11 +8,13 @@ import ImagePreview from "../../components/Fr";
 import NestedModal from "./Modal";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
+import { Alert } from "@mui/material";
 
 export class ProfileForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      error: ["error", ""],
       edit: false,
       role: this.props.data.role,
       category: this.props.data.category,
@@ -35,10 +37,18 @@ export class ProfileForm extends Component {
       let str = url.split("/");
       let par = str.splice(-1)[0];
       axios
-        .put(`${process.env.REACT_APP_BACKEND_URL}users/${par}`,this.state)
+        .put(`${process.env.REACT_APP_BACKEND_URL}users/${par}`, this.state)
         .then((res) => {
-// console.log(res.data);
-        }) 
+          if (res?.data?._id) {
+            this.setState({
+              error: ["success", "Updated Successfully"],
+            });
+          } else {
+            this.setState({
+              error: ["error", "Could not update details. Try Again Later"],
+            });
+          }
+        })
         .catch((err) => console.log(err));
     };
 
@@ -53,13 +63,13 @@ export class ProfileForm extends Component {
         })
         .catch((err) => console.error(err));
     };
-  
   }
   render() {
     return (
       <div>
         {this.state.navigate ? <Navigate to="/collection"></Navigate> : ""}
         <Grid container size="small" fullWidth spacing={3}>
+
           <Grid item xs={12}>
             <Typography
               style={{ paddingBottom: "1rem", fontWeight: "bold" }}
@@ -75,6 +85,7 @@ export class ProfileForm extends Component {
                 disabled={this.state.edit}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
+                size="small"
                 value={this.state.role}
                 onChange={(e) => this.setState({ role: e.target.value })}
               >
@@ -94,9 +105,8 @@ export class ProfileForm extends Component {
                 value={this.state.category}
                 onChange={(e) => this.setState({ category: e.target.value })}
               >
-                <MenuItem value={10}>Medicine </MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem value={"Medicine"}>Medicine </MenuItem>
+                <MenuItem value={"Groceries"}>Groceries</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -112,9 +122,8 @@ export class ProfileForm extends Component {
                 value={this.state.subCategory}
                 onChange={(e) => this.setState({ subCategory: e.target.value })}
               >
-                <MenuItem value={10}>Medicine </MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={50}>Thirty</MenuItem>
+                <MenuItem value={"Wholeseller"}>Wholeseller </MenuItem>
+                <MenuItem value={"Retailler"}>Retailler</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -123,7 +132,7 @@ export class ProfileForm extends Component {
             <TextField
               size="small"
               fullWidth
-              label=" Name"
+              label="Name"
               value={this.state.name}
               variant="outlined"
               InputProps={{
@@ -289,43 +298,46 @@ export class ProfileForm extends Component {
 
           {/* Address Row ends  */}
 
-          <Grid item xs={12} md={6}>
-            <ImagePreview label="Shop Image" />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <ImagePreview label="Shop Document" />
+          <Grid item xs={12}>
+            <ImagePreview label="Shop Image" name="shopImages" />
           </Grid>
 
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={4}>
             <Link
               to="/collection"
               style={{ textDecoration: "none", borderRadius: "1rem" }}
             >
-              <Button
-                style={{ backgroundColor: "var(--main-color)", color: "white" }}
+              <Button 
+               variant="outlined"
+               color="primary"
+               size="small"
               >
                 Back To Dashboard
               </Button>
             </Link>
+          </Grid>
+          <Grid item xs={12} md={4} textAlign={"center"}>
             <Button
               onClick={this.handleUpdate}
-              variant="contained"
+              variant="outlined"
               size="small"
-              style={{
-                borderRadius: "0.25rem",
-                color: "white",
-                backgroundColor: "var(--success-color)",
-                margin: "1rem 0.25rem",
-                paddingX: "1rem",
-                textTransform: "capitalize",
-              }}
+              color="success"
+              disabled={this.state.edit}
+              
             >
               Save Details
             </Button>
           </Grid>
-          <Grid xs={12} md={3} style={{ paddingTop: "0.5rem" }}>
-            <NestedModal label=" User" handleDelete={this.handleDelete} />
+          <Grid xs={12} md={4} textAlign="right" paddingTop="1.5rem" >
+            <NestedModal label="User" handleDelete={this.handleDelete} />
           </Grid>
+          {this.state.error[1]  ?  (<>
+          <Grid item xs={12}>
+            <Alert severity={this.state.error[0]} onClose={() => {this.setState({error:["error",""]})}}>
+              {this.state.error[1]}
+            </Alert>
+          </Grid>
+          </>) : (<></>)}
         </Grid>
       </div>
     );
