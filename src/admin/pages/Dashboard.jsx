@@ -34,7 +34,7 @@ export default function Dashboard() {
   const [dailyOrders, setDailyOrders] = useState([]);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
-  const id = useSelector((state) => state.id);
+  const uid = useSelector((state) => state.id);
   const role = useSelector((state) => state.role);
   
   const yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
@@ -57,7 +57,7 @@ export default function Dashboard() {
       })
       .catch((err) => console.log(err));
     axios
-      .post(id)
+      .post(id,{ $or: [{ from: uid }, { to: uid }, { createdBy: uid }] })
       .then((res) => {
         // console.log(res.data);
         setOrders(res.data);

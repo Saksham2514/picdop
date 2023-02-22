@@ -182,7 +182,7 @@ const ParcelForm = ({ id }) => {
                 {data?.parcelImages.map((url) => (
                   <>
                     <img
-                      src={process.env.REACT_APP_BACKEND_URL+url}
+                      src={url}
                       alt="..."
                       height={100}
                       width={100}
@@ -205,7 +205,7 @@ const ParcelForm = ({ id }) => {
                 {data?.billImages.map((url) => (
                   <>
                     <img
-                      src={process.env.REACT_APP_BACKEND_URL+url}
+                      src={url}
                       alt="..."
                       height={100}
                       width={100}

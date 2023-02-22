@@ -135,6 +135,7 @@ export default function Dashboard() {
       wrap: true,
     },
   ];
+  
   function search(nameKey, myArray) {
     for (let i = 0; i < myArray.length; i++) {
       if (myArray[i]["_id"] === nameKey) {

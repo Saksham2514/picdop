@@ -13,13 +13,45 @@ import React, { useState } from "react";
 import ImagePreview from "../../components/FrOriginal";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { Alert } from "@mui/material";
+import { Alert, Input } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+const ImgDisplay = ({ billImage, setLoading }) => (
+  <Grid item xs={12} md={6} key={Math.random()}>
+    <Button
+      key={Math.random()}
+      variant="contained"
+      color="primary"
+      onClick={() => {
+        setLoading(false);
+      }}
+    >
+      Select different files
+    </Button>
+
+    <div
+      key={Math.random()}
+      style={{
+        marginTop: "1rem",
+        display: "flex",
+        gap: 10,
+        overflowX: "auto",
+      }}
+    >
+      {billImage.map((e, i) => (
+        <>
+          <img src={e} height={150} alt="Images" key={i} />
+        </>
+      ))}
+    </div>
+  </Grid>
+);
 const ParcelForm = ({ details, setDetails }) => {
   const { id } = useSelector((state) => state);
   const [error, setError] = useState();
   const navigate = useNavigate();
+  const [loading, setloading] = useState(false);
+  const [loadingP, setloadingP] = useState(false);
   const [parcelImage, setParcelImage] = useState([]);
   const [billImage, setBillImage] = useState([]);
   const requiredFields = [
@@ -33,75 +65,118 @@ const ParcelForm = ({ details, setDetails }) => {
     "parcelWidth",
     "paymentMode",
     "parcelPaymentCollection",
+    "parcelImages",
+    "billImages",
   ];
 
+  const handleBillImage = async (e) => {
+    const urls = [];
 
-const getPrice = () => {
+    for (let i = 0; i < e.target.files.length; i++) {
+      let img = await fileToDataUri(e.target.files[i]);
+      urls.push(img.base64);
+    }
+    await setBillImage(urls);
+    await setDetails({ ...details, billImages: urls });
+    setloading(true);
+    console.log(urls);
+  };
 
+  const handleParcelImage = async (e) => {
+    const urls = [];
+
+    for (let i = 0; i < e.target.files.length; i++) {
+      let img = await fileToDataUri(e.target.files[i]);
+      urls.push(await img.base64);
+    }
+    
+      setParcelImage(urls);
+      await setDetails({ ...details, parcelImages: urls });
+      setloadingP(true);
+    
+  };
+
+  const fileToDataUri = (image) => {
+    return new Promise((res) => {
+      const reader = new FileReader();
+      const { type, name, size } = image;
+      reader.addEventListener("load", () => {
+        res({
+          base64: reader.result,
+          name: name,
+          type,
+          size: size,
+        });
+      });
+      reader.readAsDataURL(image);
+    });
+  };
+
+  const getPrice = () => {
     const weightFilter =
       details.parcelWeight < 1
-        ? {name:"Weight", $and: [{ lowerLimit: 0 }, { upperLimit: 1 }] }
+        ? { name: "Weight", $and: [{ lowerLimit: 0 }, { upperLimit: 1 }] }
         : details.parcelWeight >= 1 && details.parcelWeight < 5
-        ? {name:"Weight", $and: [{ lowerLimit: 1 }, { upperLimit: 5 }] }
+        ? { name: "Weight", $and: [{ lowerLimit: 1 }, { upperLimit: 5 }] }
         : details.parcelWeight >= 5 && details.parcelWeight < 10
-        ? {name:"Weight", $and: [{ lowerLimit: 5 }, { upperLimit: 10 }] }
+        ? { name: "Weight", $and: [{ lowerLimit: 5 }, { upperLimit: 10 }] }
         : details.parcelWeight >= 10 && details.parcelWeight < 30
-        ? {name:"Weight", $and: [{ lowerLimit: 10 }, { upperLimit: 30 }] }
+        ? { name: "Weight", $and: [{ lowerLimit: 10 }, { upperLimit: 30 }] }
         : { lowerLimit: 30 };
 
     const heightFilter =
       details.parcelHeight < 1
-        ? {name:"Height", $and: [{ lowerLimit: 0 }, { upperLimit: 1 }] }
+        ? { name: "Height", $and: [{ lowerLimit: 0 }, { upperLimit: 1 }] }
         : details.parcelHeight >= 1 && details.parcelHeight < 3
-        ? {name:"Height", $and: [{ lowerLimit: 1 }, { upperLimit: 3 }] }
+        ? { name: "Height", $and: [{ lowerLimit: 1 }, { upperLimit: 3 }] }
         : details.parcelHeight >= 3 && details.parcelHeight < 5
-        ? {name:"Height", $and: [{ lowerLimit: 3 }, { upperLimit: 5 }] }
+        ? { name: "Height", $and: [{ lowerLimit: 3 }, { upperLimit: 5 }] }
         : details.parcelHeight >= 5 && details.parcelHeight < 8
-        ? {name:"Height", $and: [{ lowerLimit: 5 }, { upperLimit: 8 }] }
-        : {name:"Height", $and: [{ lowerLimit: 8 }] };
-  // console.log(weightFilter); 
-  // console.log(heightFilter); 
+        ? { name: "Height", $and: [{ lowerLimit: 5 }, { upperLimit: 8 }] }
+        : { name: "Height", $and: [{ lowerLimit: 8 }] };
+    // console.log(weightFilter);
+    // console.log(heightFilter);
 
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}prices/search`, {
-        filters : {
-          $or:[
-          weightFilter,
-          heightFilter
-        ]
-      },
-      select: details.sameCity ? "localPrice -_id " : "outCityPrice -_id "
+        filters: {
+          $or: [weightFilter, heightFilter],
+        },
+        select: details.sameCity ? "localPrice -_id " : "outCityPrice -_id ",
       })
       .then((res) => {
-        const data = res.data
-        const price = data[0].localPrice ? Math.max(data[0].localPrice, data[1].localPrice) :  Math.max(data[0].outCityPrice, data[1].outCityPrice);
-        setDetails({...details,parcelPaymentCollection : price})
-        
+        const data = res.data;
+        const price = data[0].localPrice
+          ? Math.max(data[0].localPrice, data[1].localPrice)
+          : Math.max(data[0].outCityPrice, data[1].outCityPrice);
+        setDetails({ ...details, parcelPaymentCollection: price });
+
         // console.log(Math.max(Object.values(res.data)))
       })
       .catch((err) => console.log(err));
-      
   };
 
   const handleSubmit = () => {
-    // console.log(parcelImage);
-    // console.log(billImage);
-    // setDetails({ ...details, parcelImage: parcelImage });
+  
 
-    // setDetails({ ...details, "billImage": billImage });
-    // setDetails({...details,"parcelImage":parcelImage,"billImage":billImage})
-    const validate = Object.keys(details).map((data) =>
-      requiredFields.includes(data) && data.length > 3 
+    const validate = Object.keys(details).map(
+      (data) => requiredFields.includes(data) && data.length > 3
     );
-    // console.log(requiredFields.includes(Object.keys(details)));
-    // console.log(validate);
-    // console.log(details);
 
     if (validate.includes("false") || validate.length < 11) {
       setError("Please fill all the fields ");
     } else {
+      const data =
+        billImage.length > 0 && parcelImage.length > 0
+          ? { details, billImages: billImage, parcelImages: parcelImage }
+          : billImage.length > 0 && parcelImage.length === 0
+          ? { details, billImages: billImage, parcelImages: parcelImage }
+          : billImage.length === 0 && parcelImage.length > 0
+          ? { details, billImages: billImage, parcelImages: parcelImage }
+          : details;
+
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}orders`, details)
+        .post(`${process.env.REACT_APP_BACKEND_URL}orders`, data)
         .then((res) => {
           if (res?.data?._message) {
             setError(res.data._message);
@@ -172,7 +247,8 @@ const getPrice = () => {
             onChange={(e) => {
               setDetails({
                 ...details,
-                parcelWeight: parseFloat(e.target.value) > 0 ?  e.target.value.trim() : 1,
+                parcelWeight:
+                  parseFloat(e.target.value) > 0 ? e.target.value.trim() : 1,
                 createdBy: id,
               });
             }}
@@ -222,7 +298,6 @@ const getPrice = () => {
             fullWidth
             label="Parcel Width"
             variant="outlined"
-            
             onChange={(e) => {
               setDetails({ ...details, parcelWidth: e.target.value.trim() });
             }}
@@ -259,8 +334,7 @@ const getPrice = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Payment Mode"
-              value={details.paymentMode || "" }
-              
+              value={details.paymentMode || ""}
               onChange={(e) => {
                 setDetails({ ...details, paymentMode: e.target.value.trim() });
               }}
@@ -275,7 +349,9 @@ const getPrice = () => {
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label={details.parcelPaymentCollection ? "" : "Amount to be collected "}
+            label={
+              details.parcelPaymentCollection ? "" : "Amount to be collected "
+            }
             variant="outlined"
             InputProps={{
               readOnly: true,
@@ -284,39 +360,72 @@ const getPrice = () => {
             id="outlined-start-adornment"
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <ImagePreview
             label="Bill Image"
             name="billImages"
             setDetails={setBillImage}
           />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </Grid> */}
+
+        {loading ? (
+          <ImgDisplay billImage={billImage} setLoading={setloading} />
+        ) : (
+          <Grid item xs={12} md={6}>
+            <Typography variant="subtitle2">Bill Image</Typography>
+            <input
+              type="file"
+              title="This is title"
+              multiple
+              onChange={handleBillImage}
+            />
+          </Grid>
+        )}
+
+        {/* <Grid item xs={12} md={6}>
           <ImagePreview
             label="Parcel Document"
             name="parcelImages"
             setDetails={setParcelImage}
           />
-        </Grid>
+        </Grid> */}
+        {loadingP ? (
+          <ImgDisplay billImage={parcelImage} setLoading={setloadingP} />
+        ) : (
+          <Grid item xs={12} md={6}>
+            <Typography variant="subtitle2">Parcel Images</Typography>
+
+            <input type="file" multiple onChange={handleParcelImage} />
+          </Grid>
+        )}
+
         <Grid item xs={12}>
           <Button
             variant="contained"
             size="small"
-           color="primary"
-            disabled={details.parcelWeight && details.parcelHeight ? getPrice() : true  }
-            onClick={ async() => {
-              await setDetails({
-                ...details,
-                parcelImages: parcelImage,
-                billImages: billImage,
-              });
-              handleSubmit() ;
-              
+            color="primary"
+            disabled={
+              details.parcelWeight?.length > 0 &&
+              details.parcelHeight?.length > 0
+                ? getPrice()
+                : true
+            }
+            onClick={() => {
+              if (billImage && details.billImages) {
+                if (parcelImage && details.parcelImages) {
+                  handleSubmit();
+                } else {
+                  setDetails({ ...details, parcelImages: parcelImage });
+                  handleSubmit();
+                }
+              } else {
+                setDetails({ ...details, billImages: billImage });
+                handleSubmit();
+              }
             }}
           >
             Book Delivery
           </Button>
-          {/* <Button onClick={()=>{getPrice()}}>Get Price</Button> */}
         </Grid>
       </Grid>
     </div>

@@ -9,6 +9,24 @@ class FileUploader extends React.Component {
       responseArray: [],
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.fileToDataUri = this.fileToDataUri.bind(this);
+  }
+
+ 
+   fileToDataUri  (image)  {
+    return new Promise((res) => {
+      const reader = new FileReader();
+      const {type, name, size} = image;
+      reader.addEventListener('load', () => {
+          res({
+              base64: reader.result,
+              name: name,
+              type,
+              size: size,
+          })
+      });
+      reader.readAsDataURL(image);
+    })
   }
 
   handleInputChange(event) {
@@ -18,14 +36,25 @@ class FileUploader extends React.Component {
     });
   }
 
-  onSubmit(e) {
+  async onSubmit(e) {
     if (!this.state.selectedFile) {
       alert("Please select a file!");
       return false;
     }
-    const data = new FormData();
-
+    const data = [];
+    console.log(this.state.selectedFile);
+    
+    const newImagesPromises = []
     for (let i = 0; i < this.state.selectedFile.length; i++) {
+    newImagesPromises.push(this.fileToDataUri(this.state.selectedFile[i]))
+    }
+    const newImages = await Promise.all(newImagesPromises)
+    newImages.map((d)=>data.push(d.base64));
+    console.log(data);
+    
+/*
+    for (let i = 0; i < this.state.selectedFile.length; i++) {
+      //  console.log(fileToDataUri(this.state.selectedFile[i]));
       data.append(this.props.name, this.state.selectedFile[i]);
     }
 
@@ -43,7 +72,7 @@ class FileUploader extends React.Component {
       (error) => {
         alert(error);
       }
-    );
+    );*/
   }
 
   resetFile() {

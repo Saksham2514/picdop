@@ -71,7 +71,7 @@ export default function Dashboard() {
           <Grid item xs={12}>
             {error ? <Alert severity={errType} onClose={() => {setError()}}>{error}</Alert>: ""}
           </Grid>
-          <Grid item xs={12} md={2}>
+          {/* <Grid item xs={12} md={2}>
             <TextField
               fullWidth
 
@@ -138,7 +138,7 @@ export default function Dashboard() {
             <Button variant="outlined" size="small" fullWidth onClick={handleSubmit}>
               Add Price Category
             </Button>
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid container alignContent="center">
           <Grid item xs={12}>
