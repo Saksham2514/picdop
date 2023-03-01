@@ -37,8 +37,7 @@ const ParcelForm = ({ id }) => {
         .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, { _id: id })
         .then((res) => {
           setAgentData(res.data[0]);
-        })
-        .catch((err) => console.log(err));
+        }).then(setLoading(false)).catch((err) => console.log(err));
     } catch (err) {
       alert("error");
       console.log(err);

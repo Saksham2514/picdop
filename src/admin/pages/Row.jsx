@@ -12,7 +12,7 @@ import { useEffect } from "react";
 
 const Row = () => {
   const [data, setData] = useState([]);
-
+const [loading, setloading] = useState(true)
   const [users, setUsers] = useState([]);
   const { role, id } = useSelector((state) => state);
   const [choice, setChoice] = useState(true);
@@ -34,11 +34,12 @@ const Row = () => {
 
 
   function getData(){
+    setloading(true)
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, filter)
       .then((res) => {
         setData(res.data);
-      })
+      }).then(setloading(false))
       .catch((err) => console.log(err));
 
     axios
@@ -49,7 +50,7 @@ const Row = () => {
       .then((res) => {
         // console.log(res.data);
         setUsers(res.data);
-      })
+      }).then(setloading(false))
       .catch((err) => console.log(err));
   }
 
@@ -276,6 +277,7 @@ const Row = () => {
 
   return (
     <div>
+      
       <Grid container spacing={3}>
         <Grid item xs={12} md={3}>
           <Typography
@@ -364,6 +366,11 @@ const Row = () => {
             Clear Filter
           </Button>
         </Grid>
+        {loading ? (
+        <Grid item xs={12}>
+          Loading
+        </Grid>
+        ) : (
         <Grid item xs={12}>
           <Table
             expand={true}
@@ -371,6 +378,7 @@ const Row = () => {
             columns={choice ? columns : userColumns}
           />
         </Grid>
+        )}
       </Grid>
     </div>
   );

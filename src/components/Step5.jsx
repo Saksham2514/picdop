@@ -31,7 +31,8 @@ const Form = ({ disabled, details, setDetails }) => {
       if (details.cardCVV.length > 3) {
         alert("Enter correct card details");
       } else {
-        console.log(process.env.REACT_APP_BACKEND_URL);
+        
+        
         axios
           .post(`${process.env.REACT_APP_BACKEND_URL}users`, details)
           .then((res) => {
@@ -42,14 +43,13 @@ const Form = ({ disabled, details, setDetails }) => {
               navigate("/admin");
             } else {
               alert("User Already exists");
-            //   alert(resp.upsertedCount);
             }
           })
           .catch((err) => console.log(err));
-        
+       
       }
     } else {
-      alert("Fill all Fields ");
+      alert("Please fill all fields ");
       console.log(details);
     }
   };

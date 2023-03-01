@@ -16,7 +16,7 @@ import axios from "axios";
 import { Alert, Input } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const ImgDisplay = ({ billImage, setLoading }) => (
+const ImgDisplay = ({ billImage, setLoading }) => {return(
   <Grid item xs={12} md={6} key={Math.random()}>
     <Button
       key={Math.random()}
@@ -38,14 +38,14 @@ const ImgDisplay = ({ billImage, setLoading }) => (
         overflowX: "auto",
       }}
     >
-      {billImage.map((e, i) => (
+      {billImage?.map((e, i) => (
         <>
           <img src={e} height={150} alt="Images" key={i} />
         </>
       ))}
     </div>
   </Grid>
-);
+);}
 const ParcelForm = ({ details, setDetails }) => {
   const { id } = useSelector((state) => state);
   const [error, setError] = useState();
@@ -69,7 +69,7 @@ const ParcelForm = ({ details, setDetails }) => {
     "billImages",
   ];
 
-  const handleBillImage = async (e) => {
+  const handleBillImages = async (e) => {
     const urls = [];
 
     for (let i = 0; i < e.target.files.length; i++) {
@@ -82,19 +82,26 @@ const ParcelForm = ({ details, setDetails }) => {
     console.log(urls);
   };
 
-  const handleParcelImage = async (e) => {
+  const handleParcelImage = async (e) =>{
     const urls = [];
 
     for (let i = 0; i < e.target.files.length; i++) {
-      let img = await fileToDataUri(e.target.files[i]);
-      urls.push(await img.base64);
+      await fileToDataUri(e.target.files[i]).then(res=>{
+        urls.push(res.base64);
+        setParcelImage(prevState =>({...prevState,urls}));        
+      }).then(setDetails(prevState => ({ ...prevState, parcelImages: urls }))).then(setloadingP(true));
     }
-    
-      setParcelImage(urls);
-      await setDetails({ ...details, parcelImages: urls });
-      setloadingP(true);
-    
-  };
+  }
+  const handleBillImage = async (e) =>{
+    const urls = [];
+
+    for (let i = 0; i < e.target.files.length; i++) {
+      await fileToDataUri(e.target.files[i]).then(res=>{
+        urls.push(res.base64);
+        setBillImage(prevState =>({...prevState,urls}));        
+      }).then(setDetails(prevState => ({ ...prevState, billImages: urls }))).then(setloading(true));
+    }
+  }
 
   const fileToDataUri = (image) => {
     return new Promise((res) => {
@@ -334,7 +341,7 @@ const ParcelForm = ({ details, setDetails }) => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Payment Mode"
-              value={details.paymentMode || ""}
+              value={details.paymentMode ?  "" : details.paymentMode }
               onChange={(e) => {
                 setDetails({ ...details, paymentMode: e.target.value.trim() });
               }}
@@ -369,7 +376,7 @@ const ParcelForm = ({ details, setDetails }) => {
         </Grid> */}
 
         {loading ? (
-          <ImgDisplay billImage={billImage} setLoading={setloading} />
+          <ImgDisplay billImage={details.billImages} setLoading={setloading} />
         ) : (
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle2">Bill Image</Typography>
@@ -390,7 +397,7 @@ const ParcelForm = ({ details, setDetails }) => {
           />
         </Grid> */}
         {loadingP ? (
-          <ImgDisplay billImage={parcelImage} setLoading={setloadingP} />
+          <ImgDisplay billImage={details.parcelImages} setLoading={setloadingP} />
         ) : (
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle2">Parcel Images</Typography>
@@ -411,17 +418,10 @@ const ParcelForm = ({ details, setDetails }) => {
                 : true
             }
             onClick={() => {
-              if (billImage && details.billImages) {
-                if (parcelImage && details.parcelImages) {
+             
                   handleSubmit();
-                } else {
-                  setDetails({ ...details, parcelImages: parcelImage });
-                  handleSubmit();
-                }
-              } else {
-                setDetails({ ...details, billImages: billImage });
-                handleSubmit();
-              }
+             
+              
             }}
           >
             Book Delivery

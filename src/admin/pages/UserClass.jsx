@@ -28,7 +28,6 @@ export class UserClass extends Component {
     }
   };
   componentDidMount() {
-    console.log(this.state.details);
     if (this.state.details !== undefined) {
       alert(this.state.details[0].name);
     } else {

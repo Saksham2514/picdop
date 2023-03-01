@@ -87,8 +87,8 @@ const SignUp = () => {
             textDecoration: "none",
           }}
         >
-          {" "}
-          Login instead ?{" "}
+          
+          Login instead ?
         </Link>
       </Layout>
     </div>

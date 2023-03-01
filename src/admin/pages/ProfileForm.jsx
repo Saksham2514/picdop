@@ -15,12 +15,14 @@ export class ProfileForm extends Component {
     this.state = {
       error: ["error", ""],
       edit: false,
+      loading: true,
       role: this.props.data.role,
       category: this.props.data.category,
       subCategory: this.props.data.subCategory,
       name: this.props.data.name,
       shopName: this.props.data.shopName,
       shopNumber: this.props.data.shopNumber,
+      shopImages: this.props.data.shopImages,
       contact: this.props.data.contact,
       email: this.props.data.email,
       line1: this.props.data.line1,
@@ -31,6 +33,42 @@ export class ProfileForm extends Component {
       pin: this.props.data.pin,
       navigate: false,
     };
+    this.handleLoad = (val) => {
+      this.setState({ loading: val });
+    };
+
+    this.handleBillImage = async (e) => {
+      const urls = [];
+
+      for (let i = 0; i < e.target.files.length; i++) {
+        await this.fileToDataUri(e.target.files[i])
+          .then((res) => {
+            urls.push(res.base64);
+            this.setState({shopImages: urls });
+          })
+          .then(
+            this.setState({shopImages: urls })
+          )
+          .then(this.handleLoad(true));
+      }
+    };
+
+    this.fileToDataUri = (image) => {
+      return new Promise((res) => {
+        const reader = new FileReader();
+        const { type, name, size } = image;
+        reader.addEventListener("load", () => {
+          res({
+            base64: reader.result,
+            name: name,
+            type,
+            size: size,
+          });
+        });
+        reader.readAsDataURL(image);
+      });
+    };
+
     this.handleUpdate = () => {    
       axios
         .put(`${process.env.REACT_APP_BACKEND_URL}users/${this.props.data._id}`, this.state)
@@ -88,7 +126,7 @@ export class ProfileForm extends Component {
                 value={this.state.category}
                 onChange={(e) => this.setState({ category: e.target.value })}
               >
-                <MenuItem value={"Medicine"}>Medicine </MenuItem>
+                <MenuItem value={"Medical"}>Medical </MenuItem>
                 <MenuItem value={"Groceries"}>Groceries</MenuItem>
               </Select>
             </FormControl>
@@ -267,10 +305,22 @@ export class ProfileForm extends Component {
           </Grid>
 
           {/* Address Row ends  */}
-
-          <Grid item xs={12}>
-            <ImagePreview label="Shop Image" name="shopImages" />
-          </Grid>
+          {this.state.loading ? (
+            <ImgDisplay
+              billImage={this.state.shopImages}
+              setLoading={this.handleLoad}
+            />
+          ) : (
+            <Grid item xs={12} >
+              <Typography variant="subtitle2">Shop Images</Typography>
+              <input
+                type="file"
+                title="This is title"
+                multiple
+                onChange={this.handleBillImage}
+              />
+            </Grid>
+          )}
 
           <Grid item xs={12} md={6}>
             <Link
@@ -312,3 +362,43 @@ export class ProfileForm extends Component {
 }
 
 export default ProfileForm;
+
+
+const ImgDisplay = ({ billImage, setLoading }) => {
+  return (
+    <Grid item xs={12} key={Math.random()}>
+      <Button
+        key={Math.random()}
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          setLoading(false);
+        }}
+      >
+        Select different files
+      </Button>
+
+      <div
+        key={Math.random()}
+        style={{
+          marginTop: "1rem",
+          display: "flex",
+          gap: 10,
+          overflowX: "auto",
+        }}
+      >
+        {!billImage ? (
+          <>
+            <p>No Images Uploaded</p>
+          </>
+        ) : (
+          billImage?.map((e, i) => (
+            <>
+              <img src={e} height={150} alt="Images" key={i} />
+            </>
+          ))
+        )}
+      </div>
+    </Grid>
+  );
+};
