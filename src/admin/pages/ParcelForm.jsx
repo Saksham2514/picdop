@@ -65,8 +65,7 @@ const ParcelForm = ({ details, setDetails }) => {
     "parcelWidth",
     "paymentMode",
     "parcelPaymentCollection",
-    "parcelImages",
-    "billImages",
+    
   ];
 
   const handleBillImages = async (e) => {
@@ -167,7 +166,7 @@ const ParcelForm = ({ details, setDetails }) => {
   
 
     const validate = Object.keys(details).map(
-      (data) => requiredFields.includes(data) && data.length > 3
+      (data) => requiredFields.includes(data)
     );
 
     if (validate.includes("false") || validate.length < 11) {
