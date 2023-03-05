@@ -4,7 +4,7 @@ import { Typography, Chip, Grid, Button } from "@mui/material";
 import DatePicker from "react-datepicker";
 import Table from "../pages/Table";
 import "react-datepicker/dist/react-datepicker.css";
-// import classes from "../../assets/css/App.module.css";
+import classes from "../../assets/css/Root.module.css";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -36,12 +36,13 @@ const [loading, setloading] = useState(true)
   function getData(){
     setloading(true)
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, filter)
-      .then((res) => {
-        setData(res.data);
-      }).then(setloading(false))
-      .catch((err) => console.log(err));
-
+    .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, filter)
+    .then((res) => {
+      setData(res.data);
+    }).then(setloading(false))
+    .catch((err) => console.log(err));
+    
+    setloading(true)
     axios
       .post(
         `${process.env.REACT_APP_BACKEND_URL}users/search`,
@@ -82,11 +83,11 @@ const [loading, setloading] = useState(true)
         <div
           className={
             row.status === "Pending"
-              ? "chip pending"
+              ? `${classes.chip} ${classes.pending}`
               : row.status === "Completed"
-              ? "chip success"
+              ? `${classes.chip} ${classes.success}`
               : row.status === "Accepted"
-              ? "chip info"
+              ? `${classes.chip} ${classes.info}`
               : "error"
           }
           key={ind}
@@ -235,12 +236,12 @@ const [loading, setloading] = useState(true)
         <span
           className={
             row.role === "admin"
-              ? "chip pending"
+              ? `${classes.chip} ${classes.pending}`
               : row.role === "agent"
-              ? "chip info"
+              ? `${classes.chip} ${classes.info}`
               : row.role === "user"
-              ? "chip success"
-              : "chip error"
+              ? `${classes.chip} ${classes.success}`
+              : `${classes.chip} ${classes.error}`
           }
           key={ind}
           variant="outlined"
@@ -297,13 +298,13 @@ const [loading, setloading] = useState(true)
               <Chip
                 label="Users"
                 variant="outlined"
-                id={choice ? "bgN" : "bg"}
+                id={choice ? classes.bgN : classes.bg}
                 onClick={handleClick}
               />
 
               <Chip
                 label="Orders"
-                id={choice ? "bg" : "bgN"}
+                id={choice ? classes.bg : classes.bgN}
                 variant="outlined"
                 onClick={handleClick}
               />
