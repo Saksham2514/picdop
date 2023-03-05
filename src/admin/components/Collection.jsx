@@ -1,9 +1,8 @@
 import React from "react";
-import "../../App.css";
-
+import "../../assets/css/App.module.css";
+import classes from  "../../assets/css/components.module.css";
 import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
-import classes from  "./components.module.css";
 import Row from "../pages/Row";
 
 export default function Dashboard() {

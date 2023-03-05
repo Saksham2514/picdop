@@ -1,4 +1,4 @@
-@import url('./Root.css');
+@import url('./Root.module.css');
 body {
     font-family: Arial, Helvetica, sans-serif;
     counter-reset: section;

@@ -4,7 +4,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import React, { Component } from "react";
-import ImagePreview from "../../components/Fr";
 import NestedModal from "./Modal";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";

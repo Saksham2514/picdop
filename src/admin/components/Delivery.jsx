@@ -1,6 +1,6 @@
 import React from "react";
-import "../../App.css";
-import "./components.css";
+import "../../assets/css/App.module.css";
+import "../../assets/css/components.module.css";
 import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
 import SVG from "../../assets/admin/dashboard.png";
@@ -13,7 +13,6 @@ import { TypeAhead } from "./TypeAhead";
 import { useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 
 

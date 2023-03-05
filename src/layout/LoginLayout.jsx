@@ -4,7 +4,7 @@ import { Grid } from "@mui/material/";
 
 import s from "../login.png";
 import logo from "../logo.png";
-import "../App.css";
+import "../assets/css/App.module.css";
 const Layout = (props) => {
   return (
     <div className="App">

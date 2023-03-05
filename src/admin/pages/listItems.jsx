@@ -2,7 +2,7 @@ import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import "../../App.css";
+import "../../assets/css/App.module.css";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";

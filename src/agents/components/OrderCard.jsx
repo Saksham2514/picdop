@@ -1,14 +1,8 @@
 import * as React from "react";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
+
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { Alert, Button, CardActions, Grid, TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
@@ -16,7 +10,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function MediaControlCard({ data, getData }) {
-  const theme = useTheme();
+  
   const [otp, setOtp] = useState(0);
   const [from, setFrom] = useState([]);
   const [error, setError] = useState(false);

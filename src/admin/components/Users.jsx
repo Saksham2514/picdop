@@ -1,5 +1,5 @@
 import React from "react";
-import "../../App.css";
+import "../../assets/css/App.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 // import DashboardLayout from "./DashboardLayout";
 import DashboardLayout from "../pages/DashboardLayout";

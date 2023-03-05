@@ -10,10 +10,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import React, { useState } from "react";
-import ImagePreview from "../../components/FrOriginal";
+// import ImagePreview from "../../components/FrOriginal";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { Alert, Input } from "@mui/material";
+import { Alert} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const ImgDisplay = ({ billImage, setLoading }) => {return(
@@ -68,18 +68,18 @@ const ParcelForm = ({ details, setDetails }) => {
     
   ];
 
-  const handleBillImages = async (e) => {
-    const urls = [];
+  // const handleBillImages = async (e) => {
+  //   const urls = [];
 
-    for (let i = 0; i < e.target.files.length; i++) {
-      let img = await fileToDataUri(e.target.files[i]);
-      urls.push(img.base64);
-    }
-    await setBillImage(urls);
-    await setDetails({ ...details, billImages: urls });
-    setloading(true);
-    console.log(urls);
-  };
+  //   for (let i = 0; i < e.target.files.length; i++) {
+  //     let img = await fileToDataUri(e.target.files[i]);
+  //     urls.push(img.base64);
+  //   }
+  //   await setBillImage(urls);
+  //   await setDetails({ ...details, billImages: urls });
+  //   setloading(true);
+  //   console.log(urls);
+  // };
 
   const handleParcelImage = async (e) =>{
     const urls = [];

@@ -1,4 +1,4 @@
-import "./Bidy.css";
+import "./assets/css/Bidy.module.css";
 import React from "react";
 import Login from "./pages/Login";
 

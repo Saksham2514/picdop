@@ -36,7 +36,7 @@ class FileUploader extends React.Component {
         // then print response status
         if(res?.data?.stat === "success"){
           this.setState({ responseArray: res.data.message });
-          const {details,name }= {...this.props};
+          const {details }= {...this.props};
           this.props.setDetails({...details, name : res.data.message })
           this.resetFile();
         }

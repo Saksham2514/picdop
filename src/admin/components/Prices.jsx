@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import "../../App.css";
+import "../../assets/css/App.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import DashboardLayout from "../pages/DashboardLayout";
 import List from "../pages/List";
-import { Container, Grid, TextField, Typography } from "@material-ui/core";
-import { Alert, Button } from "@mui/material";
+import { Container, Grid, Typography } from "@material-ui/core";
+import { Alert } from "@mui/material";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -27,29 +27,29 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const [category, setCategory] = useState({});
+  // const [category, setCategory] = useState({});
   const [error, setError] = useState();
   const [errType, setErrType] = useState("error");
   const [data, setData] = useState([]);
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
     
-    if (Object.keys(category).length === 5) {
-      axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}prices`, category)
-        .then((res) => {
+  //   if (Object.keys(category).length === 5) {
+  //     axios
+  //       .post(`${process.env.REACT_APP_BACKEND_URL}prices`, category)
+  //       .then((res) => {
           
-          if (res?.data?.upsertedId) {
-            getData();
-          } else {
-            setError("Couldn't create Price Category");
-          }
-        })
-        .catch((err) => console.log(err));
-    }else{
-      setError("Please Fill All the fields ");
-    }
-  };
+  //         if (res?.data?.upsertedId) {
+  //           getData();
+  //         } else {
+  //           setError("Couldn't create Price Category");
+  //         }
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }else{
+  //     setError("Please Fill All the fields ");
+  //   }
+  // };
 
   const getData = () => {
     axios

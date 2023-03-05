@@ -1,28 +1,21 @@
 import * as React from "react";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { Alert, Button, CardActions, Chip, Grid, TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+
 
 export default function MediaControlCard({ data, key, getData }) {
-  const theme = useTheme();
+  
   const [from, setFrom] = useState([]);
   const [to, setTo] = useState([]);
   const [otp, setOtp] = useState("");
   const [error, setError] = useState(false);
   const date = new Date(data.createdAt.toString());
-  const { id, name } = useSelector((state) => state);
+  
  
   const handleAccept = () => {
     if (otp.trim() === data.otp.toString()) {
