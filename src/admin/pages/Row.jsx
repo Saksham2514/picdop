@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Stack, Typography, Chip, Grid, Button } from "@mui/material";
-import "../../Root.css";
+
+import { Typography, Chip, Grid, Button } from "@mui/material";
 import DatePicker from "react-datepicker";
 import Table from "../pages/Table";
 import "react-datepicker/dist/react-datepicker.css";
-
+import classes from "../../assets/css/App.module.css";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -277,7 +277,7 @@ const [loading, setloading] = useState(true)
 
   return (
     <div>
-      
+        
       <Grid container spacing={3}>
         <Grid item xs={12} md={3}>
           <Typography
@@ -338,6 +338,7 @@ const [loading, setloading] = useState(true)
         <Grid item xs={12} md={3}>
           <Button
             variant="outlined"
+            color="primary"
             onClick={() => {
               setFilter({
                 ...filter,
@@ -346,7 +347,6 @@ const [loading, setloading] = useState(true)
                   $lt: endDate.toISOString(),
                 },
               });
-              console.log(filter);
             }}
           >
             Load

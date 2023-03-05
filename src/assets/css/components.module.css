@@ -1,0 +1,13 @@
+.container{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.paper{
+    padding: 0.5rem;
+    display: flex;
+    overflow: auto;
+    flex-direction: column;
+}
+.fixedHeight{
+    height: 240;
+}

@@ -1,7 +1,6 @@
 import React from "react";
 import "../../App.css";
-import { makeStyles } from "@material-ui/core/styles";
-// import DashboardLayout from "./DashboardLayout";
+import "./components.css";
 import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
 import SVG from "../../assets/admin/dashboard.png";
@@ -16,22 +15,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column",
-  },
-  fixedHeight: {
-    height: 240,
-  },
-  // added the footer class
-}));
+
 
 export default function Dashboard() {
   const { id } = useSelector((state) => state);
@@ -43,7 +27,7 @@ export default function Dashboard() {
   const [toCity, setToCity] = useState("");
   const [users, setUsers] = useState([]);
 
-  const classes = useStyles();
+  
 
   const columns = [
     {
@@ -166,12 +150,13 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
-      <Container maxWidth="lg" className={classes.container}>
+      <Container maxWidth="lg" className={"container"}>
         <Grid container>
           <Grid item xs={12}>
             {/* Grid Content */}
 
             <Paper
+            className="paper"
               variant="outlined"
               elevation={3}
               style={{
@@ -238,7 +223,7 @@ export default function Dashboard() {
                   md={6}
                   display={{ xs: "none", lg: "block" }}
                 >
-                  <img src={SVG} alt="" width={"100%"} height="100%" />
+                  <img src={SVG} alt="" width={"100%"} style={{marginTop:10}} />
                 </Grid>
                 {/* Grid Content */}
               </Grid>
