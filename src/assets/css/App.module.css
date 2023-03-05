@@ -1,67 +1,64 @@
-@import url('./Root.module.css');
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    counter-reset: section;
+@import url("./Root.module.css");
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  counter-reset: section;
 }
-body:has(.App){
-    background-color: var(--main-color) !important;
+body:has(.App) {
+  background-color: var(--main-color) !important;
 }
-.App{
-    
-    inset: 0;
-    position: fixed;
-    margin: 1rem 0;
-    overflow-y: scroll;
-    background-color: #fff;
+.App {
+  inset: 0;
+  position: fixed; 
+  margin: 1rem 0;
+  overflow-y: scroll;
+  background-color: #fff;
 }
-.counter::before{
-    counter-increment: section;
-    content: counter(section) ;
+.counter::before {
+  counter-increment: section;
+  content: counter(section);
 }
-.active{
-    background-color: var(--main-color);
-    color:white;
+.active {
+  background-color: var(--main-color);
+  color: white;
 }
-.counter{
-    border: 1px solid black;
-    border-radius:50%;  
-    width: 0.5rem;
-    height: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    margin-right: 0.5rem  ;
+.counter {
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
 }
-.text-blue{
-    color:var(--main-color);
+.text-blue {
+  color: var(--main-color);
 }
 
 @media screen and (min-width: 1200px) {
-    .App{
-        margin-top: 5rem  ;
-        margin-left: 8rem;
-        margin-right: 8rem;
-        margin-bottom: 5rem  ;
-    }
+  .App {
+    margin-top: 5rem;
+    margin-left: 8rem;
+    margin-right: 8rem;
+    margin-bottom: 5rem;
+  }
 }
-.button{
-    background-color:"red";
-    border:0;
-    border-radius:"50%";
-    height:"1rem";
-    color:"white";
-    position:"absolute";
-    float:"center"
+.button {
+  background-color: "red";
+  border: 0;
+  border-radius: "50%";
+  height: "1rem";
+  color: "white";
+  position: "absolute";
+  float: "center";
 }
-.listParent{
-    background-color: aqua;
+.listParent {
+  background-color: aqua;
 }
-.iSAVrt{
-
-    background-color: var(--main-color) !important;
-    color:white;
-    text-transform: uppercase;
-    font-weight: bolder;
+.iSAVrt {
+  background-color: var(--main-color) !important;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bolder;
 }
-  

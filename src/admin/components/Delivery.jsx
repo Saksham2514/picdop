@@ -1,6 +1,6 @@
 import React from "react";
 import "../../assets/css/App.module.css";
-import "../../assets/css/components.module.css";
+import styles from "../../assets/css/components.module.css";
 import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
 import SVG from "../../assets/admin/dashboard.png";
@@ -149,7 +149,7 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
-      <Container maxWidth="lg" className={"container"}>
+      <Container maxWidth="lg" className={styles.container}>
         <Grid container>
           <Grid item xs={12}>
             {/* Grid Content */}
