@@ -10,7 +10,7 @@ public
 
 # testing
 /coverage
-
+.env
 # production
 /build
 
