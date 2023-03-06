@@ -103,7 +103,7 @@ const [loading, setloading] = useState(true)
     },
     {
       name: "Agent",
-      selector: (row) => row.agentName || "-",
+      selector: (row) => row.agentName || "Not Assigned",
       sortable: true,
       wrap: true,
     },

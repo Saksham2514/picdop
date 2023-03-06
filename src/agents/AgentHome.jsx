@@ -17,13 +17,15 @@ export const AgentHome = () => {
     .then((res) => {
       setData(res.data);
       setLoading(false);
-    
+      
     })
     .catch((err) => console.log(err));
   }
   
   useEffect(() => {
-   getData()
+    
+      getData()
+    
   }, []);
 
   return (
@@ -48,8 +50,9 @@ export const AgentHome = () => {
                 <>No Orders available right now </>
               ) : (
                 data.map((order, ind) => (
-                  <Grid item xs={12} key={ind}>
+                  <Grid item xs={12} md={3} key={ind}>
                     <OrderCard data={order} key={ind} getData={getData}/>
+                    
                   </Grid>
                 ))
               )}
