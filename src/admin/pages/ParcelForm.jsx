@@ -9,7 +9,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import ImagePreview from "../../components/FrOriginal";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -120,7 +120,7 @@ const ParcelForm = ({ details, setDetails }) => {
 
   const getPrice = () => {
     const weightFilter =
-      details.parcelWeight < 1
+      details?.parcelWeight < 1 && details.parcelWeight > 0
         ? { name: "Weight", $and: [{ lowerLimit: 0 }, { upperLimit: 1 }] }
         : details.parcelWeight >= 1 && details.parcelWeight < 5
         ? { name: "Weight", $and: [{ lowerLimit: 1 }, { upperLimit: 5 }] }
@@ -128,10 +128,12 @@ const ParcelForm = ({ details, setDetails }) => {
         ? { name: "Weight", $and: [{ lowerLimit: 5 }, { upperLimit: 10 }] }
         : details.parcelWeight >= 10 && details.parcelWeight < 30
         ? { name: "Weight", $and: [{ lowerLimit: 10 }, { upperLimit: 30 }] }
-        : { lowerLimit: 30 };
-
+        : details.parcelWeight >= 5 && details.parcelWeight < 8
+        ? { name: "Weight", $and: [{ lowerLimit: 30 }] }
+        : { name: "Weight", $and: [{ lowerLimit: 0 }, { upperLimit: 0 }] }
+    
     const heightFilter =
-      details.parcelHeight < 1
+      details?.parcelHeight < 1 && details.parcelHeight > 0
         ? { name: "Height", $and: [{ lowerLimit: 0 }, { upperLimit: 1 }] }
         : details.parcelHeight >= 1 && details.parcelHeight < 3
         ? { name: "Height", $and: [{ lowerLimit: 1 }, { upperLimit: 3 }] }
@@ -139,7 +141,10 @@ const ParcelForm = ({ details, setDetails }) => {
         ? { name: "Height", $and: [{ lowerLimit: 3 }, { upperLimit: 5 }] }
         : details.parcelHeight >= 5 && details.parcelHeight < 8
         ? { name: "Height", $and: [{ lowerLimit: 5 }, { upperLimit: 8 }] }
-        : { name: "Height", $and: [{ lowerLimit: 8 }] };
+        : details.parcelHeight >= 5 && details.parcelHeight < 8
+        ? { name: "Height", $and: [{ lowerLimit: 8 }] }
+        : { name: "Height", $and: [{ lowerLimit: 0 }, { upperLimit: 0 }] }
+        
     // console.log(weightFilter);
     // console.log(heightFilter);
 
@@ -169,7 +174,7 @@ const ParcelForm = ({ details, setDetails }) => {
       (data) => requiredFields.includes(data)
     );
 
-    if (validate.includes("false") || validate.length < 11) {
+    if (validate.includes("false") || validate.length < 9) {
       setError("Please fill all the fields ");
     } else {
       const data =
@@ -228,11 +233,11 @@ const ParcelForm = ({ details, setDetails }) => {
       <Grid container fullWidth spacing={3}>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Parcel Type</InputLabel>
+            <InputLabel id="demo-simple-select-label">Parcel Type*</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Parcel Type"
+              label="Parcel Type*"
               value={details.parcelType || ""}
               onChange={(e) => {
                 setDetails({ ...details, parcelType: e.target.value.trim() });
@@ -248,7 +253,7 @@ const ParcelForm = ({ details, setDetails }) => {
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
-            label="Parcel Weight"
+            label="Parcel Weight*"
             variant="outlined"
             onChange={(e) => {
               setDetails({
@@ -270,7 +275,7 @@ const ParcelForm = ({ details, setDetails }) => {
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
-            label="Parcel Height"
+            label="Parcel Height*"
             variant="outlined"
             onChange={(e) => {
               setDetails({ ...details, parcelHeight: e.target.value.trim() });
@@ -286,7 +291,7 @@ const ParcelForm = ({ details, setDetails }) => {
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
-            label="Parcel Length"
+            label="Parcel Length*"
             variant="outlined"
             onChange={(e) => {
               setDetails({ ...details, parcelLength: e.target.value.trim() });
@@ -302,11 +307,12 @@ const ParcelForm = ({ details, setDetails }) => {
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
-            label="Parcel Width"
+            label="Parcel Width*"
             variant="outlined"
             onChange={(e) => {
               setDetails({ ...details, parcelWidth: e.target.value.trim() });
             }}
+            onBlur={getPrice}
             id="outlined-start-adornment"
             InputProps={{
               endAdornment: (
@@ -339,7 +345,7 @@ const ParcelForm = ({ details, setDetails }) => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Payment Mode"
+              label="Payment Mode*"
               value={details.paymentMode ?  "" : details.paymentMode }
               onChange={(e) => {
                 setDetails({ ...details, paymentMode: e.target.value.trim() });
@@ -368,7 +374,7 @@ const ParcelForm = ({ details, setDetails }) => {
         </Grid>
         {/* <Grid item xs={12} md={6}>
           <ImagePreview
-            label="Bill Image"
+            label="Bill Image*"
             name="billImages"
             setDetails={setBillImage}
           />
@@ -390,7 +396,7 @@ const ParcelForm = ({ details, setDetails }) => {
 
         {/* <Grid item xs={12} md={6}>
           <ImagePreview
-            label="Parcel Document"
+            label="Parcel Document*"
             name="parcelImages"
             setDetails={setParcelImage}
           />
@@ -411,10 +417,7 @@ const ParcelForm = ({ details, setDetails }) => {
             size="small"
             color="primary"
             disabled={
-              details.parcelWeight?.length > 0 &&
-              details.parcelHeight?.length > 0
-                ? getPrice()
-                : true
+            details.parcelPaymentCollection > 0 ? false : true
             }
             onClick={() => {
              

@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect } from "react";
+import { Loading } from "./Loading";
 
 const Row = () => {
   const [data, setData] = useState([]);
@@ -61,7 +62,7 @@ const [loading, setloading] = useState(true)
 
   const columns = [
     {
-      name: "FROM ",
+      name: "From ",
       selector: (row, ind) => {
         return search(row.from, users);
       },
@@ -70,7 +71,7 @@ const [loading, setloading] = useState(true)
     },
 
     {
-      name: "to ",
+      name: "To ",
       selector: (row) => {
         return search(row.to, users);
       },
@@ -78,7 +79,7 @@ const [loading, setloading] = useState(true)
       wrap: true,
     },
     {
-      name: "status",
+      name: "Status",
       selector: (row, ind) => (
         <div
           className={
@@ -171,7 +172,7 @@ const [loading, setloading] = useState(true)
           ? new Date(row.pickupDate).toLocaleString("en-US", {
               timeZone: "Asia/Kolkata",
             })
-          : "-";
+          : "Not picked";
       },
       sortable: true,
       wrap: true,
@@ -183,7 +184,7 @@ const [loading, setloading] = useState(true)
           ? new Date(row.deliveryDate).toLocaleString("en-US", {
               timeZone: "Asia/Kolkata",
             })
-          : "-";
+          : "Not delivered";
       },
       sortable: true,
       wrap: true,
@@ -369,7 +370,7 @@ const [loading, setloading] = useState(true)
         </Grid>
         {loading ? (
         <Grid item xs={12}>
-          Loading
+          <Loading/>
         </Grid>
         ) : (
         <Grid item xs={12}>

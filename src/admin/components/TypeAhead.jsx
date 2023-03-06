@@ -19,7 +19,6 @@ export const TypeAhead = (props) => {
   }, []);
 
   for (let x of users) {
-    
     options.push(`${x.contact} - ${x.name} from ${x.shopName}`);
   }
 

@@ -174,14 +174,14 @@ export default function Dashboard() {
                   <Grid container fullWidth spacing={1}>
                     <Grid item xs={12} md={6}>
                       <TypeAhead
-                        label="From"
+                        label="From*"
                         setFrom={setFrom}
                         setCity={setFromCity}
                       />
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <TypeAhead
-                        label="To"
+                        label="To*"
                         setFrom={setTo}
                         setCity={setToCity}
                       />

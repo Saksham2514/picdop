@@ -174,7 +174,7 @@ export default function Dashboard() {
                 item
                 xs={2}
                 style={{ textAlign: "", paddingLeft: "0.5rem", margin: 0 }}
-              >
+              > 
                 <Typography variant="button">Upper Limit</Typography>
               </Grid>
               <Grid

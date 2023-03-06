@@ -10,7 +10,7 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import { makeStyles } from "@material-ui/core/styles";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { List } from "@mui/material";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slice";
 
@@ -40,9 +40,9 @@ export const MainListItems = () => {
   const classes = useStyles();
   return (
     <List>
-      {/* <Link to={role !== "agent" ?  "/admin" : "/agent"}> */}
-      <Link
-        to={role !== "agent" ? "/delivery" : "/agent"}
+      {/* <a href={role !== "agent" ?  "/admin" : "/agent"}> */}
+      <a
+        href={role !== "agent" ? "/delivery" : "/agent"}
         style={{ textDecoration: "none" }}
       >
         <ListItem button className={classes.listitemRoot}>
@@ -53,9 +53,9 @@ export const MainListItems = () => {
             primary={role !== "agent" ? "Book a Delivery" : "Available Orders"}
           />
         </ListItem>
-      </Link>
-      <Link
-        to={role !== "agent" ? "/collection" : "/orders"}
+      </a>
+      <a
+        href={role !== "agent" ? "/collection" : "/orders"}
         style={{ textDecoration: "none" }}
       >
         <ListItem button className={classes.listitemRoot}>
@@ -66,27 +66,27 @@ export const MainListItems = () => {
             primary={role !== "agent" ? "Collection" : "Accepted Orders"}
           />
         </ListItem>
-      </Link>
+      </a>
       {role !== "agent" ? (
         <>
-          <Link to="/admin" style={{ textDecoration: "none" }}>
+          <a href="/admin" style={{ textDecoration: "none" }}>
             <ListItem button className={classes.listitemRoot}>
               <ListItemIcon className={classes.iconRoot}>
                 <MonetizationOnIcon />
               </ListItemIcon>
               <ListItemText primary="Daily Earnings" />
             </ListItem>
-          </Link>
+          </a>
           {role === "admin" ? (
             <>
-              <Link to="/prices" style={{ textDecoration: "none" }}>
+              <a href="/prices" style={{ textDecoration: "none" }}>
                 <ListItem button className={classes.listitemRoot}>
                   <ListItemIcon className={classes.iconRoot}>
                     <ReceiptIcon />
                   </ListItemIcon>
                   <ListItemText primary="Set Prices" />
                 </ListItem>
-              </Link>
+              </a>
             </>
           ) : (
             ""
