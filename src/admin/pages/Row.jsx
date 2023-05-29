@@ -13,8 +13,11 @@ import { Loading } from "./Loading";
 
 const Row = () => {
   const [data, setData] = useState([]);
-const [loading, setloading] = useState(true)
   const [users, setUsers] = useState([]);
+
+  const [dataStatus, setDataStatus] = useState(0);
+  const [usersStatus, setUsersStatus] = useState(0);
+
   const { role, id } = useSelector((state) => state);
   const [choice, setChoice] = useState(true);
   const [startDate, setStartDate] = useState("");
@@ -33,17 +36,15 @@ const [loading, setloading] = useState(true)
     }
   }
 
-
-  function getData(){
-    setloading(true)
+  function getData() {
     axios
-    .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, filter)
-    .then((res) => {
-      setData(res.data);
-    }).then(setloading(false))
-    .catch((err) => console.log(err));
-    
-    setloading(true)
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, filter)
+      .then((res) => {
+        setData(res.data);
+        setDataStatus(res.status);
+      })
+      .catch((err) => console.log(err));
+
     axios
       .post(
         `${process.env.REACT_APP_BACKEND_URL}users/search`,
@@ -52,12 +53,13 @@ const [loading, setloading] = useState(true)
       .then((res) => {
         // console.log(res.data);
         setUsers(res.data);
-      }).then(setloading(false))
+        setUsersStatus(res.status);
+      })
       .catch((err) => console.log(err));
   }
 
   useEffect(() => {
-    setTimeout(getData(),60000)
+    setTimeout(getData(), 60000);
   }, [filter]);
 
   const columns = [
@@ -121,7 +123,7 @@ const [loading, setloading] = useState(true)
     },
     {
       name: "Amount",
-      selector: (row) => "₹ "+row.parcelPaymentCollection,
+      selector: (row) => "₹ " + row.parcelPaymentCollection,
       sortable: true,
       wrap: true,
     },
@@ -233,7 +235,7 @@ const [loading, setloading] = useState(true)
     {
       name: "Role",
       selector: (row) => row.role,
-      render: ( row, ind ) => {
+      render: (row, ind) => {
         <span
           className={
             row.role === "admin"
@@ -279,7 +281,6 @@ const [loading, setloading] = useState(true)
 
   return (
     <div>
-        
       <Grid container spacing={3}>
         <Grid item xs={12} md={3}>
           <Typography
@@ -368,19 +369,14 @@ const [loading, setloading] = useState(true)
             Clear Filter
           </Button>
         </Grid>
-        {loading ? (
-        <Grid item xs={12}>
-          <Loading/>
-        </Grid>
-        ) : (
         <Grid item xs={12}>
           <Table
             expand={true}
             data={choice ? data : users}
             columns={choice ? columns : userColumns}
+            status={choice ? dataStatus : usersStatus}
           />
         </Grid>
-        )}
       </Grid>
     </div>
   );

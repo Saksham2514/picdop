@@ -32,8 +32,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const [dailyOrders, setDailyOrders] = useState([]);
+  
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
+  
+  const [dailyOrdersStatus, setDailyOrdersStatus] = useState(0);
+  const [ordersStatus, setOrdersStatus] = useState(0);
+  const [usersStatus, setUsersStatus] = useState(0);
+  
   const uid = useSelector((state) => state.id);
   const role = useSelector((state) => state.role);
   
@@ -54,6 +60,7 @@ export default function Dashboard() {
       .then((res) => {
         // console.log(res.data);
         setDailyOrders(res.data);
+        setDailyOrdersStatus(res.status)
       })
       .catch((err) => console.log(err));
     axios
@@ -61,12 +68,16 @@ export default function Dashboard() {
       .then((res) => {
         // console.log(res.data);
         setOrders(res.data);
+        setOrdersStatus(res.status)
       })
       .catch((err) => console.log(err));
 
     axios
       .get(`${process.env.REACT_APP_BACKEND_URL}users`)
-      .then((res) => setUsers(res.data))
+      .then((res) => {
+        setUsers(res.data)
+        setUsersStatus(res.status)
+      })
       .catch((err) => console.log(err));
   };
   useEffect(() => {
@@ -218,7 +229,7 @@ export default function Dashboard() {
                 >
                   Daily Earnings
                 </Typography>
-                <Table data={dailyOrders} columns={columns1} />
+                <Table data={dailyOrders} columns={columns1} status={dailyOrdersStatus} />
               </Paper>
             </Grid>
           ) : (
@@ -232,7 +243,7 @@ export default function Dashboard() {
               >
                 Orders
               </Typography>
-              <Table data={orders} columns={columns1} />
+              <Table data={orders} columns={columns1} status={ordersStatus} />
               {/* <Test/> */}
             </Paper>
           </Grid>

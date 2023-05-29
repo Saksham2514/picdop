@@ -19,6 +19,9 @@ import { useSelector } from "react-redux";
 export default function Dashboard() {
   const { id } = useSelector((state) => state);
   const [data, setData] = useState([]);
+  
+  const [dataStatus, setDataStatus] = useState(0);
+  
   const [parcelDetails, setParcelDetails] = useState({});
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -134,6 +137,7 @@ export default function Dashboard() {
       })
       .then((res) => {
         setData(res.data);
+        setDataStatus(res.status);
         // console.log(res.data);
       })
       .catch((err) => console.log(err));

@@ -1,9 +1,4 @@
-import {
-  Grid,
-  Button,
-  Chip,
-  Typography,
-} from "@mui/material";
+import { Grid, Button, Chip, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import NestedModal from "./Modal";
@@ -11,16 +6,19 @@ import { useEffect } from "react";
 import axios from "axios";
 import { Loading } from "./Loading";
 
-const DataDisplay = ({ label, value,color }) => (
+const DataDisplay = ({ label, value, color }) => (
   <>
     <Typography variant="button" color="gray">
       {label}
     </Typography>
     <br />
-    <Typography textOverflow={"ellipsis"} variant="body1" color={color ? color :  ""}>
-      {value} 
+    <Typography
+      textOverflow={"ellipsis"}
+      variant="body1"
+      color={color ? color : ""}
+    >
+      {value}
     </Typography>
-    
   </>
 );
 
@@ -28,7 +26,7 @@ const ParcelForm = ({ id }) => {
   const [data, setData] = React.useState([]);
   const [agentData, setAgentData] = React.useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const navigate = useNavigate();
 
   const getAgentData = (id) => {
@@ -37,7 +35,9 @@ const ParcelForm = ({ id }) => {
         .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, { _id: id })
         .then((res) => {
           setAgentData(res.data[0]);
-        }).then(setLoading(false)).catch((err) => console.log(err));
+        })
+        .then(setLoading(false))
+        .catch((err) => console.log(err));
     } catch (err) {
       alert("error");
       console.log(err);
@@ -53,13 +53,14 @@ const ParcelForm = ({ id }) => {
         .then((res) => {
           setData(res.data[0]);
           if (res.data[0].agentId) getAgentData(res.data[0].agentId);
+          if (res.status > 0 && res.status === 200) {
+            setLoading(false);
+          }
         })
         .catch((err) => console.log(err));
     } catch (err) {
       alert("error");
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   };
   useEffect(() => {
@@ -82,7 +83,7 @@ const ParcelForm = ({ id }) => {
 
   return loading ? (
     <>
-      <Loading/>
+      <Loading />
     </>
   ) : (
     <div>
@@ -122,7 +123,7 @@ const ParcelForm = ({ id }) => {
         <Grid item xs={4} md={3}>
           <DataDisplay label="Height" value={data.parcelHeight + " inch"} />
         </Grid>
-        <Grid item xs={4} md={3}> 
+        <Grid item xs={4} md={3}>
           <DataDisplay label="Length" value={data.parcelLength + " inch"} />
         </Grid>
         <Grid item xs={4} md={3}>
@@ -131,10 +132,17 @@ const ParcelForm = ({ id }) => {
         {/* LBH ROW ends  */}
         {/* Descritpion and payments mode  */}
         <Grid item xs={8} md={3}>
-          <DataDisplay label="Description" value={data.parcelDescription || "-"} />
+          <DataDisplay
+            label="Description"
+            value={data.parcelDescription || "-"}
+          />
         </Grid>
         <Grid item xs={4} md={3}>
-          <DataDisplay label="Payment Amount" value={"₹ "+data.parcelPaymentCollection} color="green"/>
+          <DataDisplay
+            label="Payment Amount"
+            value={"₹ " + data.parcelPaymentCollection}
+            color="green"
+          />
         </Grid>
         <Grid item xs={4} md={3}>
           <DataDisplay label="Payment Mode" value={data.paymentMode} />
@@ -146,13 +154,33 @@ const ParcelForm = ({ id }) => {
         {agentData._id ? (
           <>
             <Grid item xs={6} md={6}>
-             <DataDisplay label={"Pickup Time"} value={data.pickupDate  ? new Date(data.pickupDate).toLocaleString() : "-"} key={352} />
+              <DataDisplay
+                label={"Pickup Time"}
+                value={
+                  data.pickupDate
+                    ? new Date(data.pickupDate).toLocaleString()
+                    : "-"
+                }
+                key={352}
+              />
             </Grid>
             <Grid item xs={6} md={6}>
-             <DataDisplay label={"Delivery Time"} value={data.deliveryDate ? new Date(data.deliveryDate).toLocaleString() : "Not delivered yet"} key={352} />
+              <DataDisplay
+                label={"Delivery Time"}
+                value={
+                  data.deliveryDate
+                    ? new Date(data.deliveryDate).toLocaleString()
+                    : "Not delivered yet"
+                }
+                key={352}
+              />
             </Grid>
             <Grid item xs={6} md={6}>
-             <DataDisplay label={"Agent name"} value={data.agentName} key={352} />
+              <DataDisplay
+                label={"Agent name"}
+                value={data.agentName}
+                key={352}
+              />
             </Grid>
             <Grid item xs={6} md={6}>
               <Typography variant="button" color="gray">
@@ -161,7 +189,7 @@ const ParcelForm = ({ id }) => {
               <br />
               <Typography
                 component={"a"}
-                href={`tel:${agentData.contact.replace(/\D/g,'')}`}
+                href={`tel:${agentData.contact.replace(/\D/g, "")}`}
                 variant="body1"
                 color=""
               >
@@ -174,7 +202,9 @@ const ParcelForm = ({ id }) => {
         )}
         {/* Descritpion and payments mode ends */}
         <Grid item xs={12} md={6}>
-        <Typography variant="button" color="gray">Parcel Images</Typography>
+          <Typography variant="button" color="gray">
+            Parcel Images
+          </Typography>
           {data?.parcelImages?.length > 0 ? (
             <>
               <div style={{ display: "flex", overflowX: "auto" }}>
@@ -197,7 +227,9 @@ const ParcelForm = ({ id }) => {
           )}
         </Grid>
         <Grid item xs={12} md={6}>
-        <Typography variant="button" color="gray">Bill Images</Typography> 
+          <Typography variant="button" color="gray">
+            Bill Images
+          </Typography>
           {data?.billImages?.length > 0 ? (
             <>
               <div style={{ display: "flex", overflowX: "auto" }}>
@@ -219,27 +251,28 @@ const ParcelForm = ({ id }) => {
             <Typography> No Images Found</Typography>
           )}
         </Grid>
-       
+
         {/* Button Row starts */}
         <Grid item xs={12} md={4}>
           <Link
             to="/collection"
             style={{ textDecoration: "none", borderRadius: "1rem" }}
           >
-            <Button
-            variant="contained"
-              size="small"
-              color="primary"
-            >
+            <Button variant="contained" size="small" color="primary">
               Back To Dashboard
             </Button>
           </Link>
-          </Grid>
-          <Grid item xs={6} md={4}  sx={{textAlign:{xs:"left" , md:"center"}}}>
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          md={4}
+          sx={{ textAlign: { xs: "left", md: "center" } }}
+        >
           <Button
             variant="contained"
             size="small"
-           color="success"
+            color="success"
             onClick={() => {
               handleRegenerate();
               fetch();

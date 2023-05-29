@@ -39,7 +39,6 @@ export default function Dashboard() {
         <Grid container spacing={2} style={{ marginTop: "0.5rem" }}>
           <Grid item xs={12} md={8} style={{margin:"auto"}}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
-              
               <OrderView id={orderId} />
             </Paper>
           </Grid>

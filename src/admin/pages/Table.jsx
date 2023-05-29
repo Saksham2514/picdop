@@ -7,34 +7,40 @@ const ExpandedComponent = ({ data }) => {
 };
 
 const Table = (props) => {
-  const [loading, setloading] = useState(true)
+  const [loading, setloading] = useState(true);
 
-  useEffect(() => {
-    
-  if(props.data.length > 0 ) setloading(false)
-  else setloading(true)
-  }, [props.data])
-  
-  
+  useEffect(
+    () => {
+      if (props?.status === 200) setloading(false);
+      else if (props?.status > 0) setloading(false);
+      else if (props?.data.length > 0) setloading(false);
+      else setloading(true);
+    },
+    [props?.data]
+  );
+
   return (
     <div>
-      {
-      loading ? (<>
-      <Loading/>
-      </>) : (<>
-      <DataTable
-        paginationRowsPerPageOptions={[1, 5, 10, 15, 20]}
-        paginationPerPage={5}
-        columns={props.columns}
-        expandableRows={props.expand !== undefined ?  props.expand : true}
-        expandableRowsComponent={ExpandedComponent}
-        data={props.data}
-        options={{
-          search: true,
-        }}
-        pagination
-      />
-      </>)}
+      {loading ? (
+        <>
+          <Loading />
+        </>
+      ) : (
+        <>
+          <DataTable
+            paginationRowsPerPageOptions={[1, 5, 10, 15, 20]}
+            paginationPerPage={5}
+            columns={props.columns}
+            expandableRows={props.expand !== undefined ? props.expand : true}
+            expandableRowsComponent={ExpandedComponent}
+            data={props.data}
+            options={{
+              search: true,
+            }}
+            pagination
+          />
+        </>
+      )}
     </div>
   );
 };
