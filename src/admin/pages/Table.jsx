@@ -16,7 +16,7 @@ const Table = (props) => {
       else if (props?.data.length > 0) setloading(false);
       else setloading(true);
     },
-    [props?.data]
+    [props?.status]
   );
 
   return (

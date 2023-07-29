@@ -251,7 +251,7 @@ export default function Dashboard() {
               >
                 Recent Bookings
               </Typography>
-              <Table data={data} columns={columns} expand={false} />
+              <Table data={data} status={dataStatus} columns={columns} expand={false} />
             </Paper>
           </Grid>
         </Grid>
