@@ -23,7 +23,6 @@ import { useSelector } from "react-redux";
 function Copyright() {
   const id =  useSelector(state=>state.id)
   const role =  useSelector(state=>state.role)
-
   
   // classes created because it is needed in the footer.
   const classes = useStyles();
@@ -31,10 +30,11 @@ function Copyright() {
     <Container className={classes.footer}> 
     {id.length > 0 && role.length > 0 ? "" :<Navigate to="/"/>}
       <Typography variant="body2" color="textSecondary" align="center">
-        {"Copyright © "}
-        <Link color="inherit" to="/order">
-          Your Website 
+        {"Developed and Managed by  "}
+        <Link color="inherit" to="https://www.brandon.co.in">
+          Brandon
         </Link>
+        {" "}
         {new Date().getFullYear()}
         {"."}
       </Typography>

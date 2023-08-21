@@ -38,11 +38,14 @@ export default function MediaControlCard({ data, getData }) {
   };
 
   useEffect(() => {
+    
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, {
         $or: [{ _id: data.from }, { _id: data.to }],
       })
       .then((res) => {
+
+        
         if (res.data[0]._id === data.from) {
           setFrom(res.data[0]);
           setTo(res.data[1]);
@@ -82,18 +85,18 @@ export default function MediaControlCard({ data, getData }) {
                     color="text.secondary"
                     gutterBottom
                   >
-                    From - {from.name}
+                    From - {from?.name}
                   </Typography>
                   <Typography color="text.caption1" gutterBottom>
-                    {from.line1 +
+                    {from?.line1 +
                       " , " +
-                      from.line2 +
+                      from?.line2 +
                       " , " +
-                      from.city +
+                      from?.city +
                       " , " +
-                      from.state +
+                      from?.state +
                       " - " +
-                      from.pin}
+                      from?.pin}
                   </Typography>
                   <Typography
                     sx={{ fontWeight: "bold" }}
@@ -102,7 +105,7 @@ export default function MediaControlCard({ data, getData }) {
                   >
                     Contact
                   </Typography>
-                  <a href={`tell:${from.contact}`}>{from.contact}</a>
+                  <a href={`tell:${from?.contact}`}>{from?.contact}</a>
                 </Grid>
                 <Grid item xs={12} >
                   <Typography
@@ -111,18 +114,18 @@ export default function MediaControlCard({ data, getData }) {
                     gutterBottom
                     align="right"
                   >
-                    To - {to.name}
+                    To - {to?.name}
                   </Typography>
                   <Typography color="text.caption1" gutterBottom align="right">
-                    {to.line1 +
+                    {to?.line1 +
                       " , " +
-                      to.line2 +
+                      to?.line2 +
                       " , " +
-                      to.city +
+                      to?.city +
                       " , " +
-                      to.state +
+                      to?.state +
                       " - " +
-                      to.pin}
+                      to?.pin}
                   </Typography>
                   <Typography
                     sx={{ fontWeight: "bold" }}
@@ -134,7 +137,7 @@ export default function MediaControlCard({ data, getData }) {
                   </Typography>
 
                   <Typography color="text.caption1" gutterBottom align="right">
-                    <a href={`tell:${to.contact}`}>{to.contact}</a>
+                    <a href={`tell:${to?.contact}`}>{to?.contact}</a>
                   </Typography>
                 </Grid>
               </Grid>

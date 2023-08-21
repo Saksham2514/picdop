@@ -16,6 +16,7 @@ export const AgentHome = () => {
     })
     .then((res) => {
       setData(res.data);
+      console.log(res.data);
       setLoading(false);
       
     })

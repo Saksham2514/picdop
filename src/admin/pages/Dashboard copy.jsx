@@ -32,83 +32,56 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const [dailyOrders, setDailyOrders] = useState([]);
-
+  
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
-
+  
   const [dailyOrdersStatus, setDailyOrdersStatus] = useState(0);
   const [ordersStatus, setOrdersStatus] = useState(0);
   const [usersStatus, setUsersStatus] = useState(0);
-
-  // Analysis States
-
-  const [adminData, setAdminData] = useState([]);
-
-  // Analysis States end
-
+  
   const uid = useSelector((state) => state.id);
   const role = useSelector((state) => state.role);
+  
+  const yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
+  const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString()
 
-  const yesterday = new Date(
-    new Date().setDate(new Date().getDate() - 1)
-  ).toISOString();
-  const tomorrow = new Date(
-    new Date().setDate(new Date().getDate() + 1)
-  ).toISOString();
-
-  const { id } = useSelector((state) => state);
+  
 
   const getData = (id) => {
+  
     axios
-      .post(id, {
+      .post(id,{
         createdAt: {
           $gte: yesterday,
-          $lte: tomorrow,
+          $lte: tomorrow
         },
       })
       .then((res) => {
         // console.log(res.data);
         setDailyOrders(res.data);
-        setDailyOrdersStatus(res.status);
+        setDailyOrdersStatus(res.status)
       })
       .catch((err) => console.log(err));
     axios
-      .post(id, { $or: [{ from: uid }, { to: uid }, { createdBy: uid }] })
+      .post(id,{ $or: [{ from: uid }, { to: uid }, { createdBy: uid }] })
       .then((res) => {
         // console.log(res.data);
         setOrders(res.data);
-        setOrdersStatus(res.status);
+        setOrdersStatus(res.status)
       })
       .catch((err) => console.log(err));
 
     axios
       .get(`${process.env.REACT_APP_BACKEND_URL}users`)
       .then((res) => {
-        setUsers(res.data);
-        setUsersStatus(res.status);
+        setUsers(res.data)
+        setUsersStatus(res.status)
       })
       .catch((err) => console.log(err));
   };
-
-  const getAnalysis = (id) => {
-
-    console.log(id);
-    const URL =  role=== 'admin' ? `${process.env.REACT_APP_BACKEND_URL}admin/earnings/status` : `${process.env.REACT_APP_BACKEND_URL}admin/earnings/`;
-
-    axios
-      .post(URL, {
-        id: id,
-      })
-      .then((res) => {
-        console.log(res.data);
-        setAdminData(res.data);
-      })
-      .catch((err) => console.warn(err));
-  };
-
   useEffect(() => {
     getData(`${process.env.REACT_APP_BACKEND_URL}orders/search`);
-    getAnalysis(role === "admin" ? "" : id);
   }, []);
 
   function search(nameKey, myArray) {
@@ -194,6 +167,7 @@ export default function Dashboard() {
             {/* Grid Content */}
 
             <Paper
+              
               elevation={3}
               style={{
                 backgroundColor: "var(--main-color)",
@@ -201,7 +175,7 @@ export default function Dashboard() {
                 padding: "0 0.5rem",
               }}
             >
-              <Grid container>
+              <Grid container >
                 <Grid item xs={12} md={6}>
                   <Typography variant="subtitle1">
                     <p>Book a Delivery</p>
@@ -246,8 +220,8 @@ export default function Dashboard() {
         </Grid>
 
         <Grid container spacing={2} style={{ marginTop: "0.5rem" }}>
-          {/* {role === "admin" ? ( */}
-            <Grid item xs={12} >
+          {role === "admin" ? (
+            <Grid item xs={12} md={6}>
               <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
                 <Typography
                   style={{ paddingBottom: "1rem", fontWeight: "bold" }}
@@ -255,26 +229,13 @@ export default function Dashboard() {
                 >
                   Daily Earnings
                 </Typography>
-                {/* <Table data={dailyOrders} columns={columns1} status={dailyOrdersStatus} /> */}
-                <Grid container spacing={4} >
-                  {adminData.map((data, ind) => (
-                    <Grid item xs={12} md={4} key = {ind}  >
-                    <Paper elevation={4}  style={{paddingTop:10, paddingBottom:10}}>
-                      <Typography textAlign={"center"} variant="h6">
-                        {data.status} orders
-                      </Typography>
-                      <Typography textAlign={"center"}>₹
- {data.totalAmount}</Typography>
-                    </Paper>
-                    </Grid>
-                  ))}
-                </Grid>
+                <Table data={dailyOrders} columns={columns1} status={dailyOrdersStatus} />
               </Paper>
             </Grid>
-          {/* ) : ( */}
-            {/* <></> */}
-          {/* )} */}
-          <Grid item xs={12} md={12}>
+          ) : (
+            <></>
+          )}
+          <Grid item xs={12} md={role === "admin" ? 6 : 12}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
               <Typography
                 style={{ paddingBottom: "1rem", fontWeight: "bold" }}

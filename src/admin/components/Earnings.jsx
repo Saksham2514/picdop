@@ -222,7 +222,7 @@ export default function Dashboard() {
           <Grid item xs={12} md={6}>
             <Paper style={{ padding: "1rem" ,borderRadius:"1rem"}}>
             <Typography style={{paddingBottom : "1rem",fontWeight:"bold"}} variant="h5">Daily Earnings</Typography>
-             <Table columns={1}/>
+             <Table columns={1} />
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>

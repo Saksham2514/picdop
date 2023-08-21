@@ -13,9 +13,12 @@ import Admin from "./admin/pages/Dashboard";
 import PrivateRoutes, { AdminRoute } from "./components/PrivateRoutes";
 import AgentRoutes from "./components/AgentRoutes";
 import SignUp from "./pages/SignUp";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { AgentHome } from "./agents/AgentHome";
 import { AgentOrders } from "./agents/AgentOrders";
+import { CompletedOrders } from "./agents/CompletedOrders";
+import { useDispatch } from "react-redux";
+import { logout } from "./redux/slice";
 
 function App() {
   return (
@@ -23,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/register" element={<SignUp />} />
         <Route path="/" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
       {/* Private Routes */}
       <Routes>
@@ -42,6 +46,7 @@ function App() {
         <Route element={<AgentRoutes />}>
           <Route path="/agent" element={<AgentHome />} />
           <Route path="/orders" element={<AgentOrders />} />
+          <Route path="/agent/complete" element={<CompletedOrders/>} />
           {/* <Route path="/agent" element={<Admin />} />
           <Route path="/collection" element={<Collection />} />
           <Route path="/prices" element={<Prices />} />
@@ -54,3 +59,13 @@ function App() {
 }
 
 export default App;
+
+
+const Logout = () =>{
+  const dispatch = useDispatch();
+  return(
+  <>
+    <Navigate to="/" replace/> 
+    {dispatch(logout())}
+  </>
+)}

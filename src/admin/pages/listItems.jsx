@@ -67,16 +67,21 @@ export const MainListItems = () => {
           />
         </ListItem>
       </a>
-      {role !== "agent" ? (
-        <>
-          <a href="/admin" style={{ textDecoration: "none" }}>
-            <ListItem button className={classes.listitemRoot}>
+      <a
+        href={role !== "agent" ? "/admin" : "/agent/complete"}
+        style={{ textDecoration: "none" }}
+      >
+                    <ListItem button className={classes.listitemRoot}>
               <ListItemIcon className={classes.iconRoot}>
                 <MonetizationOnIcon />
               </ListItemIcon>
-              <ListItemText primary="Daily Earnings" />
-            </ListItem>
-          </a>
+          <ListItemText
+            primary={role !== "agent" ? "Daily Earnings" : "Completed Orders"}
+          />
+        </ListItem>
+      </a>
+   
+     
           {role === "admin" ? (
             <>
               <a href="/prices" style={{ textDecoration: "none" }}>
@@ -91,10 +96,7 @@ export const MainListItems = () => {
           ) : (
             ""
           )}
-        </>
-      ) : (
-        ""
-      )}
+      
       <ListItem
         button
         className={classes.listitemRoot}
