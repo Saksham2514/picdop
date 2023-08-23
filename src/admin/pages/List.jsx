@@ -74,7 +74,7 @@ export default function CheckboxList(props) {
           />
         </Grid>
         <Grid  item xs={2} style={{textAlign:"center"}}>
-          <Button variant="outlined" color="error"  onClick={handleDelete}>Delete</Button>
+          {/* <Button variant="outlined" color="error"  onClick={handleDelete}>Delete</Button> */}
           <Button variant="outlined" color="info" disabled={update} onClick={handleUpdate}>Update</Button>
         </Grid>
         {/* <Grid  item xs={2} style={{textAlign:"center"}}>

@@ -5,6 +5,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import "../../assets/css/App.module.css";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,6 +14,7 @@ import { List } from "@mui/material";
 // import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slice";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   listitemRoot: {
@@ -40,9 +42,9 @@ export const MainListItems = () => {
   const classes = useStyles();
   return (
     <List>
-      {/* <a href={role !== "agent" ?  "/admin" : "/agent"}> */}
-      <a
-        href={role !== "agent" ? "/delivery" : "/agent"}
+      {/* <Link to={role !== "agent" ?  "/admin" : "/agent"}> */}
+      <Link
+        to={role !== "agent" ? "/delivery" : "/agent"}
         style={{ textDecoration: "none" }}
       >
         <ListItem button className={classes.listitemRoot}>
@@ -53,9 +55,9 @@ export const MainListItems = () => {
             primary={role !== "agent" ? "Book a Delivery" : "Available Orders"}
           />
         </ListItem>
-      </a>
-      <a
-        href={role !== "agent" ? "/collection" : "/orders"}
+      </Link>
+      <Link
+        to={role !== "agent" ? "/collection" : "/orders"}
         style={{ textDecoration: "none" }}
       >
         <ListItem button className={classes.listitemRoot}>
@@ -66,9 +68,10 @@ export const MainListItems = () => {
             primary={role !== "agent" ? "Collection" : "Accepted Orders"}
           />
         </ListItem>
-      </a>
-      <a
-        href={role !== "agent" ? "/admin" : "/agent/complete"}
+      </Link>
+      
+      <Link
+        to={role !== "agent" ? "/admin" : "/agent/complete"}
         style={{ textDecoration: "none" }}
       >
                     <ListItem button className={classes.listitemRoot}>
@@ -79,19 +82,33 @@ export const MainListItems = () => {
             primary={role !== "agent" ? "Daily Earnings" : "Completed Orders"}
           />
         </ListItem>
-      </a>
+      </Link>
    
+      <Link
+        to={role !== "admin" ? "/notes" : "/notesAdmin"}
+        style={{ textDecoration: "none" }}
+      >
+                    <ListItem button className={classes.listitemRoot}>
+              <ListItemIcon className={classes.iconRoot}>
+                <ListAltIcon />
+              </ListItemIcon>
+          <ListItemText
+          // primary={role !== "agent" ? "Notes" : "Completed Orders"}
+          primary={"Notes"}
+          />
+        </ListItem>
+      </Link>
      
           {role === "admin" ? (
             <>
-              <a href="/prices" style={{ textDecoration: "none" }}>
+              <Link to="/prices" style={{ textDecoration: "none" }}>
                 <ListItem button className={classes.listitemRoot}>
                   <ListItemIcon className={classes.iconRoot}>
                     <ReceiptIcon />
                   </ListItemIcon>
                   <ListItemText primary="Set Prices" />
                 </ListItem>
-              </a>
+              </Link>
             </>
           ) : (
             ""

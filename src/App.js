@@ -19,6 +19,8 @@ import { AgentOrders } from "./agents/AgentOrders";
 import { CompletedOrders } from "./agents/CompletedOrders";
 import { useDispatch } from "react-redux";
 import { logout } from "./redux/slice";
+import NotesAdmin from "./admin/pages/NotesAdmin";
+import Notes from "./admin/pages/Notes";
 
 function App() {
   return (
@@ -37,16 +39,18 @@ function App() {
           <Route path="/orders/:orderId" element={<Orders />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/users/:userId" element={<UserClass />} />
+          <Route path="/notes" element={<Notes />} />
         </Route>
         <Route element={<AdminRoute />}>
           <Route path="/prices" element={<Prices />} />
+          <Route path="/notesAdmin" element={<NotesAdmin />} />
         </Route>
       </Routes>
       <Routes>
         <Route element={<AgentRoutes />}>
           <Route path="/agent" element={<AgentHome />} />
           <Route path="/orders" element={<AgentOrders />} />
-          <Route path="/agent/complete" element={<CompletedOrders/>} />
+          <Route path="/agent/complete" element={<CompletedOrders />} />
           {/* <Route path="/agent" element={<Admin />} />
           <Route path="/collection" element={<Collection />} />
           <Route path="/prices" element={<Prices />} />
@@ -60,12 +64,12 @@ function App() {
 
 export default App;
 
-
-const Logout = () =>{
+const Logout = () => {
   const dispatch = useDispatch();
-  return(
-  <>
-    <Navigate to="/" replace/> 
-    {dispatch(logout())}
-  </>
-)}
+  return (
+    <>
+      <Navigate to="/" replace />
+      {dispatch(logout())}
+    </>
+  );
+};

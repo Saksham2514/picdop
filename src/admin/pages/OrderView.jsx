@@ -5,6 +5,7 @@ import NestedModal from "./Modal";
 import { useEffect } from "react";
 import axios from "axios";
 import { Loading } from "./Loading";
+import { useSelector } from "react-redux";
 
 const DataDisplay = ({ label, value, color }) => (
   <>
@@ -26,13 +27,19 @@ const ParcelForm = ({ id }) => {
   const [data, setData] = React.useState([]);
   const [agentData, setAgentData] = React.useState([]);
   const [loading, setLoading] = useState(true);
+  const token = useSelector((state) => state.token);
 
   const navigate = useNavigate();
 
   const getAgentData = (id) => {
     try {
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, { _id: id })
+        .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, { _id: id },
+        {
+          headers: {
+            Authorization: token,
+          },
+        })
         .then((res) => {
           setAgentData(res.data[0]);
         })
@@ -49,7 +56,12 @@ const ParcelForm = ({ id }) => {
   const fetch = () => {
     try {
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, { _id: id })
+        .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, { _id: id },
+        {
+          headers: {
+            Authorization: token,
+          },
+        })
         .then((res) => {
           setData(res.data[0]);
           if (res.data[0].agentId) getAgentData(res.data[0].agentId);
@@ -70,13 +82,23 @@ const ParcelForm = ({ id }) => {
   const handleRegenerate = () => {
     let otp = Math.floor(Math.random() * 999999) + 100000;
     axios
-      .put(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`, { otp: otp })
+      .put(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`, { otp: otp },
+      {
+        headers: {
+          Authorization: token,
+        },
+      })
       .then(fetch())
       .catch((err) => console.error(err));
   };
   const handleDelete = () => {
     axios
-      .delete(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`)
+      .delete(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      })
       .then(navigate("/collection"))
       .catch((err) => console.error(err));
   };

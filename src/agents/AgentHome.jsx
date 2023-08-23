@@ -5,7 +5,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Dashboard from "../admin/pages/DashboardLayout";
 import OrderCard from "./components/OrderCard";
+import { useSelector } from "react-redux";
+
 export const AgentHome = () => {
+  const token = useSelector((state) => state.token);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -13,6 +16,11 @@ export const AgentHome = () => {
     axios
     .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, {
       status: "Pending",
+    },
+    {
+      headers: {
+        Authorization: token,
+      },
     })
     .then((res) => {
       setData(res.data);

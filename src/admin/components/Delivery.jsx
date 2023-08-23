@@ -3,8 +3,8 @@ import "../../assets/css/App.module.css";
 import styles from "../../assets/css/components.module.css";
 import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
-import SVG from "../../assets/admin/dashboard.png";
 import { Button, Chip, Paper, Typography } from "@mui/material";
+import SVG from "../../assets/admin/dashboard.png";
 import { Box } from "@mui/system";
 import Table from "../pages/Table";
 import ParcelForm from "../pages/ParcelForm";
@@ -137,8 +137,8 @@ export default function Dashboard() {
       })
       .then((res) => {
         setData(res.data);
+        console.log(res.status);
         setDataStatus(res.status);
-        // console.log(res.data);
       })
       .catch((err) => console.log(err));
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import "../../assets/css/App.module.css";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,6 +10,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 // import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -19,6 +20,7 @@ import { MainListItems } from "./listItems";
 import Logo from "../../logo.png"
 import { Link, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 function Copyright() {
   const id =  useSelector(state=>state.id)
@@ -41,6 +43,8 @@ function Copyright() {
     </Container>
   );
 }
+
+
 
 const drawerWidth = 240;
 
@@ -142,7 +146,6 @@ const useStyles = makeStyles(theme => ({
 
 
 export default function Dashboard({children}) {
-
   
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -152,7 +155,8 @@ export default function Dashboard({children}) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const role =  useSelector(state=>state.role)
+  const role =  useSelector(state=>state.role);
+  const wallet =  useSelector(state=>state.wallet);
 
   return (
     <div className={classes.root}>
@@ -185,11 +189,16 @@ export default function Dashboard({children}) {
             <img src={Logo} style={{height:"4rem"}} alt=""/>
           </Link>  
           </Typography>
-          {/* <IconButton color="gray">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton> */}
+          <IconButton
+            // onClick={handleClick}
+            size="small"
+            sx={{ ml: 2 }}
+            aria-controls={open ? "account-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+          >
+            <AccountBalanceWalletIcon/>  {wallet}
+          </IconButton>
           <Appbar/>
         </Toolbar>
       </AppBar>

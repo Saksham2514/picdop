@@ -48,6 +48,7 @@ export default function Dashboard() {
 
   const uid = useSelector((state) => state.id);
   const role = useSelector((state) => state.role);
+  const token = useSelector((state) => state.token);
 
   const yesterday = new Date(
     new Date().setDate(new Date().getDate() - 1)
@@ -60,12 +61,20 @@ export default function Dashboard() {
 
   const getData = (id) => {
     axios
-      .post(id, {
-        createdAt: {
-          $gte: yesterday,
-          $lte: tomorrow,
+      .post(
+        id,
+        {
+          createdAt: {
+            $gte: yesterday,
+            $lte: tomorrow,
+          },
         },
-      })
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
       .then((res) => {
         // console.log(res.data);
         setDailyOrders(res.data);
@@ -91,14 +100,24 @@ export default function Dashboard() {
   };
 
   const getAnalysis = (id) => {
-
     console.log(id);
-    const URL =  role=== 'admin' ? `${process.env.REACT_APP_BACKEND_URL}admin/earnings/status` : `${process.env.REACT_APP_BACKEND_URL}admin/earnings/`;
+    const URL =
+      role === "admin"
+        ? `${process.env.REACT_APP_BACKEND_URL}admin/earnings/status`
+        : `${process.env.REACT_APP_BACKEND_URL}admin/earnings/`;
 
     axios
-      .post(URL, {
-        id: id,
-      })
+      .post(
+        URL,
+        {
+          id: id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
       .then((res) => {
         console.log(res.data);
         setAdminData(res.data);
@@ -247,32 +266,36 @@ export default function Dashboard() {
 
         <Grid container spacing={2} style={{ marginTop: "0.5rem" }}>
           {/* {role === "admin" ? ( */}
-            <Grid item xs={12} >
-              <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
-                <Typography
-                  style={{ paddingBottom: "1rem", fontWeight: "bold" }}
-                  variant="h5"
-                >
-                  Daily Earnings
-                </Typography>
-                {/* <Table data={dailyOrders} columns={columns1} status={dailyOrdersStatus} /> */}
-                <Grid container spacing={4} >
-                  {adminData.map((data, ind) => (
-                    <Grid item xs={12} md={4} key = {ind}  >
-                    <Paper elevation={4}  style={{paddingTop:10, paddingBottom:10}}>
+          <Grid item xs={12}>
+            <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
+              <Typography
+                style={{ paddingBottom: "1rem", fontWeight: "bold" }}
+                variant="h5"
+              >
+                Daily Earnings
+              </Typography>
+              {/* <Table data={dailyOrders} columns={columns1} status={dailyOrdersStatus} /> */}
+              <Grid container spacing={4}>
+                {adminData.map((data, ind) => (
+                  <Grid item xs={12} md={4} key={ind}>
+                    <Paper
+                      elevation={4}
+                      style={{ paddingTop: 10, paddingBottom: 10 }}
+                    >
                       <Typography textAlign={"center"} variant="h6">
                         {data.status} orders
                       </Typography>
-                      <Typography textAlign={"center"}>₹
- {data.totalAmount}</Typography>
+                      <Typography textAlign={"center"}>
+                        ₹{data.totalAmount}
+                      </Typography>
                     </Paper>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Paper>
-            </Grid>
+                  </Grid>
+                ))}
+              </Grid>
+            </Paper>
+          </Grid>
           {/* ) : ( */}
-            {/* <></> */}
+          {/* <></> */}
           {/* )} */}
           <Grid item xs={12} md={12}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>

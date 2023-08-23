@@ -16,6 +16,7 @@ export default function MediaControlCard({ data, getData }) {
   const [error, setError] = useState(false);
   const [to, setTo] = useState([]);
   const date = new Date(data.createdAt.toString());
+  const token = useSelector((state) => state.token);
 
   const { id, name } = useSelector((state) => state);
 
@@ -27,6 +28,11 @@ export default function MediaControlCard({ data, getData }) {
           agentName: name,
           status: "Accepted",
           pickupDate: new Date(),
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
         })
         .then((res) => {
           getData();
