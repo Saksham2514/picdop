@@ -21,6 +21,7 @@ import Logo from "../../logo.png"
 import { Link, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Modal from "../components/Modal";
 
 function Copyright() {
   const id =  useSelector(state=>state.id)
@@ -149,6 +150,8 @@ export default function Dashboard({children}) {
   
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [openModal, setOpenModal] = React.useState(false);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -158,7 +161,13 @@ export default function Dashboard({children}) {
   const role =  useSelector(state=>state.role);
   const wallet =  useSelector(state=>state.wallet);
 
+  const handleClickOpen = () => {
+    setOpenModal(true);
+  };
   return (
+    <>
+    <Modal openModal={openModal} setOpenModal={setOpenModal}/>
+    
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
@@ -190,14 +199,11 @@ export default function Dashboard({children}) {
           </Link>  
           </Typography>
           <IconButton
-            // onClick={handleClick}
+            onClick={handleClickOpen}
             size="small"
-            sx={{ ml: 2 }}
-            aria-controls={open ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
+            style={{padding:"5px" ,borderRadius:"4px",marginRight:"10px"}}
           >
-            <AccountBalanceWalletIcon/>  {wallet}
+            <AccountBalanceWalletIcon fontSize="large"/> {wallet}
           </IconButton>
           <Appbar/>
         </Toolbar>
@@ -224,5 +230,6 @@ export default function Dashboard({children}) {
         <Copyright />
       </main>
     </div>
+    </>
   );
 }

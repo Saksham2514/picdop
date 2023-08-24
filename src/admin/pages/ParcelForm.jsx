@@ -46,8 +46,8 @@ const ImgDisplay = ({ billImage, setLoading }) => {return(
     </div>
   </Grid>
 );}
-const ParcelForm = ({ details, setDetails }) => {
-  const { id } = useSelector((state) => state);
+const ParcelForm = ({ details, setDetails }) => {  
+  const { id,role,wallet } = useSelector((state) => state);
   const [error, setError] = useState();
   const navigate = useNavigate();
   const [loading, setloading] = useState(false);
@@ -169,7 +169,10 @@ const ParcelForm = ({ details, setDetails }) => {
 
   const handleSubmit = () => {
   
-
+    if(wallet<details.parcelPaymentCollection && role != "admin"){
+        return setError("Insufficient amount in wallet");
+        
+      }
     const validate = Object.keys(details).map(
       (data) => requiredFields.includes(data)
     );
@@ -177,6 +180,7 @@ const ParcelForm = ({ details, setDetails }) => {
     if (validate.includes("false") || validate.length < 9) {
       setError("Please fill all the fields ");
     } else {
+      setDetails({ ...details, role: role });
       const data =
         billImage.length > 0 && parcelImage.length > 0
           ? { details, billImages: billImage, parcelImages: parcelImage }

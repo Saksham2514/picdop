@@ -26,10 +26,13 @@ export const userSlice = createSlice({
       state.id = "";
       state.name = "";
     },
+    updateWallet: (state, action) => {
+      state.wallet = action.payload.wallet;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateWallet } = userSlice.actions;
 
 export default userSlice.reducer;
