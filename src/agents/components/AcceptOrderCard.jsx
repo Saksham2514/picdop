@@ -6,10 +6,12 @@ import { Alert, Button, CardActions, Chip, Grid, TextField } from "@mui/material
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateWallet } from "../../redux/slice";
 
 
 export default function MediaControlCard({ data, key, getData }) {
-  
+  const dispatch = useDispatch();
   const [from, setFrom] = useState([]);
   const [to, setTo] = useState([]);
   const [otp, setOtp] = useState("");
@@ -18,6 +20,7 @@ export default function MediaControlCard({ data, key, getData }) {
   
  
   const handleAccept = () => {
+    console.log(data.otp.toString());
     if (otp.trim() === data.otp.toString()) {
       axios
         .put(`${process.env.REACT_APP_BACKEND_URL}orders/${data._id}`, {
@@ -25,6 +28,8 @@ export default function MediaControlCard({ data, key, getData }) {
           deliveryDate: new Date()
         })
         .then((res) => {
+          console.log(res.data.wallet);
+          dispatch(updateWallet({wallet:res.data.wallet}));
           getData();
         })
         .catch((err) => console.log(err));

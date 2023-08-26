@@ -132,7 +132,7 @@ export default function Dashboard() {
 
   const getData = () => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, {
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/searchLimit`, {
         $or: [{ from: id }, { to: id }, { createdBy: id }],
       })
       .then((res) => {

@@ -21,6 +21,7 @@ export default function MediaControlCard({ data, getData }) {
   const { id, name } = useSelector((state) => state);
 
   const handleAccept = () => {
+    console.log(data.otp)
     if (otp.trim() === data.otp.toString()) {
       axios
         .put(`${process.env.REACT_APP_BACKEND_URL}orders/${data._id}`, {

@@ -11,10 +11,11 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import React, { useEffect, useState } from "react";
 // import ImagePreview from "../../components/FrOriginal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Alert} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { updateWallet } from "../../redux/slice";
 
 const ImgDisplay = ({ billImage, setLoading }) => {return(
   <Grid item xs={12} md={6} key={Math.random()}>
@@ -47,6 +48,7 @@ const ImgDisplay = ({ billImage, setLoading }) => {return(
   </Grid>
 );}
 const ParcelForm = ({ details, setDetails }) => {  
+  const dispatch = useDispatch()
   const { id,role,wallet } = useSelector((state) => state);
   const [error, setError] = useState();
   const navigate = useNavigate();
@@ -128,7 +130,7 @@ const ParcelForm = ({ details, setDetails }) => {
         ? { name: "Weight", $and: [{ lowerLimit: 5 }, { upperLimit: 10 }] }
         : details.parcelWeight >= 10 && details.parcelWeight < 30
         ? { name: "Weight", $and: [{ lowerLimit: 10 }, { upperLimit: 30 }] }
-        : details.parcelWeight >= 5 && details.parcelWeight < 8
+        : details.parcelWeight >= 30 
         ? { name: "Weight", $and: [{ lowerLimit: 30 }] }
         : { name: "Weight", $and: [{ lowerLimit: 0 }, { upperLimit: 0 }] }
     
@@ -161,8 +163,8 @@ const ParcelForm = ({ details, setDetails }) => {
           ? Math.max(data[0].localPrice, data[1].localPrice)
           : Math.max(data[0].outCityPrice, data[1].outCityPrice);
         setDetails({ ...details, parcelPaymentCollection: price });
+        console.log(price);
 
-        // console.log(Math.max(Object.values(res.data)))
       })
       .catch((err) => console.log(err));
   };
@@ -180,7 +182,7 @@ const ParcelForm = ({ details, setDetails }) => {
     if (validate.includes("false") || validate.length < 9) {
       setError("Please fill all the fields ");
     } else {
-      setDetails({ ...details, role: role });
+      setDetails({ ...details, role: role,userID:id });
       const data =
         billImage.length > 0 && parcelImage.length > 0
           ? { details, billImages: billImage, parcelImages: parcelImage }
@@ -197,8 +199,11 @@ const ParcelForm = ({ details, setDetails }) => {
             setError(res.data._message);
             // console.log(res.data);
           } else {
-            // console.log(`${process.env.REACT_APP_BACKEND_URL}orders`);
-            navigate("/collection");
+            if(role!="admin"){
+              const wal = wallet - details.parcelPaymentCollection;
+              dispatch(updateWallet({ wallet: wal}));
+            }
+            navigate('/collection');
           }
         })
         .catch((err) => {
@@ -232,7 +237,7 @@ const ParcelForm = ({ details, setDetails }) => {
         </>
       ) : (
         <></>
-      )}
+      )} 
 
       <Grid container fullWidth spacing={3}>
         <Grid item xs={12} md={6}>
@@ -366,7 +371,7 @@ const ParcelForm = ({ details, setDetails }) => {
           <TextField
             fullWidth
             label={
-              details.parcelPaymentCollection ? "" : "Amount to be collected "
+              details.parcelPaymentCollection ? "" : "Amount to be collected"
             }
             variant="outlined"
             InputProps={{
