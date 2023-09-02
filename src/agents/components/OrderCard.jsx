@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-export default function MediaControlCard({ data, getData }) {
+export default function MediaControlCard({ data, removeCard }) {
   const [otp, setOtp] = useState(0);
   const [loading, setloading] = useState(true);
   const [from, setFrom] = useState([]);
@@ -36,7 +36,7 @@ export default function MediaControlCard({ data, getData }) {
           },
         })
         .then((res) => {
-          getData();
+          removeCard(data._id);
         })
         .catch((err) => console.log(err));
     } else {

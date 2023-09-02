@@ -198,13 +198,13 @@ export default function Dashboard({children}) {
             <img src={Logo} style={{height:"4rem"}} alt=""/>
           </Link>  
           </Typography>
-          <IconButton
+          {role!="admin"?<IconButton
             onClick={handleClickOpen}
             size="small"
             style={{padding:"5px" ,borderRadius:"4px",marginRight:"10px"}}
           >
             <AccountBalanceWalletIcon fontSize="large"/> {wallet}
-          </IconButton>
+          </IconButton>:""}
           <Appbar/>
         </Toolbar>
       </AppBar>

@@ -56,6 +56,7 @@ const ParcelForm = ({ details, setDetails }) => {
   const [loadingP, setloadingP] = useState(false);
   const [parcelImage, setParcelImage] = useState([]);
   const [billImage, setBillImage] = useState([]);
+  const [clicked, setClicked] = useState(false)
   const requiredFields = [
     "from",
     "to",
@@ -159,7 +160,8 @@ const ParcelForm = ({ details, setDetails }) => {
       })
       .then((res) => {
         const data = res.data;
-        const price = data[0].localPrice
+        console.log(data[0]);
+        const price = data[0].localPrice != undefined
           ? Math.max(data[0].localPrice, data[1].localPrice)
           : Math.max(data[0].outCityPrice, data[1].outCityPrice);
         setDetails({ ...details, parcelPaymentCollection: price });
@@ -171,42 +173,55 @@ const ParcelForm = ({ details, setDetails }) => {
 
   const handleSubmit = () => {
   
+    console.log(role);
+    // return;
+    if(clicked){
+      return;
+    }else{
+      setClicked(true);
+    }
+
     if(wallet<details.parcelPaymentCollection && role != "admin"){
+        setClicked(false)
         return setError("Insufficient amount in wallet");
         
       }
-    const validate = Object.keys(details).map(
-      (data) => requiredFields.includes(data)
-    );
-
+      const validate = Object.keys(details).map(
+        (data) => requiredFields.includes(data)
+        );
+    
     if (validate.includes("false") || validate.length < 9) {
       setError("Please fill all the fields ");
+      setClicked(false)
     } else {
-      setDetails({ ...details, role: role,userID:id });
+      
+      const preDetails = {...details, role: role,userID:id }
+      
       const data =
         billImage.length > 0 && parcelImage.length > 0
-          ? { details, billImages: billImage, parcelImages: parcelImage }
+          ? { preDetails, billImages: billImage, parcelImages: parcelImage }
           : billImage.length > 0 && parcelImage.length === 0
-          ? { details, billImages: billImage, parcelImages: parcelImage }
+          ? { preDetails, billImages: billImage, parcelImages: parcelImage }
           : billImage.length === 0 && parcelImage.length > 0
-          ? { details, billImages: billImage, parcelImages: parcelImage }
-          : details;
-
+          ? { preDetails, billImages: billImage, parcelImages: parcelImage }
+          : preDetails;
+          console.log(preDetails);
       axios
         .post(`${process.env.REACT_APP_BACKEND_URL}orders`, data)
         .then((res) => {
           if (res?.data?._message) {
             setError(res.data._message);
-            // console.log(res.data);
           } else {
             if(role!="admin"){
               const wal = wallet - details.parcelPaymentCollection;
-              dispatch(updateWallet({ wallet: wal}));
+              dispatch(updateWallet({ wallet: res.data.wallet}));
             }
             navigate('/collection');
           }
+          setClicked(false)
         })
         .catch((err) => {
+          setClicked(false)
           setError(err.message);
         });
     }
@@ -249,7 +264,9 @@ const ParcelForm = ({ details, setDetails }) => {
               label="Parcel Type*"
               value={details.parcelType || ""}
               onChange={(e) => {
-                setDetails({ ...details, parcelType: e.target.value.trim() });
+                setDetails((curr)=>{
+                  return { ...curr, parcelType: e.target.value.trim() }
+                });
               }}
             >
               <MenuItem value={"Box"}>Box</MenuItem>
@@ -435,7 +452,7 @@ const ParcelForm = ({ details, setDetails }) => {
               
             }}
           >
-            Book Delivery
+            {clicked?"loading...":"Book Delivery"}
           </Button>
         </Grid>
       </Grid>

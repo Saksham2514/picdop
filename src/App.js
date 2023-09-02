@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "./redux/slice";
 import NotesAdmin from "./admin/pages/NotesAdmin";
 import Notes from "./admin/pages/Notes";
+import CommissionReq from "./admin/pages/CommissionReq";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         </Route>
         <Route element={<AdminRoute />}>
           <Route path="/prices" element={<Prices />} />
+          <Route path="/commission-request" element={<CommissionReq />} />
           <Route path="/notesAdmin" element={<NotesAdmin />} />
         </Route>
       </Routes>

@@ -9,7 +9,9 @@ import OrderCard from "./components/AcceptOrderCard";
 export const CompletedOrders = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { id } = useSelector((state) => state);
+  const { id,role } = useSelector((state) => state);
+  const [expEarData, setExpEarData] = useState([]);
+
   const getData = () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, {
@@ -23,8 +25,21 @@ export const CompletedOrders = () => {
       .catch((err) => console.log(err));
   };
 
+  const getSummary = ()=>{
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_URL}getSummary`, {
+        role:role,userID:id
+      })
+      .then((res) => {
+        setExpEarData(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  }
+
   useEffect(() => {
     getData();
+    getSummary();
   }, []);
 
   return (
@@ -39,34 +54,12 @@ export const CompletedOrders = () => {
               Refresh
             </Button>
           </Grid>
-          <Grid item xs={12} md={4} lg={3}>
+          {expEarData.map((data,ind)=><Grid item xs={12} md={4} lg={3}>
             <StatCard 
-              title="Today's Comission"
-              price="1,000"
+              title={data[0] + " Commission"}
+              price={data[1].amount}
             />
-          </Grid>
-          <Grid item xs={12} md={4} lg={3}>
-            <StatCard 
-              title="Today's Comission"
-              price="1,000"
-            />
-           
-          </Grid>
-          <Grid item xs={12} md={4} lg={3}>
-            <StatCard 
-              title="Today's Comission"
-              price="1,000"
-            />
-           
-          </Grid>
-          <Grid item xs={12} md={4} lg={3}>
-            <StatCard 
-              title="Today's Comission"
-              price="1,000"
-            />
-           
-          </Grid>
-
+          </Grid>)}
           {loading ? (
             <>
               <Typography key={1} variant="subtitle2">
@@ -99,10 +92,10 @@ const StatCard = ({title,price}) => {
     <>
       <Paper variant="elevation" elevation={4} sx={{ p: 1 }}>
         <Grid container>
-          <Grid item xs={6}>
+          <Grid item xs={7}>
             {title}
           </Grid>
-          <Grid item xs={6} textAlign={"end"}>
+          <Grid item xs={5} textAlign={"end"}>
             {price}
           </Grid>
         </Grid>

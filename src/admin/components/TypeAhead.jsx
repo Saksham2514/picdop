@@ -14,7 +14,7 @@ export const TypeAhead = (props) => {
       .post(`${process.env.REACT_APP_BACKEND_URL}users/search`,{
         $not : [{role:"agent"}]
       })
-      .then((res) => setUsers(res.data))
+      .then((res) => {setUsers(res.data);console.log(res.data)})
       .catch((err) => alert(err));
   }, []);
 

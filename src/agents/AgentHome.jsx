@@ -11,6 +11,13 @@ export const AgentHome = () => {
   const token = useSelector((state) => state.token);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const removeCard = (id)=>{
+    const filteredArr = data.filter((asd)=>{
+      return asd._id!=id;
+    })
+    setData(filteredArr);
+  }
   
   const getData = () =>{
     axios
@@ -59,9 +66,8 @@ export const AgentHome = () => {
                 <>No Orders available right now </>
               ) : (
                 data.map((order, ind) => (
-                  <Grid item xs={12} md={3} key={ind}>
-                    <OrderCard data={order} key={ind} getData={getData}/>
-                    
+                  <Grid item xs={12} md={3} key={order._id}>
+                    <OrderCard data={order} removeCard={removeCard}/>
                   </Grid>
                 ))
               )}

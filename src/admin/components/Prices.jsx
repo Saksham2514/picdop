@@ -4,9 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import DashboardLayout from "../pages/DashboardLayout";
 import List from "../pages/List";
 import { Container, Grid, Typography } from "@material-ui/core";
-import { Alert } from "@mui/material";
+import { Alert, Button, TextField } from "@mui/material";
 import axios from "axios";
 import { useEffect } from "react";
+import CommissionCard from "../pages/CommissionCard";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -31,6 +32,13 @@ export default function Dashboard() {
   const [error, setError] = useState();
   const [errType, setErrType] = useState("error");
   const [data, setData] = useState([]);
+  const [commissionData,setCommissionData] = useState();
+  const [breakpoint,setBreakpoint] = useState();
+  
+  useEffect(() => {
+    setBreakpoint(commissionData?.breakpoint);
+  }, [commissionData]);
+  
 
   // const handleSubmit = (e) => {
     
@@ -55,14 +63,27 @@ export default function Dashboard() {
     axios
       .get(`${process.env.REACT_APP_BACKEND_URL}prices`)
       .then((res) => {
-        // console.log(res.data);
         setData(res.data);
       })
       .catch((err) => console.log(err));
+      
   };
+  const getCommissionData = ()=>{
+  axios
+    .get(`${process.env.REACT_APP_BACKEND_URL}getComissionValues`)
+    .then((res) => {
+      setCommissionData(res.data);
+    })
+    .catch((err) => console.log(err));
+
+  }
+
   useEffect(() => {
     getData();
+    getCommissionData();
   }, []);
+
+
 
   return (
     <DashboardLayout>
@@ -201,8 +222,7 @@ export default function Dashboard() {
 
               <Grid item xs={12} style={{ padding: 0, margin: 0 }}>
                 {data.map((data, ind) => (
-                  <>
-                    <List
+                  <List
                       key={ind}
                       category={data.name}
                       lowerLimit={data.lowerLimit}
@@ -213,9 +233,13 @@ export default function Dashboard() {
                       setErrType={setErrType} 
                       localPrice={data.localPrice}
                       outCityPrice={data.outCityPrice}
-                    ></List>
-                  </>
+                    />
                 ))}
+              </Grid>
+            <Grid container style={{justifyContent:"space-around"}}>
+                <CommissionCard title={"Fixed Charge Range (in KM)"} value={breakpoint} setBreakpoint={setBreakpoint} ind={0} setData={setCommissionData} setError={setError}/> 
+                <CommissionCard title={`Fixed Charge (Below ${breakpoint || "0"} KM)`} value={commissionData?.belowBreakpoint} ind={1} setData={setCommissionData} setError={setError}/>
+                <CommissionCard title={`Per KiloMeter Rate (Above ${breakpoint || "0"} KM)`} value={commissionData?.aboveBreakpoint} ind={2} setData={setCommissionData} setError={setError}/>
               </Grid>
             </Grid>
           </Grid>

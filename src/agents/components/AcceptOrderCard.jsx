@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { updateWallet } from "../../redux/slice";
 
 
-export default function MediaControlCard({ data, key, getData }) {
+export default function MediaControlCard({ data, key, removeCard }) {
   const dispatch = useDispatch();
   const [from, setFrom] = useState([]);
   const [to, setTo] = useState([]);
@@ -28,9 +28,8 @@ export default function MediaControlCard({ data, key, getData }) {
           deliveryDate: new Date()
         })
         .then((res) => {
-          console.log(res.data.wallet);
           dispatch(updateWallet({wallet:res.data.wallet}));
-          getData();
+          removeCard(data._id);
         })
         .catch((err) => console.log(err));
     } else {

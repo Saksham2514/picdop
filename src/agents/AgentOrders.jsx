@@ -10,6 +10,15 @@ export const AgentOrders = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { id } = useSelector((state) => state);
+  console.log(id);
+
+  const removeCard = (id)=>{
+    const filteredArr = data.filter((asd)=>{
+      return asd._id!=id;
+    })
+    setData(filteredArr);
+  }
+
   const getData = () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, {
@@ -54,8 +63,8 @@ export const AgentOrders = () => {
                 </Typography>
               ) : (
                 data.map((order, ind) => (
-                  <Grid item xs={12}>
-                    <OrderCard data={order} getData={getData} key={ind} />
+                  <Grid item xs={12} key={order._id}>
+                    <OrderCard data={order} getData={getData} removeCard={removeCard}/>
                   </Grid>
                 ))
               )}

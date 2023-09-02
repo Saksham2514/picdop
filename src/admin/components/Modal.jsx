@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import axios from 'axios';
 import React, { useState } from 'react'
 import ReactDOM  from 'react-dom'
@@ -9,6 +9,7 @@ const Modal = ({openModal,setOpenModal}) => {
     const dispatch = useDispatch();
     const id =  useSelector(state=>state.id)
     const role =  useSelector(state=>state.role)
+    const wallet =  useSelector(state=>state.wallet)
     const [amount, setAmount] = useState(100);
     const handleClickClose = () => {
         setOpenModal(false);
@@ -48,12 +49,6 @@ const Modal = ({openModal,setOpenModal}) => {
     <Dialog open={openModal} onClose={handleClickClose}>
         <DialogTitle>Add Money</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-            Minimum redeemption amount is Rs. 200
-          </DialogContentText>
-          <DialogContentText>
-            Maximum redeemption amount is Rs. 10000
-          </DialogContentText> */}
           <TextField
             autoFocus
             margin="dense"
@@ -84,12 +79,6 @@ const Modal = ({openModal,setOpenModal}) => {
       </Dialog>:<Dialog open={openModal} onClose={handleClickClose}>
         <DialogTitle>Redeem Money</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-            Minimum redeemption amount is Rs. 200
-          </DialogContentText>
-          <DialogContentText>
-            Maximum redeemption amount is Rs. 10000
-          </DialogContentText> */}
           <TextField
             autoFocus
             margin="dense"
@@ -112,9 +101,13 @@ const Modal = ({openModal,setOpenModal}) => {
         <DialogActions>
           <Button onClick={handleClickClose}>Cancel</Button>
           <Button onClick={()=>{
-            deductMoney(amount)
-            handleClickClose()
-            }}>Redeem</Button>
+            if(parseInt(wallet) >= amount){
+              deductMoney(amount)
+              handleClickClose()
+            }else{
+              alert("Insufficient amount");
+            }
+          }}>Redeem</Button>
         </DialogActions>
       </Dialog>,
   document.querySelector(".modal"))

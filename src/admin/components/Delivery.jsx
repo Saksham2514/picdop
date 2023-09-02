@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 export default function Dashboard() {
   const { id } = useSelector((state) => state);
   const [data, setData] = useState([]);
+  console.log(id);
   
   const [dataStatus, setDataStatus] = useState(0);
   
@@ -206,15 +207,15 @@ export default function Dashboard() {
                     onClick={(e) => {
                       
                       from && to && fromCity && toCity
-                        ? setParcelDetails({
-                            ...parcelDetails,
+                        ? setParcelDetails((curr)=>{
+                          console.log(from,to);
+                          return {
+                            ...curr,
                             from: from,
                             to: to,
                               sameCity:fromCity.trim().toLowerCase() === toCity.trim().toLowerCase()
-                          })
+                          }})
                         : alert("Set pickup Source and destination");
-
-                     
                     }}
                   >
                     Add Parcel Details

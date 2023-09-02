@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Typography, Chip, Grid, Button } from "@mui/material";
+import { Typography, Chip, Grid, Button, Paper } from "@mui/material";
 import DatePicker from "react-datepicker";
 import Table from "../pages/Table";
 import "react-datepicker/dist/react-datepicker.css";
@@ -13,15 +13,22 @@ import { Loading } from "./Loading";
 
 const Row = () => {
   const [data, setData] = useState([]);
+  const [createdOrders, setCreatedOrders] = useState([]);
+  const [fromOrders, setFromOrders] = useState([]);
+  const [toOrders, setToOrders] = useState([]);
   const [users, setUsers] = useState([]);
 
   const [dataStatus, setDataStatus] = useState(0);
+  const [createdOrdersStatus, setCreatedOrdersStatus] = useState(0);
+  const [fromOrdersStatus, setFromOrdersStatus] = useState(0);
+  const [toOrdersStatus, setToOrdersStatus] = useState(0);
   const [usersStatus, setUsersStatus] = useState(0);
 
   const { role, id } = useSelector((state) => state);
   const [choice, setChoice] = useState(true);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  console.log(role);
   const [filter, setFilter] = useState(
     role === "admin"
       ? {}
@@ -37,22 +44,46 @@ const Row = () => {
   }
 
   function getData() {
+    if(role!=="admin"){
+      axios
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`,  { createdBy: id })
+      .then((res) => {
+        setCreatedOrders(res.data);
+        setCreatedOrdersStatus(res.status);
+      })
+      .catch((err) => console.log(err));
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, filter)
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, { from: id } )
+      .then((res) => {
+        setFromOrders(res.data);
+        setFromOrdersStatus(res.status);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, { to: id })
+      .then((res) => {
+        setToOrders(res.data);
+        setToOrdersStatus(res.status);
+      })
+      .catch((err) => console.log(err));
+
+    }else{
+      axios
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`,{})
       .then((res) => {
         setData(res.data);
         setDataStatus(res.status);
       })
       .catch((err) => console.log(err));
-
+    }
     axios
       .post(
         `${process.env.REACT_APP_BACKEND_URL}users/search`,
         choice ? {} : filter
       )
       .then((res) => {
-        // console.log(res.data);
-        setUsers(res.data);
+        setUsers(res.data)
         setUsersStatus(res.status);
       })
       .catch((err) => console.log(err));
@@ -369,14 +400,57 @@ const Row = () => {
             Clear Filter
           </Button>
         </Grid>
-        <Grid item xs={12}>
-          <Table
-            expand={true}
-            data={choice ? data : users}
-            columns={choice ? columns : userColumns}
-            status={choice ? dataStatus : usersStatus}
-          />
-        </Grid>
+        {role!=="admin"?
+         <>
+          <Grid item xs={12} md={12}>
+            <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
+              <Typography
+                style={{ paddingBottom: "1rem", fontWeight: "bold" }}
+                variant="h5"
+              >
+                Your Orders
+              </Typography>
+              <Table data={createdOrders} columns={ columns } status={createdOrdersStatus} />
+              {/* <Test/> */}
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
+              <Typography
+                style={{ paddingBottom: "1rem", fontWeight: "bold" }}
+                variant="h5"
+              >
+                Orders to be Shipped
+              </Typography>
+              <Table data={fromOrders} columns={columns} status={fromOrdersStatus} />
+              {/* <Test/> */}
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
+              <Typography
+                style={{ paddingBottom: "1rem", fontWeight: "bold" }}
+                variant="h5"
+              >
+                Orders to be Received
+              </Typography>
+              <Table data={toOrders} columns={columns} status={ toOrdersStatus} />
+              {/* <Test/> */}
+            </Paper>
+          </Grid>
+        </>
+        :<Grid item xs={12} md={12}>
+        <Paper style={{ padding: "1rem", borderRadius: "1rem" }}>
+          <Typography
+            style={{ paddingBottom: "1rem", fontWeight: "bold" }}
+            variant="h5"
+          >
+            {choice?"All Orders":"Users"}
+          </Typography>
+          <Table data={choice ? data : users} columns={choice ? columns : userColumns} status={choice ? dataStatus : usersStatus} />
+          {/* <Test/> */}
+        </Paper>
+      </Grid>}
       </Grid>
     </div>
   );
