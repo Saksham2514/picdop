@@ -21,7 +21,7 @@ import Logo from "../../logo.png"
 import { Link, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Modal from "../components/Modal";
+import Modal from "../components/WalletModal";
 
 function Copyright() {
   const id =  useSelector(state=>state.id)

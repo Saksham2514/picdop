@@ -57,7 +57,7 @@ export const CompletedOrders = () => {
           {expEarData.map((data,ind)=><Grid item xs={12} md={4} lg={3}>
             <StatCard 
               title={data[0] + " Commission"}
-              price={data[1].amount}
+              price={data[1]?.amount || "0"}
             />
           </Grid>)}
           {loading ? (

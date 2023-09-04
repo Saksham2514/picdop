@@ -15,7 +15,6 @@ import { List } from "@mui/material";
 // import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slice";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   listitemRoot: {
@@ -84,17 +83,17 @@ export const MainListItems = () => {
           />
         </ListItem>
       </a>
-      {role === "admin" ? (
+      {role !== "user" ? (
       <a
-        href={"/commission-request"}
+        href={role=="admin"?"/commission-request":"/agent/request"}
         style={{ textDecoration: "none" }}
       >
-                    <ListItem button className={classes.listitemRoot}>
-              <ListItemIcon className={classes.iconRoot}>
-                <RequestPageOutlinedIcon />
-              </ListItemIcon>
+        <ListItem button className={classes.listitemRoot}>
+          <ListItemIcon className={classes.iconRoot}>
+            <RequestPageOutlinedIcon />
+            </ListItemIcon>
           <ListItemText
-            primary={role !== "agent" ? "Daily Earnings" : "Completed Orders"}
+            primary={"Request Management"}
           />
         </ListItem>
       </a>):<></>}
@@ -103,12 +102,11 @@ export const MainListItems = () => {
         href={role !== "admin" ? "/notes" : "/notesAdmin"}
         style={{ textDecoration: "none" }}
       >
-                    <ListItem button className={classes.listitemRoot}>
-              <ListItemIcon className={classes.iconRoot}>
-                <ListAltIcon />
-              </ListItemIcon>
+          <ListItem button className={classes.listitemRoot}>
+            <ListItemIcon className={classes.iconRoot}>
+              <ListAltIcon />
+            </ListItemIcon>
           <ListItemText
-          // primary={role !== "agent" ? "Notes" : "Completed Orders"}
           primary={"Notes"}
           />
         </ListItem>
