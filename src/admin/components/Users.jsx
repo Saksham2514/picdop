@@ -8,6 +8,7 @@ import { Container, Grid } from "@material-ui/core";
 import { Paper } from "@mui/material";
 import {ProfileForm} from "../pages/UserFormClass";
 import { useState,useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -33,6 +34,8 @@ const [edit, setEdit] = useState(false)
 
 const [long, setLong] = useState("");
 const [lat, setLat] = useState("");
+const {token} = useSelector(state=>state);
+
 useEffect(() => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -61,7 +64,7 @@ return (
         <Grid container spacing={2} style={{ marginTop: "0.5rem" , display:"flex",justifyContent:"center"}}>
           <Grid item xs={9}>
             <Paper style={{ padding: "1rem", borderRadius: "1rem" }} elevation={5}>
-              <ProfileForm edit={edit} setEdit={setEdit} data={details} setDetails={setDetails} />
+              <ProfileForm edit={edit} setEdit={setEdit} data={details} setDetails={setDetails} token={token}/>
             </Paper>
           </Grid>
         </Grid>

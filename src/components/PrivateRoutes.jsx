@@ -1,11 +1,12 @@
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 
 const PrivateRoute = () => {
   let {role,auth} = useSelector(state=>state)
+  const {pathname} = useLocation();
   return (
-      role !=="agent" && auth ? <Outlet/> : <Navigate to="/" replace/> 
+      (role !=="agent" || pathname == "/profile") && auth ? <Outlet/> : <Navigate to="/" replace/> 
   );
 };
 

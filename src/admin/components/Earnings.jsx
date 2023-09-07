@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
 import SVG from "../../assets/admin/dashboard.png";
-import { Button, Chip, Paper, Typography } from "@mui/material";
+import { Chip, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Table from "./Table"
 import { Link } from "react-router-dom";
@@ -35,23 +35,29 @@ export default function Dashboard() {
   
   const classes = useStyles();
 
-  const { id,role } = useSelector((state) => state);
+  const { id,role,token } = useSelector((state) => state);
   const [data, setData] = useState([]);
   const [users, setUsers] = useState([]);
 
   const getData = (id) => {
-    console.log("ID sent to get data : " + id);
     try {
       axios
-        .get(id)
+        .get(id,{
+          headers:{
+              "Authorization":token
+          }
+        })
         .then((res) => {
-          console.log(res.data);
           setData(res.data);
         })
         .catch((err) => console.log(err));
 
       axios
-        .get(`${process.env.REACT_APP_BACKEND_URL}users`)
+        .get(`${process.env.REACT_APP_BACKEND_URL}users`,{
+          headers:{
+              "Authorization":token
+          }
+        })
         .then((res) => setUsers(res.data))
         .catch((err) => console.log(err.message));
     } catch (err) {
@@ -63,7 +69,6 @@ export default function Dashboard() {
 
  
   useEffect(() => {
-    console.log(id);
     role === "admin"
       ? getData(`${process.env.REACT_APP_BACKEND_URL}orders`)
       : getData(`${process.env.REACT_APP_BACKEND_URL}order/${id}`);

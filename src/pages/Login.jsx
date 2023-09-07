@@ -32,13 +32,13 @@ const Login = () => {
         .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, {
           email: email,
           password: password,
+          generate:true
         })
         .then((res) => {
           if (res.data.length > 0) {
             dispatch(login({ id: res.data[0]._id, role: res.data[0].role,name:res.data[0].name,token:res.data[1],wallet:res.data[0].wallet }));
           } else {
             setError("Invalid Credentials");
-            console.log(res.data.length);
           }
         })
         .catch((err) => console.error(err));

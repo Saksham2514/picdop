@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 const Form = ({ disabled, details, setDetails }) => {
   const [activeClass, setActive] = React.useState("");
-  
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();

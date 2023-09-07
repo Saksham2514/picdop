@@ -34,12 +34,7 @@ const ParcelForm = ({ id }) => {
   const getAgentData = (id) => {
     try {
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, { _id: id },
-        {
-          headers: {
-            Authorization: token,
-          },
-        })
+        .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, { _id: id })
         .then((res) => {
           setAgentData(res.data[0]);
         })
@@ -47,7 +42,6 @@ const ParcelForm = ({ id }) => {
         .catch((err) => console.log(err));
     } catch (err) {
       alert("error");
-      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -56,13 +50,17 @@ const ParcelForm = ({ id }) => {
   const fetch = () => {
     try {
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, { _id: id },
-        {
-          headers: {
-            Authorization: token,
-          },
-        })
+        .post(
+          `${process.env.REACT_APP_BACKEND_URL}orders/search`,
+          { _id: id },
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
         .then((res) => {
+          console.log(res.data[0]);
           setData(res.data[0]);
           if (res.data[0].agentId) getAgentData(res.data[0].agentId);
           if (res.status > 0 && res.status === 200) {
@@ -80,21 +78,25 @@ const ParcelForm = ({ id }) => {
   }, []);
 
   const handleRegenerate = () => {
-    let otp = Math.floor(Math.random() * 999999) + 100000;
+    let otp = parseInt(
+      (Math.floor(Math.random() * 999999) + 100000).toString().substring(0, 6)
+    );
     axios
-      .put(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`, { otp: otp },
-      {
-        headers: {
-          Authorization: token,
-        },
-      })
+      .put(
+        `${process.env.REACT_APP_BACKEND_URL}orders/${id}`,
+        { otp: otp },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
       .then(fetch())
       .catch((err) => console.error(err));
   };
   const handleDelete = () => {
     axios
-      .delete(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`,
-      {
+      .delete(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`, {
         headers: {
           Authorization: token,
         },
@@ -119,9 +121,13 @@ const ParcelForm = ({ id }) => {
           </Typography>
         </Grid>
         <Grid item xs={4} md={4} textAlign={"center"}>
-          <Typography style={{ fontWeight: "bold" }} variant="h6">
-            OTP is : {data.otp}
-          </Typography>
+          {data.status.toLowerCase() !== "completed" ? (
+            <Typography style={{ fontWeight: "bold" }} variant="h6">
+              OTP is : {data.otp}
+            </Typography>
+          ) : (
+            <></>
+          )}
         </Grid>
         <Grid item xs={4} md={4} textAlign={"right"}>
           <Chip
@@ -278,35 +284,49 @@ const ParcelForm = ({ id }) => {
         <Grid item xs={12} md={4}>
           <Link
             to="/collection"
-            style={{ textDecoration: "none", borderRadius: "1rem" }}
+            style={{
+              textDecoration: "none",
+              borderRadius: "1rem",
+            }}
           >
             <Button variant="contained" size="small" color="primary">
               Back To Dashboard
             </Button>
           </Link>
         </Grid>
-        <Grid
-          item
-          xs={6}
-          md={4}
-          sx={{ textAlign: { xs: "left", md: "center" } }}
-        >
-          <Button
-            variant="contained"
-            size="small"
-            color="success"
-            onClick={() => {
-              handleRegenerate();
-              fetch();
-            }}
-          >
-            Regenerate OTP
-          </Button>
-        </Grid>
+        {data.status.toLowerCase() !== "completed" ? (
+          <>
+            <Grid
+              item
+              xs={6}
+              md={4}
+              sx={{ textAlign: { xs: "left", md: "center" } }}
+            >
+              <Button
+                variant="contained"
+                size="small"
+                color="success"
+                onClick={() => {
+                  handleRegenerate();
+                  fetch();
+                }}
+              >
+                Regenerate OTP
+              </Button>
+            </Grid>
 
-        <Grid xs={6} md={4} style={{ paddingTop: "1.5rem" }} textAlign="right">
-          <NestedModal label=" Order" handleDelete={handleDelete} />
-        </Grid>
+            <Grid
+              xs={6}
+              md={4}
+              style={{ paddingTop: "1.5rem" }}
+              textAlign="right"
+            >
+              <NestedModal label=" Order" handleDelete={handleDelete} />
+            </Grid>
+          </>
+        ) : (
+          <></>
+        )}
         {/* Button row ens  */}
       </Grid>
     </div>

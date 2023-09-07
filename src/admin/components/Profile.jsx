@@ -6,7 +6,7 @@ import DashboardLayout from "../pages/DashboardLayout";
 import { Container, Grid } from "@material-ui/core";
 
 import { Paper } from "@mui/material";
-import ParcelForm from "../pages/ProfileForm";
+import ProfileForm from "../pages/ProfileForm";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const { id } = useSelector((state) => state);
+  const { id,token } = useSelector((state) => state);
   const [edit, setEdit] = useState(false);
   const [details, setDetails] = useState();
 
@@ -42,7 +42,6 @@ export default function Dashboard() {
         _id: id,
       })
       .then((res) => {
-        // console.log(res.data);
         setDetails(res.data);
       })
       .catch((err) => console.error(err));
@@ -68,11 +67,12 @@ export default function Dashboard() {
                     style={{ padding: "1rem", borderRadius: "1rem" }}
                     elevation={5}
                   >
-                    <ParcelForm
+                    <ProfileForm
                       edit={edit}
                       setEdit={setEdit}
                       data={details[0]}
                       setDetails={setDetails}
+                      token={token}
                     />
                   </Paper>
                 </Grid>

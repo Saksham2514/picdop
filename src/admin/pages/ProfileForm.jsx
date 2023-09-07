@@ -8,8 +8,10 @@ import React, { Component } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { Alert } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export class ProfileForm extends Component {
+  // const { token } = useSelector((state) => state);
   constructor(props) {
     super(props);
     this.state = {
@@ -71,7 +73,11 @@ export class ProfileForm extends Component {
 
     this.handleUpdate = () => {    
       axios
-        .put(`${process.env.REACT_APP_BACKEND_URL}users/${this.props.data._id}`, this.state)
+        .put(`${process.env.REACT_APP_BACKEND_URL}users/${this.props.data._id}`, this.state,{
+          headers:{
+              "Authorization":this.props.token
+          }
+        })
         .then((res) => {
           if (res?.data?._id) {
             this.setState({
@@ -91,7 +97,11 @@ export class ProfileForm extends Component {
       let str = url.split("/");
       let par = str.splice(-1)[0];
       axios
-        .delete(`${process.env.REACT_APP_BACKEND_URL}users/${par}`)
+        .delete(`${process.env.REACT_APP_BACKEND_URL}users/${par}`,{
+          headers:{
+              "Authorization":this.props.token
+          }
+        })
         .then((res) => {
           this.setState({ navigate: true });
         })

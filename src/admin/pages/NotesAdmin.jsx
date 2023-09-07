@@ -3,47 +3,29 @@ import React, { useEffect } from 'react';
 import DashboardLayout from "../pages/DashboardLayout";
 import styles from "../../assets/css/components.module.css";
 import {
-  Button,
-  Collapse,
   Container,
   Grid,
-  ListItem,
-  ListItemText,
   Paper,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import { useState } from "react";
-import Table from "rc-table";
-import { IconButton } from '@mui/material';
-import { DeleteForeverOutlined } from '@mui/icons-material';
-import { DeleteOutlined } from '@material-ui/icons';
 import Card from '../components/Card';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const NotesAdmin = () => {
   const [data, setData] = useState([]);
-  const [expanded, setExpanded] = useState(false);
-
-  const columns = [
-    {
-      name: "Product Name",
-      selector: (row) => row.product_name,
-    },
-    {
-      name: "Quantity",
-      selector: (row) => row.quantity,
-      sortable: true,
-      wrap: true,
-    },
-  ];
+  const { token } = useSelector((state) => state);
 
   useEffect(()=>{
     axios
-    .post(`${process.env.REACT_APP_BACKEND_URL}getNotes`)
+    .post(`${process.env.REACT_APP_BACKEND_URL}getNotes`,{},{
+      headers:{
+          "Authorization":token
+      }
+    })
         .then((res) => {
           setData(res.data);
-          console.log(res.data)
         })
         .catch((err) => console.log(err));
   },[])

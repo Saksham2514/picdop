@@ -42,6 +42,7 @@ export default function Dashboard() {
   
   const uid = useSelector((state) => state.id);
   const role = useSelector((state) => state.role);
+  const token = useSelector((state) => state.token);
   
   const yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
   const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString()
@@ -56,6 +57,10 @@ export default function Dashboard() {
           $gte: yesterday,
           $lte: tomorrow
         },
+      },{
+        headers:{
+            "Authorization":token
+        }
       })
       .then((res) => {
         // console.log(res.data);
@@ -64,7 +69,11 @@ export default function Dashboard() {
       })
       .catch((err) => console.log(err));
     axios
-      .post(id,{ $or: [{ from: uid }, { to: uid }, { createdBy: uid }] })
+      .post(id,{ $or: [{ from: uid }, { to: uid }, { createdBy: uid }] },{
+        headers:{
+            "Authorization":token
+        }
+      })
       .then((res) => {
         // console.log(res.data);
         setOrders(res.data);
@@ -73,7 +82,11 @@ export default function Dashboard() {
       .catch((err) => console.log(err));
 
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}users`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}users`,{
+        headers:{
+            "Authorization":token
+        }
+      })
       .then((res) => {
         setUsers(res.data)
         setUsersStatus(res.status)

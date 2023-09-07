@@ -19,7 +19,6 @@ import { useSelector } from "react-redux";
 export default function Dashboard() {
   const { id } = useSelector((state) => state);
   const [data, setData] = useState([]);
-  console.log(id);
   
   const [dataStatus, setDataStatus] = useState(0);
   
@@ -29,6 +28,7 @@ export default function Dashboard() {
   const [fromCity, setFromCity] = useState("");
   const [toCity, setToCity] = useState("");
   const [users, setUsers] = useState([]);
+  const {token} = useSelector(state=>state)
 
   
 
@@ -132,19 +132,27 @@ export default function Dashboard() {
   }
 
   const getData = () => {
+    console.log(token);
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}orders/searchLimit`, {
         $or: [{ from: id }, { to: id }, { createdBy: id }],
+      },{
+        headers:{
+            "Authorization":token
+        }
       })
       .then((res) => {
         setData(res.data);
-        console.log(res.status);
         setDataStatus(res.status);
       })
       .catch((err) => console.log(err));
 
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}users`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}users`,{
+        headers:{
+            "Authorization":token
+        }
+      })
       .then((res) => setUsers(res.data))
       .catch((err) => console.log(err.message));
   };
@@ -208,7 +216,6 @@ export default function Dashboard() {
                       
                       from && to && fromCity && toCity
                         ? setParcelDetails((curr)=>{
-                          console.log(from,to);
                           return {
                             ...curr,
                             from: from,

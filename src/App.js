@@ -55,11 +55,6 @@ function App() {
           <Route path="/orders" element={<AgentOrders />} />
           <Route path="/agent/complete" element={<CompletedOrders />} />
           <Route path="/agent/request" element={<CommissionRequest />} />
-          {/* <Route path="/agent" element={<Admin />} />
-          <Route path="/collection" element={<Collection />} />
-          <Route path="/prices" element={<Prices />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/users/:userId" element={<UserClass  />} /> */}
         </Route>
       </Routes>
     </div>

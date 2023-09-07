@@ -5,12 +5,14 @@ import Table from './Table';
 import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 const CommissionReq = () => {
     const [initiated,setInitiated] = useState([]);
     const [completed,setCompleted] = useState([]);
     const [rejected,setRejected] = useState([]);
     const [dataStatus,setDataStatus] = useState(0);
+    const token = useSelector((state) => state.token);
 
     const columns = [
         {
@@ -76,9 +78,14 @@ const CommissionReq = () => {
 
     const getData = ()=>{
         axios
-            .post(`${process.env.REACT_APP_BACKEND_URL}findRedeemReq`,{})
+            .post(`${process.env.REACT_APP_BACKEND_URL}findRedeemReq`,{},{
+                headers:{
+                    "Authorization":token
+                }
+            })
             .then((res) => {
                 seprateData(res.data)
+                console.log(res.data);
                 setDataStatus(res.status);
             })
             .catch((err) => console.log(err));
@@ -133,6 +140,10 @@ const CommissionReq = () => {
         axios
         .put(`${process.env.REACT_APP_BACKEND_URL}updateRedeemReq`,{
             status:status,redeemID:redeemID
+        },{
+            headers:{
+                "Authorization":token
+            }
         })
         .then((res) => {
             if(res.data?._id || status==="rejected") callback(res.data);

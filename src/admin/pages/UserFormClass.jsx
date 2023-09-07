@@ -74,7 +74,11 @@ export class ProfileForm extends Component {
       let str = url.split("/");
       let par = str.splice(-1)[0];
       axios
-        .put(`${process.env.REACT_APP_BACKEND_URL}users/${par}`, this.state)
+        .put(`${process.env.REACT_APP_BACKEND_URL}users/${par}`, this.state,{
+          headers:{
+              "Authorization":this.props.token
+          }
+        })
         .then((res) => {
           if (res?.data?._id) {
             this.setState({
@@ -94,7 +98,11 @@ export class ProfileForm extends Component {
       let str = url.split("/");
       let par = str.splice(-1)[0];
       axios
-        .delete(`${process.env.REACT_APP_BACKEND_URL}users/${par}`)
+        .delete(`${process.env.REACT_APP_BACKEND_URL}users/${par}`,{
+          headers:{
+              "Authorization":this.props.token
+          }
+        })
         .then((res) => {
           this.setState({ navigate: true });
         })

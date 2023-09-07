@@ -8,9 +8,6 @@ import { useEffect } from 'react';
 
 const Modal = ({openModal,setOpenModal}) => {
   const dispatch = useDispatch();
-  const id =  useSelector(state=>state.id)
-  const role =  useSelector(state=>state.role)
-  const wallet =  useSelector(state=>state.wallet)
   const [amount, setAmount] = useState(100);
   const handleClickClose = () => {
       setOpenModal(false);
@@ -23,6 +20,7 @@ const Modal = ({openModal,setOpenModal}) => {
       upiID:"",
       amount:""
   });
+  const {token,role,wallet} = useSelector((state)=>state);
   
   const min = 100;
   const max = 10000;
@@ -31,8 +29,11 @@ const Modal = ({openModal,setOpenModal}) => {
   const addMoney = ()=>{
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}addToWallet`, {
-          userID:id,
           amount:amount,
+      },{
+        headers:{
+            "Authorization":token
+        }
       })
       .then((res) => {
           setAmount(100)
@@ -54,10 +55,13 @@ const Modal = ({openModal,setOpenModal}) => {
     }
     
     axios
-    .post(`${process.env.REACT_APP_BACKEND_URL}createredeemreq`, {...data,userID:id})
+    .post(`${process.env.REACT_APP_BACKEND_URL}createredeemreq`,data,{
+      headers:{
+          "Authorization":token
+      }
+    })
     .then((res) => {
         setAmount(100)
-        console.log(res);
         if(res.data?.wallet)dispatch(updateWallet({ wallet:res.data.wallet }));
     })
     .catch((err) => console.log(err));
@@ -65,11 +69,12 @@ const Modal = ({openModal,setOpenModal}) => {
 
   const getBankDetails = ()=>{
     axios
-    .post(`${process.env.REACT_APP_BACKEND_URL}getBankDetails`, {
-        userID:id,
+    .post(`${process.env.REACT_APP_BACKEND_URL}getBankDetails`, {},{
+      headers:{
+          "Authorization":token
+      }
     })
     .then((res) => {
-      console.log(res);
       setData({
         holderName:res.data?.holderName,
         accountNumber:res.data?.accountNumber,

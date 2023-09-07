@@ -9,8 +9,7 @@ import OrderCard from "./components/AcceptOrderCard";
 export const AgentOrders = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { id } = useSelector((state) => state);
-  console.log(id);
+  const { id,token } = useSelector((state) => state);
 
   const removeCard = (id)=>{
     const filteredArr = data.filter((asd)=>{
@@ -23,13 +22,16 @@ export const AgentOrders = () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, {
         $or: [
-          {status: "Accepted"},
-      ],
+            {status: "Accepted"},
+          ],
         agentId: id,
+      },{
+        headers:{
+            "Authorization":token
+        }
       })
       .then((res) => {  
         setData(res.data);
-        console.log(res.data);
         setLoading(false);
       })
       .catch((err) => console.log(err));
@@ -63,7 +65,7 @@ export const AgentOrders = () => {
                 </Typography>
               ) : (
                 data.map((order, ind) => (
-                  <Grid item xs={12} key={order._id}>
+                  <Grid item xs={12} sm={6} md={4} key={order._id}>
                     <OrderCard data={order} getData={getData} removeCard={removeCard}/>
                   </Grid>
                 ))

@@ -1,5 +1,4 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, TextField, Typography } from '@material-ui/core';
-import axios from 'axios';
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { updateWallet } from '../../redux/slice';

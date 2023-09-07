@@ -8,20 +8,26 @@ import { Container, Grid } from "@material-ui/core";
 import { Paper } from "@mui/material";
 import UserFormClass from "./UserFormClass";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export class UserClass extends Component {
+  
   fetch = () => {
     let url = window.location.href;
+    const { token } = useSelector((state) => state);
     let str = url.split("/");
     let par = str.splice(-1)[0];
     try {
       axios
         .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, {
           _id: par.toString(),
+        },{
+          headers:{
+              "Authorization":token
+          }
         })
         .then((res) => {
           this.setState({ details: res.data });
-          console.log(res.data);
         });
     } catch (err) {
       console.log(err);

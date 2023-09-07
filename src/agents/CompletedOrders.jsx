@@ -9,7 +9,7 @@ import OrderCard from "./components/AcceptOrderCard";
 export const CompletedOrders = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { id,role } = useSelector((state) => state);
+  const { id,role,token } = useSelector((state) => state);
   const [expEarData, setExpEarData] = useState([]);
 
   const getData = () => {
@@ -17,6 +17,10 @@ export const CompletedOrders = () => {
       .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, {
         $or: [{ status: "Completed" }],
         agentId: id,
+      },{
+        headers:{
+            "Authorization":token
+        }
       })
       .then((res) => {
         setData(res.data);
@@ -29,10 +33,13 @@ export const CompletedOrders = () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}getSummary`, {
         role:role,userID:id
+      },{
+        headers:{
+            "Authorization":token
+        }
       })
       .then((res) => {
         setExpEarData(res.data);
-        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }
@@ -74,7 +81,7 @@ export const CompletedOrders = () => {
                 </Typography>
               ) : (
                 data.map((order, ind) => (
-                  <Grid item xs={4}>
+                  <Grid item xs={12} sm={6} md={4}>
                     <OrderCard data={order} getData={getData} key={ind} />
                   </Grid>
                 ))

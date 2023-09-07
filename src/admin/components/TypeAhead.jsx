@@ -12,9 +12,9 @@ export const TypeAhead = (props) => {
   useEffect(() => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}users/search`,{
-        $not : [{role:"agent"}]
+        role:{$not : {$eq:"agent"}}
       })
-      .then((res) => {setUsers(res.data);console.log(res.data)})
+      .then((res) => {setUsers(res.data);})
       .catch((err) => alert(err));
   }, []);
 

@@ -21,7 +21,6 @@ export default function MediaControlCard({ data, removeCard }) {
   const { id, name } = useSelector((state) => state);
 
   const handleAccept = () => {
-    console.log(data.otp)
     if (otp.trim() === data.otp.toString()) {
       axios
         .put(`${process.env.REACT_APP_BACKEND_URL}orders/${data._id}`, {
@@ -49,6 +48,10 @@ export default function MediaControlCard({ data, removeCard }) {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, {
         $or: [{ _id: data.from }, { _id: data.to }],
+      },{
+        headers:{
+            "Authorization":token
+        }
       })
       .then((res) => {
 

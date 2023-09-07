@@ -10,16 +10,22 @@ import { Link, useNavigate } from "react-router-dom";
 import NestedModal from "./Modal";
 import { useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const ParcelForm = ({ id }) => {
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = useState(true);
   const [fileArray, setFA] = useState(["https://source.unsplash.com/300x300"]);
+  const { token } = useSelector((state) => state);
 const navigate = useNavigate();
   const fetch = () => {
     try {
       axios
-        .get(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`)
+        .get(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`,{
+          headers:{
+              "Authorization":token
+          }
+        })
         .then((res) => {
           setData(res.data[0]);
         })
@@ -39,11 +45,19 @@ const navigate = useNavigate();
   const handleRegenerate = ()=>{
     let otp = Math.floor(Math.random()*999999)+100000
     axios.put(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`,
-    {"otp":otp}).then(fetch()).catch(err=>console.error(err))
+    {"otp":otp},{
+      headers:{
+          "Authorization":token
+      }
+    }).then(fetch()).catch(err=>console.error(err))
   }
   const handleDelete = ()=>{
     
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`,
+    axios.delete(`${process.env.REACT_APP_BACKEND_URL}orders/${id}`,{
+      headers:{
+          "Authorization":token
+      }
+    }
     ).then(navigate('/collection')).catch(err=>console.error(err))
   }
 

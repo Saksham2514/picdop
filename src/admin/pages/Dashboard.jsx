@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/slice";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -55,6 +56,8 @@ export default function Dashboard() {
   const role = useSelector((state) => state.role)
   const token = useSelector((state) => state.token);
 
+  const dispatch = useDispatch();
+
   const yesterday = new Date(
     new Date().setDate(new Date().getDate() - 1)
   ).toISOString();
@@ -62,7 +65,6 @@ export default function Dashboard() {
     new Date().setDate(new Date().getDate() + 1)
   ).toISOString();
 
-  const { id } = useSelector((state) => state);
 
   const getData = (id) => {
     axios
@@ -81,27 +83,38 @@ export default function Dashboard() {
         }
       )
       .then((res) => {
-        // console.log(res.data);
         setDailyOrders(res.data);
         setDailyOrdersStatus(res.status);
       })
       .catch((err) => console.log(err));
     axios
-      .post(id,  { createdBy: uid })
+      .post(id,  { createdBy: uid },{
+        headers:{
+            "Authorization":token
+        }
+      })
       .then((res) => {
         setCreatedOrders(res.data);
         setCreatedOrdersStatus(res.status);
       })
       .catch((err) => console.log(err));
     axios
-      .post(id, { from: uid } )
+      .post(id, { from: uid },{
+        headers:{
+            "Authorization":token
+        }
+      } )
       .then((res) => {
         setFromOrders(res.data);
         setFromOrdersStatus(res.status);
       })
       .catch((err) => console.log(err));
     axios
-      .post(id, { to: uid })
+      .post(id, { to: uid },{
+        headers:{
+            "Authorization":token
+        }
+      })
       .then((res) => {
         setToOrders(res.data);
         setToOrdersStatus(res.status);
@@ -109,7 +122,11 @@ export default function Dashboard() {
       .catch((err) => console.log(err));
 
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}users`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}users`,{
+        headers:{
+            "Authorization":token
+        }
+      })
       .then((res) => {
         setUsers(res.data);
         setUsersStatus(res.status);
@@ -145,19 +162,23 @@ export default function Dashboard() {
 
   const getSummary = ()=>{
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}getSummary`, {
-        role:role,userID:id
+      .post(`${process.env.REACT_APP_BACKEND_URL}getSummary`,{},{
+        headers:{
+          "Authorization":token
+        }
       })
       .then((res) => {
         setExpEarData(res.data);
-        console.log(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch(
+        (err) => {
+          console.log(err)
+          dispatch(logout());
+        });
   }
 
   useEffect(() => {
     getData(`${process.env.REACT_APP_BACKEND_URL}orders/search`);
-    // getAnalysis(role === "admin" ? "" : id);
     getSummary();
   }, []);
 

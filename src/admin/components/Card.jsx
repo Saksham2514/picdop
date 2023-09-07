@@ -13,7 +13,6 @@ import { useState } from "react";
 import { IconButton } from "@mui/material";
 
 const Card = (props) => {
-  console.log(props.data?._id?.user?.name);
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -49,9 +48,9 @@ const Card = (props) => {
           </IconButton>
         </Grid>
         <Grid item xs={12} textAlign={"center"}>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Collapse in={expanded} timeout="auto" unmountOnExit style={{overflow:"scroll"}}>
             {props.data?.productName.length ? (
-              <table style={{ width: "100%" }}>
+              <table style={{ width: "100%", }}>
                 <thead style={{ fontWeight: "bold" }}>
                   <tr>
                     <td>Product Name</td>
@@ -61,7 +60,7 @@ const Card = (props) => {
                 </thead>
                 {props.data.productName.map((c, ind) => {
                   return (
-                    <tr component="div">
+                    <tr component="div" >
                       <td>{props.data.productName[ind]}</td>
                       <td>{props.data.quantity[ind]}</td>
                       <td>

@@ -30,7 +30,11 @@ class FileUploader extends React.Component {
     }
 
     let url = process.env.REACT_APP_BACKEND_URL + "test";
-    axios.post(url, data).then(
+    axios.post(url, data,{
+      headers:{
+          "Authorization":this.props.token
+      }
+    }).then(
       (res) => {
         console.log(res.data);
         // then print response status

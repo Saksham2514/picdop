@@ -11,6 +11,7 @@ const CommissionRequest = () => {
     const [data,setData] = useState([]);
     const [dataStatus,setDataStatus] = useState(0);
     const uid = useSelector((state) => state.id);
+    const {token} = useSelector((state)=>state);
 
     const columns = [
         {
@@ -35,7 +36,11 @@ const CommissionRequest = () => {
 
     const getData = ()=>{
         axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}findRedeemReq`,{userID:uid})
+        .post(`${process.env.REACT_APP_BACKEND_URL}findRedeemReq`,{uid:uid},{
+            headers:{
+                "Authorization":token
+            }
+        })
         .then((res) => {
             setData(res.data);
             setDataStatus(res.status);

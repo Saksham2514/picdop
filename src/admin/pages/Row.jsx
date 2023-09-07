@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect } from "react";
-import { Loading } from "./Loading";
 
 const Row = () => {
   const [data, setData] = useState([]);
@@ -24,11 +23,10 @@ const Row = () => {
   const [toOrdersStatus, setToOrdersStatus] = useState(0);
   const [usersStatus, setUsersStatus] = useState(0);
 
-  const { role, id } = useSelector((state) => state);
+  const { role, id,token } = useSelector((state) => state);
   const [choice, setChoice] = useState(true);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  console.log(role);
   const [filter, setFilter] = useState(
     role === "admin"
       ? {}
@@ -46,22 +44,33 @@ const Row = () => {
   function getData() {
     if(role!=="admin"){
       axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`,  { createdBy: id })
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`,  { createdBy: id },{
+          headers:{
+              "Authorization":token
+          }
+        })
       .then((res) => {
         setCreatedOrders(res.data);
         setCreatedOrdersStatus(res.status);
       })
       .catch((err) => console.log(err));
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, { from: id } )
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, { from: id } ,{
+          headers:{
+              "Authorization":token
+          }
+        })
       .then((res) => {
         setFromOrders(res.data);
         setFromOrdersStatus(res.status);
-        console.log(res.data);
       })
       .catch((err) => console.log(err));
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, { to: id })
+      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`, { to: id },{
+          headers:{
+              "Authorization":token
+          }
+        })
       .then((res) => {
         setToOrders(res.data);
         setToOrdersStatus(res.status);
@@ -70,21 +79,29 @@ const Row = () => {
 
     }else{
       axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}orders/search`,{})
+      .post(`${process.env.REACT_APP_BACKEND_URL}users/search`,{},{
+        headers:{
+            "Authorization":token
+        }
+      })
       .then((res) => {
-        setData(res.data);
-        setDataStatus(res.status);
+        setUsers(res.data);
+        setUsersStatus(res.status);
       })
       .catch((err) => console.log(err));
     }
     axios
       .post(
-        `${process.env.REACT_APP_BACKEND_URL}users/search`,
-        choice ? {} : filter
+        `${process.env.REACT_APP_BACKEND_URL}orders/search`,
+        filter,{
+          headers:{
+              "Authorization":token
+          }
+        }
       )
       .then((res) => {
-        setUsers(res.data)
-        setUsersStatus(res.status);
+        setData(res.data)
+        setDataStatus(res.status);
       })
       .catch((err) => console.log(err));
   }
@@ -346,28 +363,30 @@ const Row = () => {
             ""
           )}
         </Grid>
-        <Grid item xs={6} md={3}>
-          Start Date
-          <DatePicker
-            selected={startDate}
-            dateFormat="MM/yyyy"
-            showMonthYearPicker
-            onChange={(date) => {
-              setStartDate(date);
-            }}
-          />
-        </Grid>
-        <Grid item xs={6} md={3}>
-          End Date
-          <DatePicker
-            selected={endDate}
-            minDate={startDate}
-            dateFormat="MM/yyyy"
-            showMonthYearPicker
-            onChange={(date) => {
-              setEndDate(date);
-            }}
-          />
+        <Grid container paddingLeft={5} xs={12} md={6} padding={2}>
+          <Grid item xs={12} sm={6}>
+            Start Date
+            <DatePicker
+              selected={startDate}
+              dateFormat="MM/yyyy"
+              showMonthYearPicker
+              onChange={(date) => {
+                setStartDate(date);
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            End Date
+            <DatePicker
+              selected={endDate}
+              minDate={startDate}
+              dateFormat="MM/yyyy"
+              showMonthYearPicker
+              onChange={(date) => {
+                setEndDate(date);
+              }}
+            />
+          </Grid>
         </Grid>
         <Grid item xs={12} md={3}>
           <Button

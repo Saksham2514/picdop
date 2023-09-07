@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 
 const Notes = () => {
   const [data, setData] = useState([]);
-  const { id } = useSelector((state) => state);
+  const { id, token } = useSelector((state) => state);
 
   const [dataStatus, setDataStatus] = useState(0);
 
@@ -56,6 +56,10 @@ const Notes = () => {
           createdBy:id,
           product:product,
           quantity:quantity,
+      },{
+        headers:{
+            "Authorization":token
+        }
       })
       .then((res) => {
         getNotes();
@@ -67,7 +71,11 @@ const Notes = () => {
 
   const deleteNote = (id)=>{
     axios
-      .delete(`${process.env.REACT_APP_BACKEND_URL}deleteNote/${id}`)
+      .delete(`${process.env.REACT_APP_BACKEND_URL}deleteNote/${id}`,{
+        headers:{
+            "Authorization":token
+        }
+      })
       .then((res) => {
         getNotes();
       })
@@ -78,6 +86,10 @@ const Notes = () => {
     axios
     .post(`${process.env.REACT_APP_BACKEND_URL}getNote`, {
           id:id,
+        },{
+          headers:{
+              "Authorization":token
+          }
         })
         .then((res) => {
           setData(res.data);
@@ -106,7 +118,7 @@ const Notes = () => {
               style={{
                 backgroundColor: "var(--main-color)",
                 color: "white",
-                padding: "0 0.5rem",
+                padding: "2rem 0.5rem",
               }}
             >
               <Grid item xs={12}>
@@ -122,10 +134,10 @@ const Notes = () => {
                   style={{
                     justifyContent: "space-between",
                     alignItems: "center",
-                    padding: "1rem 5rem",
+                    // padding: "1rem 5rem",
                   }}
                 >
-                  <Grid item xs={12} md={3}>
+                  <Grid item xs={12} sm={4} md={3} style={{margin:"auto"}}>
                     <TextField
                       fullWidth
                       variant="outlined"
@@ -142,7 +154,7 @@ const Notes = () => {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} md={3}>
+                  <Grid item xs={12} sm={4} md={3} style={{margin:"auto"}}>
                     <TextField
                       fullWidth
                       variant="outlined"
@@ -160,7 +172,7 @@ const Notes = () => {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} md={2}>
+                  <Grid item xs={12} sm={4} md={3} >
                     <Button
                       variant="contained"
                       size="small"
@@ -168,7 +180,6 @@ const Notes = () => {
                         backgroundColor: "white",
                         color: "var(--main-color)",
                         borderRadius: "5px",
-                        margin: "1rem 0",
                         paddingX: "1rem",
                         textTransform: "capitalize",
                         fontWeight: "600",

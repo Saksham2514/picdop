@@ -9,16 +9,16 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import React, { useEffect, useState } from "react";
-// import ImagePreview from "../../components/FrOriginal";
+import React, {  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Alert} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { updateWallet } from "../../redux/slice";
 
-const ImgDisplay = ({ billImage, setLoading }) => {return(
-  <Grid item xs={12} md={6} key={Math.random()}>
+const ImgDisplay = ({ billImage, setLoading }) => {
+  return(
+    <Grid item xs={12} md={6} key={Math.random()}>
     <Button
       key={Math.random()}
       variant="contained"
@@ -26,7 +26,7 @@ const ImgDisplay = ({ billImage, setLoading }) => {return(
       onClick={() => {
         setLoading(false);
       }}
-    >
+      >
       Select different files
     </Button>
 
@@ -38,7 +38,7 @@ const ImgDisplay = ({ billImage, setLoading }) => {return(
         gap: 10,
         overflowX: "auto",
       }}
-    >
+      >
       {billImage?.map((e, i) => (
         <>
           <img src={e} height={150} alt="Images" key={i} />
@@ -49,7 +49,7 @@ const ImgDisplay = ({ billImage, setLoading }) => {return(
 );}
 const ParcelForm = ({ details, setDetails }) => {  
   const dispatch = useDispatch()
-  const { id,role,wallet } = useSelector((state) => state);
+  const { id,role,wallet,token } = useSelector((state) => state);
   const [error, setError] = useState();
   const navigate = useNavigate();
   const [loading, setloading] = useState(false);
@@ -157,6 +157,10 @@ const ParcelForm = ({ details, setDetails }) => {
           $or: [weightFilter, heightFilter],
         },
         select: details.sameCity ? "localPrice -_id " : "outCityPrice -_id ",
+      },{
+        headers:{
+            "Authorization":token
+        }
       })
       .then((res) => {
         const data = res.data;
@@ -207,7 +211,11 @@ const ParcelForm = ({ details, setDetails }) => {
           : preDetails;
           console.log(preDetails);
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}orders`, data)
+        .post(`${process.env.REACT_APP_BACKEND_URL}orders`, data,{
+          headers:{
+              "Authorization":token
+          }
+        })
         .then((res) => {
           if (res?.data?._message) {
             setError(res.data._message);

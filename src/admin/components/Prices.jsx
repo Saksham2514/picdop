@@ -8,6 +8,7 @@ import { Alert, Button, TextField } from "@mui/material";
 import axios from "axios";
 import { useEffect } from "react";
 import CommissionCard from "../pages/CommissionCard";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,7 +35,8 @@ export default function Dashboard() {
   const [data, setData] = useState([]);
   const [commissionData,setCommissionData] = useState();
   const [breakpoint,setBreakpoint] = useState();
-  
+  const { token } = useSelector((state) => state);
+
   useEffect(() => {
     setBreakpoint(commissionData?.breakpoint);
   }, [commissionData]);
@@ -61,7 +63,11 @@ export default function Dashboard() {
 
   const getData = () => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}prices`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}prices`,{
+        headers:{
+            "Authorization":token
+        }
+      })
       .then((res) => {
         setData(res.data);
       })
@@ -70,7 +76,11 @@ export default function Dashboard() {
   };
   const getCommissionData = ()=>{
   axios
-    .get(`${process.env.REACT_APP_BACKEND_URL}getComissionValues`)
+    .get(`${process.env.REACT_APP_BACKEND_URL}getComissionValues`,{
+      headers:{
+          "Authorization":token
+      }
+    })
     .then((res) => {
       setCommissionData(res.data);
     })
@@ -162,7 +172,7 @@ export default function Dashboard() {
           </Grid> */}
         </Grid>
         <Grid container alignContent="center">
-          <Grid item xs={12}>
+          <Grid item xs={12}  display={{xs:"none",lg:"block"}}>
             {/* Grid Content */}
             <Grid
               container
