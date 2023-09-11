@@ -69,7 +69,7 @@ const CommissionCard = ({
             fullWidth
             variant="outlined"
             size="small"
-            value={inputValue}
+            // value={inputValue}
             onChange={(e) => {
               setUpdate(false);
               setInputValue(e.target.value);
@@ -83,12 +83,7 @@ const CommissionCard = ({
 
         <Grid item xs={6} sm={2} style={{ textAlign: "center" }}>
           {/* <Button variant="outlined" color="error"  onClick={handleDelete}>Delete</Button> */}
-          <Button
-            variant="outlined"
-            color="info"
-            disabled={update}
-            onClick={handleUpdate}
-          >
+          <Button variant="outlined" disabled={update} onClick={handleUpdate}>
             Update
           </Button>
         </Grid>

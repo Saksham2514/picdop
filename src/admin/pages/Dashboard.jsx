@@ -273,19 +273,17 @@ export default function Dashboard() {
               }}
             >
               <Grid container>
-                <Grid item xs={12} md={6}>
-                  <Typography variant="subtitle1">
-                    <p>Book a Delivery</p>
+                <Grid item xs={12} md={6} >
+                  <Typography variant="subtitle1"style={{margin:".2rem 0"}}>
+                    Book a Delivery
                   </Typography>
-                  <Typography variant="body2">
-                    <p>
+                  <Typography variant="body2"style={{margin:".2rem 0"}}>
                       There are many variations of passages of Lorem Ipsum
                       available, but the majority have suffered alteration some
                       form, by injected humour, or randomised words which don't
                       look even slightly believable.
-                    </p>
                   </Typography>
-                  <Link to="/delivery" style={{ textDecoration: "none" }}>
+                  <Link to="/delivery" style={{ textDecoration: "none",margin:".2rem 0" }}>
                     <Button
                       variant="contained"
                       size="small"

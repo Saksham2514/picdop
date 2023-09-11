@@ -41,7 +41,7 @@ const NotesAdmin = () => {
               style={{
                 // backgroundColor: "var(--main-color)",
                 // color: "white",
-                padding: "0 0.5rem",
+                padding: "1rem 0.5rem",
                 minHeight:"75vh"
               }}
             >
