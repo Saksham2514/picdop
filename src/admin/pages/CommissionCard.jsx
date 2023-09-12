@@ -18,9 +18,9 @@ const CommissionCard = ({
 
   let updateObject;
 
-  if (ind == 0) {
+  if (ind === 0) {
     updateObject = { breakpoint: parseInt(inputValue) };
-  } else if (ind == 1) {
+  } else if (ind === 1) {
     updateObject = { belowBreakpoint: parseInt(inputValue) };
   } else {
     updateObject = { aboveBreakpoint: parseInt(inputValue) };
@@ -69,11 +69,11 @@ const CommissionCard = ({
             fullWidth
             variant="outlined"
             size="small"
-            // value={inputValue}
+            value={inputValue}
             onChange={(e) => {
               setUpdate(false);
               setInputValue(e.target.value);
-              if (ind == 0) {
+              if (ind === 0) {
                 setBreakpoint(e.target.value);
               }
             }}

@@ -62,3 +62,14 @@ body:has(.App) {
   text-transform: uppercase;
   font-weight: bolder;
 }
+
+
+.xs_none{
+  background-color: red;
+}
+
+@media screen and (max-width:600px) {
+  .xs_none{
+    display: none;
+  }
+}

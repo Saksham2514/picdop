@@ -60,7 +60,7 @@ const CommissionReq = () => {
         {
         name: "Action",
         selector: (row) =>
-            row.status=="initiated"?<Grid  item style={{textAlign:"center"}}>
+            row.status==="initiated"?<Grid  item style={{textAlign:"center"}}>
                 <Button variant="outlined" color="error"  onClick={()=>{handleReject(row._id)}}>Reject</Button>
                 <Button variant="outlined" color="info"  onClick={()=>{handleAccept(row._id)}}>Accept</Button>
             </Grid>:<p style={{textTransform:"capitalize"}}>{row.status}</p>,

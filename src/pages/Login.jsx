@@ -102,14 +102,14 @@ const Login = () => {
               label="Remember me"
             />
           </Grid>
-          <Grid item lg={6}>
+          {/* <Grid item lg={6}>
             <Link
               to="/forgot"
               style={{ color: "var(--main-color)", textDecoration: "none" }}
             >
               <p>Forgot Password?</p>
             </Link>
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid item xs={12}>
           <Button

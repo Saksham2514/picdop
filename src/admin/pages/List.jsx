@@ -2,7 +2,7 @@ import * as React from "react";
 import { Grid, TextField } from "@material-ui/core";
 import { useState } from "react";
 import axios from "axios";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
 export default function CheckboxList(props) {
@@ -12,22 +12,22 @@ export default function CheckboxList(props) {
   const { token } = useSelector((state) => state);
 
   // const classes = useStyles();
-  const handleDelete = () => {
-    axios
-      .delete(`${process.env.REACT_APP_BACKEND_URL}prices/${props.id}`, {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((res) => {
-        if (res?.data) {
-          props.getData();
-        } else {
-          props.setError("Couldn't create Price Category");
-        }
-      })
-      .catch((err) => console.log(err));
-  };
+  // const handleDelete = () => {
+  //   axios
+  //     .delete(`${process.env.REACT_APP_BACKEND_URL}prices/${props.id}`, {
+  //       headers: {
+  //         Authorization: token,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       if (res?.data) {
+  //         props.getData();
+  //       } else {
+  //         props.setError("Couldn't create Price Category");
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
   const handleUpdate = () => {
     axios
       .put(
@@ -66,6 +66,7 @@ export default function CheckboxList(props) {
       spacing={3}
     >
       <Grid item xs={12} sm={2}>
+        <Typography align="center" variant="subtitle2" color="GrayText" textTransform={"uppercase"}> category</Typography>
         <p
           style={{
             fontWeight: "bold",
@@ -77,16 +78,19 @@ export default function CheckboxList(props) {
         </p>
       </Grid>
       <Grid item xs={6} sm={2}>
+      <Typography align="center" variant="subtitle2" color="GrayText" textTransform={"uppercase"}> More than  </Typography>
         <p style={{ fontWeight: "bold", textAlign: "center" }}>
           {props.lowerLimit}
         </p>
       </Grid>
       <Grid item xs={6} sm={2}>
+      <Typography align="center" variant="subtitle2" color="GrayText" textTransform={"uppercase"}> less than</Typography>
         <p style={{ fontWeight: "bold", textAlign: "center" }}>
           {props.upperLimit}
         </p>
       </Grid>
       <Grid item xs={6} sm={2}>
+      <Typography align="center" variant="subtitle2" color="GrayText" textTransform={"uppercase"}> Local prices</Typography>
         <TextField
           fullWidth
           variant="outlined"
@@ -99,6 +103,7 @@ export default function CheckboxList(props) {
         />
       </Grid>
       <Grid item xs={6} sm={2}>
+        <Typography align="center" variant="subtitle2" color="GrayText" textTransform={"uppercase"}> OutCity prices</Typography>
         <TextField
           fullWidth
           variant="outlined"

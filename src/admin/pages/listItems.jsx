@@ -85,7 +85,7 @@ export const MainListItems = () => {
       </a>
       {role !== "user" ? (
       <a
-        href={role=="admin"?"/commission-request":"/agent/request"}
+        href={role==="admin"?"/commission-request":"/agent/request"}
         style={{ textDecoration: "none" }}
       >
         <ListItem button className={classes.listitemRoot}>
@@ -98,7 +98,7 @@ export const MainListItems = () => {
         </ListItem>
       </a>):<></>}
    
-      {role!="agent"?<a
+      {role!=="agent"?<a
         href={role !== "admin" ? "/notes" : "/notesAdmin"}
         style={{ textDecoration: "none" }}
       >

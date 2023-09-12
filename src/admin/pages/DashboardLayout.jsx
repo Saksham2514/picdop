@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import clsx from "clsx";
 import "../../assets/css/App.module.css";
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,6 +36,9 @@ function Copyright() {
         <Link color="inherit" to="https://www.brandon.co.in">
           Brandon
         </Link>
+        {" "}
+          &copy; 
+        {" "}
         {new Date().getFullYear()}
         {"."}
       </Typography>
@@ -108,6 +111,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBarSpacer: theme.mixins.toolbar,
+  // appBarSpacer: theme.mixins.toolbar,
   content: {
     // content which is class of main needs to be flex and column direction
     display: "flex",
@@ -190,7 +194,7 @@ export default function Dashboard({ children }) {
                 <img src={Logo} style={{ height: "4rem" }} alt="" />
               </Link>
             </Typography>
-            {role != "admin" ? (
+            {role !== "admin" ? (
               <IconButton
                 onClick={handleClickOpen}
                 size="small"

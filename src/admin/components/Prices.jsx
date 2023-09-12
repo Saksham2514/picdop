@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import DashboardLayout from "../pages/DashboardLayout";
 import List from "../pages/List";
 import { Container, Grid, Typography } from "@material-ui/core";
-import { Alert, Button, TextField } from "@mui/material";
+import { Alert } from "@mui/material";
 import axios from "axios";
 import { useEffect } from "react";
 import CommissionCard from "../pages/CommissionCard";
@@ -83,6 +83,7 @@ export default function Dashboard() {
     })
     .then((res) => {
       setCommissionData(res.data);
+      console.warn(res.data);
     })
     .catch((err) => console.log(err));
 
@@ -172,69 +173,32 @@ export default function Dashboard() {
           </Grid> */}
         </Grid>
         <Grid container alignContent="center">
-          <Grid item xs={12}  display={{xs:"none",lg:"block"}}>
+          <Grid item xs={12} >
             {/* Grid Content */}
             <Grid
               container
               rowSpacing={1}
+               
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid
                 item
+                
+                
                 xs={12}
                 style={{ padding: 0, marginTop: "1rem", marginBottom: "1rem" }}
               >
                 <Typography variant="h5">Set Prices</Typography>
               </Grid>
               {/* Labels */}
-              <Grid
-                item
-                xs={2}
-                style={{ textAlign: "", paddingLeft: "0.5rem", margin: 0 }}
-              >
-                <Typography variant="button">Category</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={2}
-                style={{ textAlign: "", paddingLeft: "0.5rem", margin: 0 }}
-              >
-                <Typography variant="button">Lower Limit</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={2}
-                style={{ textAlign: "", paddingLeft: "0.5rem", margin: 0 }}
-              > 
-                <Typography variant="button">Upper Limit</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={2}
-                style={{ textAlign: "", paddingLeft: "0.5rem", margin: 0 }}
-              >
-                <Typography variant="button">Local Prices</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={2}
-                style={{ textAlign: "", paddingLeft: "0.5rem", margin: 0 }}
-              >
-                <Typography variant="button">Outcity Prices</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={2}
-                style={{ textAlign: "center", paddingLeft: "0.5rem", margin: 0 }}
-              >
-                <Typography variant="button">Actions</Typography>
-              </Grid>
-
+              
+             
+              
               <Grid item xs={12} style={{ padding: 0, margin: 0 }}>
                 {data.map((data, ind) => (
                   <List
                       key={ind}
-                      category={data.name}
+                      category={data.name + (data.name === "Height" ? " (in inch) " : data.name === "Weight" ? " (in kg) " : "") }
                       lowerLimit={data.lowerLimit}
                       upperLimit={data.upperLimit}
                       id={data._id}
@@ -247,6 +211,7 @@ export default function Dashboard() {
                 ))}
               </Grid>
             <Grid container style={{justifyContent:"space-around"}}>
+                <Typography variant="h5" align="center">Set Agent Commission</Typography>
                 <CommissionCard title={"Fixed Charge Range (in KM)"} value={breakpoint} setBreakpoint={setBreakpoint} ind={0} setData={setCommissionData} setError={setError}/> 
                 <CommissionCard title={`Fixed Charge (Below ${breakpoint || "0"} KM)`} value={commissionData?.belowBreakpoint} ind={1} setData={setCommissionData} setError={setError}/>
                 <CommissionCard title={`Per KiloMeter Rate (Above ${breakpoint || "0"} KM)`} value={commissionData?.aboveBreakpoint} ind={2} setData={setCommissionData} setError={setError}/>

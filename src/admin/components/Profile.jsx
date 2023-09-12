@@ -32,11 +32,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const { id,token } = useSelector((state) => state);
+  const { id, token } = useSelector((state) => state);
   const [edit, setEdit] = useState(false);
   const [details, setDetails] = useState();
 
-  useEffect(() => {
+  function getData() {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}users/search`, {
         _id: id,
@@ -45,7 +45,8 @@ export default function Dashboard() {
         setDetails(res.data);
       })
       .catch((err) => console.error(err));
-  }, []);
+  }
+  useEffect(() => {getData()}, [id]);
 
   return (
     <>
@@ -81,7 +82,7 @@ export default function Dashboard() {
           </DashboardLayout>
         </>
       ) : (
-        <Loading/>
+        <Loading />
       )}
     </>
   );

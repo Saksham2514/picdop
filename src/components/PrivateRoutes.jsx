@@ -6,7 +6,7 @@ const PrivateRoute = () => {
   let {role,auth} = useSelector(state=>state)
   const {pathname} = useLocation();
   return (
-      (role !=="agent" || pathname == "/profile") && auth ? <Outlet/> : <Navigate to="/" replace/> 
+      (role !=="agent" || pathname === "/profile") && auth ? <Outlet/> : <Navigate to="/" replace/> 
   );
 };
 

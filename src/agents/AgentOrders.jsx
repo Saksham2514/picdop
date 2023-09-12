@@ -13,7 +13,7 @@ export const AgentOrders = () => {
 
   const removeCard = (id)=>{
     const filteredArr = data.filter((asd)=>{
-      return asd._id!=id;
+      return asd._id!==id;
     })
     setData(filteredArr);
   }

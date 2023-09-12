@@ -8,7 +8,7 @@ import React, { Component } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { Alert } from "@mui/material";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 export class ProfileForm extends Component {
   // const { token } = useSelector((state) => state);
@@ -112,7 +112,7 @@ export class ProfileForm extends Component {
     return (
       <div>
         {this.state.navigate ? <Navigate to="/collection"></Navigate> : ""}
-        <Grid container size="small" fullWidth spacing={3}>
+        <Grid container  fullWidth spacing={3}>
 
           <Grid item xs={6}>
             <Typography
