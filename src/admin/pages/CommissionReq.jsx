@@ -1,11 +1,12 @@
 import React from 'react'
 import DashboardLayout from "./DashboardLayout";
-import { Button, Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import Table from './Table';
 import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Button } from '@mui/material';
 
 const CommissionReq = () => {
     const [initiated,setInitiated] = useState([]);
@@ -23,46 +24,46 @@ const CommissionReq = () => {
         },
         {
         name: "Account Holder",
-        selector: (row) => row?.bankID?.holderName,
+        selector: (row) => row?.bankID?.holderName ? row?.bankID?.holderName :"-",
         sortable: true,
         wrap: true,
         },
         {
         name: "Account Number",
-        selector: (row) => row.bankID?.accountNumber,
+        selector: (row) => row?.bankID?.accountNumber ? row?.bankID?.accountNumber : "-" ,
         sortable: true,
         wrap: true,
         },
         {
         name: "Bank Name",
-        selector: (row) => row?.bankID?.bankName,
+        selector: (row) => row?.bankID?.bankName ? row?.bankID?.bankName : "-",
         sortable: true,
         wrap: true,
         },
         {
         name: "IFSC Code",
-        selector: (row) => row?.bankID?.ifscCode,
+        selector: (row) => row?.bankID?.ifscCode ? row?.bankID?.ifscCode : "-",
         sortable: true,
         wrap: true,
         },
         {
         name: "UPI",
-        selector: (row) => row?.bankID?.upi,
+        selector: (row) => row?.bankID?.upi ? row?.bankID?.upi : "-",
         sortable: true,
         wrap: true,
         },
         {
         name: "Status",
-        selector: (row) => <p style={{textTransform:"capitalize"}}>{row.status}</p>,
+        selector: (row) => row?.status ?  <p style={{textTransform:"capitalize"}}>{row.status}</p> : "-",
         sortable: true,
         wrap: true,
         },
         {
         name: "Action",
         selector: (row) =>
-            row.status==="initiated"?<Grid  item style={{textAlign:"center"}}>
-                <Button variant="outlined" color="error"  onClick={()=>{handleReject(row._id)}}>Reject</Button>
-                <Button variant="outlined" color="info"  onClick={()=>{handleAccept(row._id)}}>Accept</Button>
+            row.status==="initiated"?<Grid  item style={{textAlign:"center" }} >
+                <Button size='small'  variant="outlined" color="error" sx={{my:1}} onClick={()=>{handleReject(row._id)}}>Reject</Button>
+                <Button size='small' variant="outlined" color="info" sx={{mb:1}} onClick={()=>{handleAccept(row._id)}}>Accept</Button>
             </Grid>:<p style={{textTransform:"capitalize"}}>{row.status}</p>,
         sortable: true,
         wrap: true,
